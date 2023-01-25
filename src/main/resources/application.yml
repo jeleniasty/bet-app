@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres?useSSL=false
+    username: postgres
+    password: password
+
+  flyway:
+    url: jdbc:postgresql://localhost:5432/postgres
+    schemas: betapp
+    user: postgres
+    password: password
