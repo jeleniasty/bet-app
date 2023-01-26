@@ -1,13 +1,13 @@
 CREATE SCHEMA IF NOT EXISTS betapp;
 
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2023-01-25 15:06:11.18
+-- Last modification date: 2023-01-25 19:34:38.918
 
 -- tables
 -- Table: Coach
 CREATE TABLE betapp.Coach (
-                       id int  NOT NULL,
-                       first_Name varchar(40)  NOT NULL,
+                       id SERIAL NOT NULL,
+                       first_Name varchar(40)  NULL,
                        last_Name varchar(40)  NOT NULL,
                        team_code varchar(3)  NOT NULL,
                        CONSTRAINT Coach_pk PRIMARY KEY (id)
@@ -15,7 +15,7 @@ CREATE TABLE betapp.Coach (
 
 -- Table: Goal
 CREATE TABLE betapp.Goal (
-                      id int  NOT NULL,
+                      id SERIAL NOT NULL,
                       timestamp smallint  NOT NULL,
                       match_id int  NOT NULL,
                       player_id int  NOT NULL,
@@ -25,16 +25,16 @@ CREATE TABLE betapp.Goal (
 -- Table: Group
 CREATE TABLE betapp."group" (
                          name char(1)  NOT NULL,
-                         team1 smallint  NOT NULL,
-                         team2 smallint  NOT NULL,
-                         team3 smallint  NOT NULL,
-                         team4 smallint  NOT NULL,
+                         team1 smallint  NULL,
+                         team2 smallint  NULL,
+                         team3 smallint  NULL,
+                         team4 smallint  NULL,
                          CONSTRAINT Group_pk PRIMARY KEY (name)
 );
 
 -- Table: Match
 CREATE TABLE betapp.Match (
-                       id int  NOT NULL,
+                       id SERIAL NOT NULL,
                        team1_score int  NOT NULL,
                        team2_score int  NOT NULL,
                        end_time varchar(20)  NOT NULL,
@@ -45,7 +45,7 @@ CREATE TABLE betapp.Match (
 
 -- Table: Match_Bet
 CREATE TABLE betapp.Match_Bet (
-                           id int  NOT NULL,
+                           id SERIAL NOT NULL,
                            team1_score int  NOT NULL,
                            team2_score int  NOT NULL,
                            end_time varchar(20)  NOT NULL,
@@ -56,15 +56,14 @@ CREATE TABLE betapp.Match_Bet (
 
 -- Table: Player
 CREATE TABLE betapp.Player (
-                        id int  NOT NULL,
-                        first_Name varchar(40)  NOT NULL,
+                        id SERIAL NOT NULL,
+                        first_Name varchar(40)  NULL,
                         last_Name varchar(40)  NOT NULL,
-                        age smallint  NOT NULL,
                         number smallint  NOT NULL,
-                        is_Capitan boolean  NOT NULL,
                         team_code varchar(3)  NOT NULL,
-                        yellow_cards smallint  NOT NULL,
-                        red_cards smallint  NOT NULL,
+                        yellow_cards smallint  NULL,
+                        red_cards smallint  NULL,
+                        position varchar(12)  NOT NULL,
                         CONSTRAINT Player_pk PRIMARY KEY (id)
 );
 
@@ -80,13 +79,12 @@ CREATE TABLE betapp.Team (
                       points smallint  NOT NULL,
                       goals_scored smallint  NOT NULL,
                       goals_lost smallint  NOT NULL,
-                      bilans_bramek smallint  NOT NULL,
                       CONSTRAINT Team_pk PRIMARY KEY (team_code)
 );
 
 -- Table: User
 CREATE TABLE betapp."user" (
-                        id int  NOT NULL,
+                        id SERIAL NOT NULL,
                         login varchar(20)  NOT NULL,
                         password varchar(50)  NOT NULL,
                         email varchar(30)  NOT NULL,
