@@ -9,3 +9,4 @@ spring:
     schemas: betapp
     user: postgres
     password: password
+    baseline-on-migrate: true
