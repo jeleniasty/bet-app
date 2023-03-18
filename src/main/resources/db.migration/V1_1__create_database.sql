@@ -35,20 +35,20 @@ CREATE TABLE betapp."group" (
 -- Table: Match
 CREATE TABLE betapp.Match (
                        id SERIAL NOT NULL,
-                       team1_score int  NOT NULL,
-                       team2_score int  NOT NULL,
-                       end_time varchar(20)  NOT NULL,
-                       team_code varchar(3)  NOT NULL,
-                       team_2_code varchar(3)  NOT NULL,
+                       home_team_score int  NOT NULL,
+                       away_team_score int  NOT NULL,
+                       end_time varchar(40)  NOT NULL,
+                       home_team_code varchar(3)  NOT NULL,
+                       away_team_code varchar(3)  NOT NULL,
                        CONSTRAINT Match_pk PRIMARY KEY (id)
 );
 
 -- Table: Match_Bet
 CREATE TABLE betapp.Match_Bet (
                            id SERIAL NOT NULL,
-                           team1_score int  NOT NULL,
-                           team2_score int  NOT NULL,
-                           end_time varchar(20)  NOT NULL,
+                           home_team_score int  NOT NULL,
+                           away_team_score int  NOT NULL,
+                           bet_time varchar(40)  NOT NULL,
                            user_id int  NOT NULL,
                            match_id int  NOT NULL,
                            CONSTRAINT Match_Bet_pk PRIMARY KEY (id)
@@ -135,7 +135,7 @@ ALTER TABLE betapp.Match_Bet ADD CONSTRAINT Match_Bet_User
 
 -- Reference: Match_Team1 (table: Match)
 ALTER TABLE betapp.Match ADD CONSTRAINT Match_Team1
-    FOREIGN KEY (team_code)
+    FOREIGN KEY (home_team_code)
         REFERENCES betapp.Team (team_code)
         NOT DEFERRABLE
             INITIALLY IMMEDIATE
@@ -143,7 +143,7 @@ ALTER TABLE betapp.Match ADD CONSTRAINT Match_Team1
 
 -- Reference: Match_Team2 (table: Match)
 ALTER TABLE betapp.Match ADD CONSTRAINT Match_Team2
-    FOREIGN KEY (team_2_code)
+    FOREIGN KEY (away_team_code)
         REFERENCES betapp.Team (team_code)
         NOT DEFERRABLE
             INITIALLY IMMEDIATE
