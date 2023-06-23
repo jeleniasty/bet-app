@@ -3,10 +3,17 @@ spring:
     url: jdbc:postgresql://localhost:5432/postgres?useSSL=false
     username: postgres
     password: password
-
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: true
+    database: postgresql
   flyway:
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://localhost:5432/postgres?useSSL=false
     schemas: betapp
     user: postgres
     password: password
-    baseline-on-migrate: true
+

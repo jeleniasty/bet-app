@@ -23,7 +23,7 @@ CREATE TABLE betapp.Goal (
 );
 
 -- Table: Group
-CREATE TABLE betapp."group" (
+CREATE TABLE betapp.Group (
                          name char(1)  NOT NULL,
                          team1 smallint  NULL,
                          team2 smallint  NULL,
@@ -35,11 +35,11 @@ CREATE TABLE betapp."group" (
 -- Table: Match
 CREATE TABLE betapp.Match (
                        id SERIAL NOT NULL,
-                       home_team_score int  NOT NULL,
-                       away_team_score int  NOT NULL,
-                       end_time varchar(40)  NOT NULL,
-                       home_team_code varchar(3)  NOT NULL,
-                       away_team_code varchar(3)  NOT NULL,
+                       home_team_score int,
+                       away_team_score int,
+                       end_time varchar(40),
+                       home_team_code varchar(3) NOT NULL,
+                       away_team_code varchar(3) NOT NULL,
                        CONSTRAINT Match_pk PRIMARY KEY (id)
 );
 
@@ -83,12 +83,13 @@ CREATE TABLE betapp.Team (
 );
 
 -- Table: User
-CREATE TABLE betapp."user" (
+CREATE TABLE betapp.betapp_user (
                         id SERIAL NOT NULL,
-                        login varchar(20)  NOT NULL,
-                        password varchar(50)  NOT NULL,
-                        email varchar(30)  NOT NULL,
-                        points int  NOT NULL,
+                        username varchar(255)  NOT NULL,
+                        email varchar(255)  NOT NULL,
+                        password varchar(255)  NOT NULL,
+                        role varchar(255),
+                        points int,
                         CONSTRAINT User_pk PRIMARY KEY (id)
 );
 
@@ -128,7 +129,7 @@ ALTER TABLE betapp.Match_Bet ADD CONSTRAINT Match_Bet_Match
 -- Reference: Match_Bet_User (table: Match_Bet)
 ALTER TABLE betapp.Match_Bet ADD CONSTRAINT Match_Bet_User
     FOREIGN KEY (user_id)
-        REFERENCES betapp."user" (id)
+        REFERENCES betapp.betapp_user (id)
         NOT DEFERRABLE
             INITIALLY IMMEDIATE
 ;
@@ -160,7 +161,7 @@ ALTER TABLE betapp.Player ADD CONSTRAINT Player_Team
 -- Reference: Team_Group (table: Team)
 ALTER TABLE betapp.Team ADD CONSTRAINT Team_Group
     FOREIGN KEY (group_name)
-        REFERENCES betapp."group" (name)
+        REFERENCES betapp.Group (name)
         NOT DEFERRABLE
             INITIALLY IMMEDIATE
 ;
