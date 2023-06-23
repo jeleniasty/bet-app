@@ -1,12 +1,10 @@
-package com.jeleniasty.betapp.matchbet.controller;
+package com.jeleniasty.betapp.features.goal.matchbet.controller;
 
-import com.jeleniasty.betapp.matchbet.repository.MatchBetRepository;
-import com.jeleniasty.betapp.matchbet.repository.entity.MatchBet;
-import com.jeleniasty.betapp.matchbet.service.MatchBetService;
+import com.jeleniasty.betapp.features.goal.matchbet.repository.entity.MatchBet;
+import com.jeleniasty.betapp.features.goal.matchbet.service.MatchBetService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 @RestController
@@ -17,12 +15,7 @@ public class MatchBetController {
 
     @PostMapping("matchbet")
     public void saveMatchBet(@RequestBody MatchBet matchBet) {
-        matchBetService.saveMatchBet(
-                matchBet.getHomeTeamScore(),
-                matchBet.getAwayTeamScore(),
-                LocalDateTime.now(),
-                matchBet.getUserId(),
-                matchBet.getMatchId());
+        matchBetService.saveMatchBet(matchBet);
     }
 
     @DeleteMapping("matchbet/{id}")

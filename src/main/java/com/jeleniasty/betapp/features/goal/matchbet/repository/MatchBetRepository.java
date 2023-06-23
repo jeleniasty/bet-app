@@ -1,6 +1,6 @@
-package com.jeleniasty.betapp.matchbet.repository;
+package com.jeleniasty.betapp.features.goal.matchbet.repository;
 
-import com.jeleniasty.betapp.matchbet.repository.entity.MatchBet;
+import com.jeleniasty.betapp.features.goal.matchbet.repository.entity.MatchBet;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

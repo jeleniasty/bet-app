@@ -1,6 +1,5 @@
-package com.jeleniasty.betapp.matchbet.repository.entity;
+package com.jeleniasty.betapp.features.goal.matchbet.repository.entity;
 
-import com.jeleniasty.betapp.user.repository.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 

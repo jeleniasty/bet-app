@@ -1,4 +1,4 @@
-package com.jeleniasty.betapp.match.repository.entity;
+package com.jeleniasty.betapp.features.goal.match.repository.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @Entity
 @RequiredArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @Table(schema = "betapp")
@@ -22,13 +23,10 @@ public class Match {
     @Column(name = "id", updatable = false)
     private Long id;
 
-    @NonNull
     private Integer homeTeamScore;
 
-    @NonNull
     private Integer awayTeamScore;
 
-    @NonNull
     private LocalDateTime endTime;
 
     @NonNull

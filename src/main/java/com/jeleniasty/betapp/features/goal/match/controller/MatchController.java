@@ -1,10 +1,10 @@
-package com.jeleniasty.betapp.match.controller;
+package com.jeleniasty.betapp.features.goal.match.controller;
 
-import com.jeleniasty.betapp.match.repository.entity.Match;
-import com.jeleniasty.betapp.match.service.MatchService;
+import com.jeleniasty.betapp.features.goal.match.repository.entity.Match;
+import com.jeleniasty.betapp.features.goal.match.service.MatchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import java.time.LocalDateTime;
+
 import java.util.Optional;
 
 @RestController
@@ -15,7 +15,12 @@ public class MatchController {
 
     @PostMapping("match")
     public void saveMatch(@RequestBody Match match) {
-        matchService.saveMatch(match.getHomeTeamScore(), match.getAwayTeamScore(), LocalDateTime.now(), match.getHomeTeamCode(), match.getAwayTeamCode());
+        matchService.saveMatch(match);
+    }
+
+    @PatchMapping("match")
+    public void saveMatchResult(@RequestBody Match match) {
+        matchService.saveMatchResult(match);
     }
 
     @DeleteMapping("match/{id}")

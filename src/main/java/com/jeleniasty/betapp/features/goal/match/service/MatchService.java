@@ -1,7 +1,7 @@
-package com.jeleniasty.betapp.match.service;
+package com.jeleniasty.betapp.features.goal.match.service;
 
-import com.jeleniasty.betapp.match.repository.MatchRepository;
-import com.jeleniasty.betapp.match.repository.entity.Match;
+import com.jeleniasty.betapp.features.goal.match.repository.MatchRepository;
+import com.jeleniasty.betapp.features.goal.match.repository.entity.Match;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,12 +14,8 @@ public class MatchService {
 
     private final MatchRepository matchRepository;
 
-    public void saveMatch(Integer homeTeamScore,
-                          Integer awayTeamScore,
-                          LocalDateTime endTime,
-                          String homeTeamCode,
-                          String awayTeamCode) {
-        matchRepository.save(new Match(homeTeamScore, awayTeamScore, endTime, homeTeamCode, awayTeamCode));
+    public void saveMatch(Match match) {
+        matchRepository.save(new Match(match.getHomeTeamCode(), match.getAwayTeamCode()));
     }
 
     public void deleteMatch(Long id) {
@@ -32,5 +28,9 @@ public class MatchService {
 
     public Iterable<Match> getMatches() {
         return matchRepository.findAll();
+    }
+
+    public void saveMatchResult(Match match) {
+        matchRepository.setMatchResult(match.getHomeTeamScore(), match.getAwayTeamScore(), LocalDateTime.now(), match.getId());
     }
 }
