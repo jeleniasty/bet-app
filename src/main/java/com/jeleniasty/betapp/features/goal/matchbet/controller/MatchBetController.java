@@ -1,35 +1,44 @@
 package com.jeleniasty.betapp.features.goal.matchbet.controller;
 
+import com.jeleniasty.betapp.features.goal.matchbet.MatchBetDTO;
+import com.jeleniasty.betapp.features.goal.matchbet.MatchBetUpdateDTO;
 import com.jeleniasty.betapp.features.goal.matchbet.repository.entity.MatchBet;
 import com.jeleniasty.betapp.features.goal.matchbet.service.MatchBetService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 public class MatchBetController {
 
-    private final MatchBetService matchBetService;
+  private final MatchBetService matchBetService;
 
-    @PostMapping("matchbet")
-    public void saveMatchBet(@RequestBody MatchBet matchBet) {
-        matchBetService.saveMatchBet(matchBet);
-    }
+  @PostMapping("matchbet")
+  @ResponseStatus(value = HttpStatus.CREATED)
+  public void saveMatchBet(@RequestBody MatchBetDTO matchBet) {
+    matchBetService.saveMatchBet(matchBet);
+  }
 
-    @DeleteMapping("matchbet/{id}")
-    public void deleteMatch(@PathVariable Long id) {
-        matchBetService.deleteMatchBet(id);
-    }
+  @PatchMapping("matchbet")
+  @ResponseStatus(value = HttpStatus.OK)
+  public void updateMatchBet(@RequestBody MatchBetUpdateDTO matchBetUpdateDTO) {
+    matchBetService.updateMatchBet(matchBetUpdateDTO);
+  }
 
-    @GetMapping("matchbet/{id}")
-    public Optional<MatchBet> getMatch(@PathVariable Long id) {
-        return matchBetService.getMatchBet(id);
-    }
+  @DeleteMapping("matchbet/{id}")
+  public void deleteMatch(@PathVariable Long id) {
+    matchBetService.deleteMatchBet(id);
+  }
 
-    @GetMapping("matchbets")
-    public Iterable<MatchBet> getMatches() {
-        return matchBetService.getMatches();
-    }
+  @GetMapping("matchbet/{id}")
+  public Optional<MatchBet> getMatch(@PathVariable Long id) {
+    return matchBetService.getMatchBet(id);
+  }
+
+  @GetMapping("matchbets")
+  public Iterable<MatchBet> getMatches() {
+    return matchBetService.getMatches();
+  }
 }
