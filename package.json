@@ -1,0 +1,13 @@
+{
+  "name": "betapp",
+  "version": "0.0.0",
+  "scripts": {
+    "check": "npx prettier --check {**/*,*}.{ts,java,js,scss,html}",
+    "format": "npx prettier --write {**/*,*}.{ts,java,js,scss,html}"
+  },
+  "devDependencies": {
+    "java-parser": "~2.0.4",
+    "prettier": "~2.8.7",
+    "prettier-plugin-java": "~2.1.0"
+  }
+}
