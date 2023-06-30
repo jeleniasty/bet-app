@@ -48,7 +48,8 @@ CREATE TABLE betapp.Match_Bet (
                            id SERIAL NOT NULL,
                            home_team_score int  NOT NULL,
                            away_team_score int  NOT NULL,
-                           bet_time varchar(40)  NOT NULL,
+                           created varchar(40)  NOT NULL,
+                           updated varchar(40),
                            user_id int  NOT NULL,
                            match_id int  NOT NULL,
                            CONSTRAINT Match_Bet_pk PRIMARY KEY (id)
