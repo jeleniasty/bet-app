@@ -1,7 +1,6 @@
-package com.jeleniasty.betapp.features.goal.match.controller;
+package com.jeleniasty.betapp.features.match;
 
-import com.jeleniasty.betapp.features.goal.match.repository.entity.Match;
-import com.jeleniasty.betapp.features.goal.match.service.MatchService;
+import com.jeleniasty.betapp.features.match.repository.entity.Match;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

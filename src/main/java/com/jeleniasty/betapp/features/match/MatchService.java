@@ -1,11 +1,11 @@
-package com.jeleniasty.betapp.features.goal.match.service;
+package com.jeleniasty.betapp.features.match;
 
-import com.jeleniasty.betapp.features.goal.match.repository.MatchRepository;
-import com.jeleniasty.betapp.features.goal.match.repository.entity.Match;
-import java.time.LocalDateTime;
-import java.util.Optional;
+import com.jeleniasty.betapp.features.match.repository.MatchRepository;
+import com.jeleniasty.betapp.features.match.repository.entity.Match;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +35,6 @@ public class MatchService {
     matchRepository.setMatchResult(
       match.getHomeTeamScore(),
       match.getAwayTeamScore(),
-      LocalDateTime.now(),
       match.getId()
     );
   }

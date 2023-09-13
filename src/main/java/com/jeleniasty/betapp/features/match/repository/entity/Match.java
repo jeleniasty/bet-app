@@ -1,4 +1,4 @@
-package com.jeleniasty.betapp.features.goal.match.repository.entity;
+package com.jeleniasty.betapp.features.match.repository.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
@@ -30,19 +30,13 @@ public class Match {
 
   private Integer awayTeamScore;
 
-  private LocalDateTime endTime;
+  private LocalDateTime started;
+
+  private Integer duration;
 
   @NonNull
   private String homeTeamCode;
 
   @NonNull
   private String awayTeamCode;
-  //    public Match(Integer homeTeamScore, Integer awayTeamScore, @NonNull LocalDateTime endTime, @NonNull String homeTeamCode, @NonNull String awayTeamCode) {
-  //        this.homeTeamScore = homeTeamScore;
-  //        this.awayTeamScore = awayTeamScore;
-  //        this.endTime = endTime;
-  //        this.homeTeamCode = homeTeamCode;
-  //        this.awayTeamCode = awayTeamCode;
-  //    }
-
 }
