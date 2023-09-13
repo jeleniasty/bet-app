@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 class AuthenticationResponse {
 
-    private String token;
+  private String token;
 }
