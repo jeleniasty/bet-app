@@ -1,6 +1,6 @@
-package com.jeleniasty.betapp.features.goal.matchbet.repository;
+package com.jeleniasty.betapp.features.matchbet.repository;
 
-import com.jeleniasty.betapp.features.goal.matchbet.repository.entity.MatchBet;
+import com.jeleniasty.betapp.features.matchbet.repository.entity.MatchBet;
 import java.time.LocalDateTime;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

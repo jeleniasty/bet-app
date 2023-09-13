@@ -1,9 +1,6 @@
-package com.jeleniasty.betapp.features.goal.matchbet.controller;
+package com.jeleniasty.betapp.features.matchbet;
 
-import com.jeleniasty.betapp.features.goal.matchbet.MatchBetDTO;
-import com.jeleniasty.betapp.features.goal.matchbet.MatchBetUpdateDTO;
-import com.jeleniasty.betapp.features.goal.matchbet.repository.entity.MatchBet;
-import com.jeleniasty.betapp.features.goal.matchbet.service.MatchBetService;
+import com.jeleniasty.betapp.features.matchbet.repository.entity.MatchBet;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

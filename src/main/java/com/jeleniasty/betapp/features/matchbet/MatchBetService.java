@@ -1,14 +1,13 @@
-package com.jeleniasty.betapp.features.goal.matchbet.service;
+package com.jeleniasty.betapp.features.matchbet;
 
-import com.jeleniasty.betapp.features.goal.matchbet.MatchBetDTO;
-import com.jeleniasty.betapp.features.goal.matchbet.MatchBetUpdateDTO;
-import com.jeleniasty.betapp.features.goal.matchbet.repository.MatchBetRepository;
-import com.jeleniasty.betapp.features.goal.matchbet.repository.entity.MatchBet;
-import com.jeleniasty.betapp.features.goal.user.service.BetappUserService;
-import java.time.LocalDateTime;
-import java.util.Optional;
+import com.jeleniasty.betapp.features.matchbet.repository.MatchBetRepository;
+import com.jeleniasty.betapp.features.matchbet.repository.entity.MatchBet;
+import com.jeleniasty.betapp.features.user.service.BetappUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

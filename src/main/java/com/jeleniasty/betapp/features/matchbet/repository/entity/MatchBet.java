@@ -1,4 +1,4 @@
-package com.jeleniasty.betapp.features.goal.matchbet.repository.entity;
+package com.jeleniasty.betapp.features.matchbet.repository.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;

@@ -1,4 +1,4 @@
-package com.jeleniasty.betapp.features.goal.matchbet;
+package com.jeleniasty.betapp.features.matchbet;
 
 public record MatchBetDTO(
   Integer homeTeamScore,
