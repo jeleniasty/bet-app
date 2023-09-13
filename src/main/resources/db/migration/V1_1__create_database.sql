@@ -1,8 +1,5 @@
 CREATE SCHEMA IF NOT EXISTS betapp;
 
--- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2023-01-25 19:34:38.918
-
 -- tables
 -- Table: Coach
 CREATE TABLE betapp.Coach (
@@ -37,7 +34,8 @@ CREATE TABLE betapp.Match (
                        id SERIAL NOT NULL,
                        home_team_score int,
                        away_team_score int,
-                       end_time varchar(40),
+                       started timestamp,
+                       duration smallint,
                        home_team_code varchar(3) NOT NULL,
                        away_team_code varchar(3) NOT NULL,
                        CONSTRAINT Match_pk PRIMARY KEY (id)
@@ -48,8 +46,8 @@ CREATE TABLE betapp.Match_Bet (
                            id SERIAL NOT NULL,
                            home_team_score int  NOT NULL,
                            away_team_score int  NOT NULL,
-                           created varchar(40)  NOT NULL,
-                           updated varchar(40),
+                           created timestamp  NOT NULL,
+                           updated timestamp,
                            user_id int  NOT NULL,
                            match_id int  NOT NULL,
                            CONSTRAINT Match_Bet_pk PRIMARY KEY (id)
