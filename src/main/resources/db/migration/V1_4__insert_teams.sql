@@ -1,4 +1,4 @@
-INSERT INTO betapp.team ("team_code", "name", "group_name", "matches_played", "wins", "ties", "loses", "points", "goals_scored", "goals_lost") VALUES
+INSERT INTO betapp.team (team_code, team_name, group_name, matches_played, wins, ties, loses, points, goals_scored, goals_lost) VALUES
                                                                                                                                                       ('QAT', 'QATAR', 'A', '0', '0', '0', '0', '0', '0', '0'),
                                                                                                                                                       ('ECU', 'ECUADOR', 'A', '0', '0', '0', '0', '0', '0', '0'),
                                                                                                                                                       ('SEN', 'SENEGAL', 'A', '0', '0', '0', '0', '0', '0', '0'),

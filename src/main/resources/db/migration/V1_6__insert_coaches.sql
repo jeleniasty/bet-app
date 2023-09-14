@@ -1,4 +1,4 @@
-INSERT INTO betapp.coach ("first_name", "last_name", "team_code")
+INSERT INTO betapp.coach (first_name, last_name, team_code)
 VALUES ('Gustavo', 'Alfaro', 'ECU'),
        ('Louis', 'van Gaal', 'NED'),
        ('Felix', 'Sanchez', 'QAT'),

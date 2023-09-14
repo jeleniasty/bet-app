@@ -1,12 +1,16 @@
 package com.jeleniasty.betapp.features.user.repository.entity;
 
 import jakarta.persistence.*;
-import java.util.Collection;
-import java.util.List;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
 
 @Data
 @Builder
@@ -33,11 +37,12 @@ public class BetappUser implements UserDetails {
   private String username;
   private String email;
   private String password;
-  private Integer points;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "role")
   private BetappUserRole betappUserRole;
+
+  private Integer points;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

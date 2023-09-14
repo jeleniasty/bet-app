@@ -1,4 +1,4 @@
-INSERT INTO betapp.player (first_Name, last_Name, number, team_code, yellow_Cards, red_cards, position)
+INSERT INTO betapp.player (first_Name, last_Name, player_number, team_code, yellow_Cards, red_cards, position)
 VALUES ('Hossein ', 'Hosseini', '24', 'IRN', '0', '0', 'Goalkeeper'),
        ('Alireza ', 'Bejranvand', '1', 'IRN', '0', '0', 'Goalkeeper'),
        ('Majid ', 'Hosseini', '19', 'IRN', '0', '0', 'Defender'),

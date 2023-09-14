@@ -15,11 +15,9 @@ import org.springframework.stereotype.Service;
 public class AuthenticationService {
 
   private final BetappUserRepository betappUserRepository;
-  private final PasswordEncoder passwordEncoder;
-
   private final JwtService jwtService;
-
   private final AuthenticationManager authManager;
+  private final PasswordEncoder passwordEncoder;
 
   public AuthenticationResponse register(RegisterRequest request) {
     var user = BetappUser
@@ -30,6 +28,7 @@ public class AuthenticationService {
       .betappUserRole(BetappUserRole.USER)
       .build();
     betappUserRepository.save(user);
+
     var jwtToken = jwtService.generateToken(user);
     return AuthenticationResponse.builder().token(jwtToken).build();
   }
