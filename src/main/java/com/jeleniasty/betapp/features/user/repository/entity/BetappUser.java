@@ -1,10 +1,8 @@
 package com.jeleniasty.betapp.features.user.repository.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,20 +10,18 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-@Data
+@Entity(name = "betapp_user")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(schema = "betapp", name = "betapp_user")
+@Table(schema = "betapp")
 public class BetappUser implements UserDetails {
 
   @Id
   @SequenceGenerator(
     schema = "betapp",
     name = "betapp_user_id_seq",
-    sequenceName = "betapp_user_id_seq",
-    allocationSize = 1
+    sequenceName = "betapp_user_id_seq"
   )
   @GeneratedValue(
     strategy = GenerationType.SEQUENCE,
@@ -34,15 +30,21 @@ public class BetappUser implements UserDetails {
   @Column(name = "id", updatable = false)
   private Long id;
 
+  @NotNull
   private String username;
+
+  @NotNull
+  @Getter
   private String email;
+
+  @NotNull
   private String password;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "role")
   private BetappUserRole betappUserRole;
 
-  private Integer points;
+  private Integer score;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -50,11 +52,13 @@ public class BetappUser implements UserDetails {
   }
 
   @Override
+  @NotNull
   public String getPassword() {
     return password;
   }
 
   @Override
+  @NotNull
   public String getUsername() {
     return username;
   }

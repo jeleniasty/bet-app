@@ -20,13 +20,13 @@ public class AuthenticationService {
   private final PasswordEncoder passwordEncoder;
 
   public AuthenticationResponse register(RegisterRequest request) {
-    var user = BetappUser
-      .builder()
+    var user = BetappUser.builder()
       .username(request.username())
       .email(request.email())
       .password(passwordEncoder.encode(request.password()))
       .betappUserRole(BetappUserRole.USER)
       .build();
+
     betappUserRepository.save(user);
 
     var jwtToken = jwtService.generateToken(user);

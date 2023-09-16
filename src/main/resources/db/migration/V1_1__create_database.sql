@@ -29,17 +29,18 @@ CREATE TABLE betapp.match (
                        id SERIAL NOT NULL,
                        home_team_score int,
                        away_team_score int,
-                       started timestamp,
+                       started_at timestamp,
                        duration smallint,
                        home_team_code varchar(3) NOT NULL,
                        away_team_code varchar(3) NOT NULL,
+                       stadium varchar(255),
                        CONSTRAINT match_pk PRIMARY KEY (id)
 );
 
 CREATE TABLE betapp.match_bet (
                            id SERIAL NOT NULL,
-                           home_team_score int  NOT NULL,
-                           away_team_score int  NOT NULL,
+                           home_team_score_bet int  NOT NULL,
+                           away_team_score_bet int  NOT NULL,
                            created_at timestamp  NOT NULL,
                            updated_at timestamp,
                            user_id int  NOT NULL,
@@ -78,8 +79,8 @@ CREATE TABLE betapp.betapp_user (
                         username varchar(255)  NOT NULL,
                         email varchar(255)  NOT NULL,
                         password varchar(255)  NOT NULL,
-                        role varchar(255),
-                        points int,
+                        role varchar(255) NOT NULL,
+                        score int NULL,
                         CONSTRAINT user_pk PRIMARY KEY (id)
 );
 
