@@ -1,7 +1,10 @@
 package com.jeleniasty.betapp.features.user.service;
 
+import com.jeleniasty.betapp.features.user.dto.UserScoreDTO;
 import com.jeleniasty.betapp.features.user.repository.BetappUserRepository;
 import com.jeleniasty.betapp.features.user.repository.entity.BetappUser;
+import com.jeleniasty.betapp.features.user.repository.entity.BetappUserRole;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,6 +17,24 @@ public class BetappUserService {
 
   private final BetappUserRepository betappUserRepository;
 
+  public List<UserScoreDTO> fetchUserScores() {
+    var users = betappUserRepository.findAllByBetappUserRole(
+      BetappUserRole.PLAYER
+    );
+
+    return users
+      .stream()
+      .map(user ->
+        new UserScoreDTO(
+          user.getId(),
+          user.getUsername(),
+          user.getScore(),
+          user.getTotalBets()
+        )
+      )
+      .toList();
+  }
+
   public BetappUser getCurrentUser() {
     return (BetappUser) SecurityContextHolder
       .getContext()
@@ -23,10 +44,10 @@ public class BetappUserService {
 
   public UserDetailsService getUserDetailsService() {
     return username ->
-            betappUserRepository
-                    .findByEmail(username)
-                    .orElseThrow(() ->
-                            new UsernameNotFoundException("User " + username + " not found.")
-                    );
+      betappUserRepository
+        .findByEmail(username)
+        .orElseThrow(() ->
+          new UsernameNotFoundException("User " + username + " not found.")
+        );
   }
 }

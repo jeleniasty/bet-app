@@ -27,17 +27,23 @@ CREATE TABLE betapp."group" (
 
 CREATE TABLE betapp.match (
                        id SERIAL NOT NULL,
-                       home_team_score int,
-                       away_team_score int,
-                       started_at timestamp,
-                       duration smallint,
                        home_team_code varchar(3) NOT NULL,
                        away_team_code varchar(3) NOT NULL,
-                       stadium varchar(255),
+                       start_time timestamp NOT NULL,
+                       stadium_id varchar(255) NOT NULL,
+                       match_result_id int NULL,
                        CONSTRAINT match_pk PRIMARY KEY (id)
 );
 
-CREATE TABLE betapp.match_bet (
+CREATE TABLE betapp.match_result (
+                        id SERIAL NOT NULL,
+                        home_team_score int NOT NULL,
+                        away_team_score int NOT NULL ,
+                        duration smallint NOT NULL,
+                        CONSTRAINT match_result_pk PRIMARY KEY (id)
+);
+
+CREATE TABLE betapp.bet (
                            id SERIAL NOT NULL,
                            home_team_score_bet int  NOT NULL,
                            away_team_score_bet int  NOT NULL,
@@ -45,7 +51,7 @@ CREATE TABLE betapp.match_bet (
                            updated_at timestamp,
                            user_id int  NOT NULL,
                            match_id int  NOT NULL,
-                           CONSTRAINT match_bet_pk PRIMARY KEY (id)
+                           CONSTRAINT bet_pk PRIMARY KEY (id)
 );
 
 CREATE TABLE betapp.player (
@@ -80,7 +86,10 @@ CREATE TABLE betapp.betapp_user (
                         email varchar(255)  NOT NULL,
                         password varchar(255)  NOT NULL,
                         role varchar(255) NOT NULL,
-                        score int NULL,
+                        score int NOT NULL DEFAULT 0,
+                        total_bets int NOT NULL DEFAULT 0,
+                        created_at timestamp NOT NULL,
+                        updated_at timestamp,
                         CONSTRAINT user_pk PRIMARY KEY (id)
 );
 
@@ -97,11 +106,11 @@ ALTER TABLE betapp.goal ADD CONSTRAINT goal_player
     FOREIGN KEY (player_id)
         REFERENCES betapp.player (id);
 
-ALTER TABLE betapp.match_bet ADD CONSTRAINT match_bet_match
+ALTER TABLE betapp.bet ADD CONSTRAINT bet_match
     FOREIGN KEY (match_id)
         REFERENCES betapp.match (id);
 
-ALTER TABLE betapp.match_bet ADD CONSTRAINT match_bet_user
+ALTER TABLE betapp.bet ADD CONSTRAINT bet_user
     FOREIGN KEY (user_id)
         REFERENCES betapp.betapp_user (id);
 
@@ -112,6 +121,10 @@ ALTER TABLE betapp.match ADD CONSTRAINT match_team1
 ALTER TABLE betapp.match ADD CONSTRAINT match_team2
     FOREIGN KEY (away_team_code)
         REFERENCES betapp.team (team_code);
+
+ALTER TABLE betapp.match ADD CONSTRAINT match_match_result
+    FOREIGN KEY (match_result_id)
+        REFERENCES betapp.match_result (id);
 
 ALTER TABLE betapp.player ADD CONSTRAINT player_team
     FOREIGN KEY (team_code)

@@ -20,11 +20,12 @@ public class AuthenticationService {
   private final PasswordEncoder passwordEncoder;
 
   public AuthenticationResponse register(RegisterRequest request) {
-    var user = BetappUser.builder()
+    var user = BetappUser
+      .builder()
       .username(request.username())
       .email(request.email())
       .password(passwordEncoder.encode(request.password()))
-      .betappUserRole(BetappUserRole.USER)
+      .betappUserRole(BetappUserRole.PLAYER)
       .build();
 
     betappUserRepository.save(user);
@@ -41,9 +42,7 @@ public class AuthenticationService {
       )
     );
 
-    var user = betappUserRepository
-      .findByEmail(request.email())
-      .orElseThrow();
+    var user = betappUserRepository.findByEmail(request.email()).orElseThrow();
 
     var jwtToken = jwtService.generateToken(user);
     return AuthenticationResponse.builder().token(jwtToken).build();

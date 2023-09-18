@@ -2,18 +2,22 @@ package com.jeleniasty.betapp.features.user.repository.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.Collection;
-import java.util.List;
 
 @Entity(name = "betapp_user")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 @Table(schema = "betapp")
 public class BetappUser implements UserDetails {
 
@@ -34,7 +38,6 @@ public class BetappUser implements UserDetails {
   private String username;
 
   @NotNull
-  @Getter
   private String email;
 
   @NotNull
@@ -44,7 +47,20 @@ public class BetappUser implements UserDetails {
   @Column(name = "role")
   private BetappUserRole betappUserRole;
 
+  @NotNull
   private Integer score;
+
+  @NotNull
+  @Column(name = "total_bets")
+  private Integer totalBets;
+
+  @NotNull
+  @Column(name = "created_at", updatable = false)
+  private LocalDateTime createdAt;
+
+  @NotNull
+  @Column(name = "updated_at", insertable = false)
+  private LocalDateTime updatedAt;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
