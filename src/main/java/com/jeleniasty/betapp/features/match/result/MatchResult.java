@@ -1,4 +1,4 @@
-package com.jeleniasty.betapp.features.matchresult;
+package com.jeleniasty.betapp.features.match.result;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;

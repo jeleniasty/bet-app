@@ -1,8 +1,8 @@
 package com.jeleniasty.betapp.features.match;
 
-import com.jeleniasty.betapp.features.matchresult.MatchResult;
-import com.jeleniasty.betapp.features.matchresult.MatchResultRepository;
-import com.jeleniasty.betapp.features.matchresult.SaveMatchResultDTO;
+import com.jeleniasty.betapp.features.match.result.MatchResult;
+import com.jeleniasty.betapp.features.match.result.MatchResultRepository;
+import com.jeleniasty.betapp.features.match.result.SaveMatchResultDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

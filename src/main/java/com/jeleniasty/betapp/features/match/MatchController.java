@@ -1,6 +1,6 @@
 package com.jeleniasty.betapp.features.match;
 
-import com.jeleniasty.betapp.features.matchresult.SaveMatchResultDTO;
+import com.jeleniasty.betapp.features.match.result.SaveMatchResultDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

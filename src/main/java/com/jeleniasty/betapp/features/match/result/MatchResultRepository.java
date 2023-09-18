@@ -1,4 +1,4 @@
-package com.jeleniasty.betapp.features.matchresult;
+package com.jeleniasty.betapp.features.match.result;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
