@@ -36,21 +36,21 @@ CREATE TABLE betapp.match (
 );
 
 CREATE TABLE betapp.match_result (
-                        id SERIAL NOT NULL,
+                        id BIGSERIAL NOT NULL,
                         home_team_score int NOT NULL,
                         away_team_score int NOT NULL ,
-                        duration smallint NOT NULL,
+                        duration smallint,
                         CONSTRAINT match_result_pk PRIMARY KEY (id)
 );
 
 CREATE TABLE betapp.bet (
                            id SERIAL NOT NULL,
-                           home_team_score_bet int  NOT NULL,
-                           away_team_score_bet int  NOT NULL,
-                           created_at timestamp  NOT NULL,
-                           updated_at timestamp,
+                           match_result_id inT NOT NULL,
                            user_id int  NOT NULL,
                            match_id int  NOT NULL,
+                           created_at timestamp  NOT NULL,
+                           updated_at timestamp,
+                           version int NOT NULL,
                            CONSTRAINT bet_pk PRIMARY KEY (id)
 );
 

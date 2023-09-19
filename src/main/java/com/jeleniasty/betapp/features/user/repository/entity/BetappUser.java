@@ -1,14 +1,14 @@
 package com.jeleniasty.betapp.features.user.repository.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.jeleniasty.betapp.features.bet.Bet;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import java.util.Set;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Setter
 @Table(schema = "betapp")
 public class BetappUser implements UserDetails {
 
@@ -53,6 +54,10 @@ public class BetappUser implements UserDetails {
   @NotNull
   @Column(name = "total_bets")
   private Integer totalBets;
+
+  @JsonIgnore
+  @OneToMany(mappedBy = "betPlayer", cascade = CascadeType.ALL)
+  private Set<Bet> playerBets;
 
   @NotNull
   @Column(name = "created_at", updatable = false)

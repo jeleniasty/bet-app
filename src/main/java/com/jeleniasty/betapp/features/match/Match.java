@@ -1,13 +1,20 @@
 package com.jeleniasty.betapp.features.match;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.jeleniasty.betapp.features.bet.Bet;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.Set;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity(name = "match")
 @Table(schema = "betapp")
 @NoArgsConstructor
+@Getter
+@Setter
 public class Match {
 
   @Id
@@ -37,6 +44,10 @@ public class Match {
 
   @Column(name = "stadium_id")
   private Long stadiumId;
+
+  @JsonIgnore
+  @OneToMany(mappedBy = "match", cascade = CascadeType.ALL)
+  private Set<Bet> matchBets;
 
   public Match(
     @NotNull String homeTeamCode,

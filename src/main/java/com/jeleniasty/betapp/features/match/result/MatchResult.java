@@ -2,13 +2,15 @@ package com.jeleniasty.betapp.features.match.result;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity(name = "match_result")
 @Table(schema = "betapp")
-@AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class MatchResult {
 
   @Id
