@@ -15,7 +15,8 @@ public class MatchResult {
   @SequenceGenerator(
     schema = "betapp",
     name = "match_result_id_seq",
-    sequenceName = "match_result_id_seq"
+    sequenceName = "match_result_id_seq",
+    allocationSize = 1
   )
   @GeneratedValue(
     strategy = GenerationType.SEQUENCE,
@@ -42,5 +43,13 @@ public class MatchResult {
     this.homeTeamScore = homeTeamScore;
     this.awayTeamScore = awayTeamScore;
     this.duration = duration;
+  }
+
+  public MatchResult(
+    @NotNull Integer homeTeamScore,
+    @NotNull Integer awayTeamScore
+  ) {
+    this.homeTeamScore = homeTeamScore;
+    this.awayTeamScore = awayTeamScore;
   }
 }
