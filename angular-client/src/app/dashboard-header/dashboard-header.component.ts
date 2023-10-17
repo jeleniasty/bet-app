@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-dashboard-header',
+  selector: 'betapp-dashboard-header',
   templateUrl: './dashboard-header.component.html',
-  styleUrls: ['./dashboard-header.component.css']
+  styleUrls: ['./dashboard-header.component.css'],
 })
-export class DashboardHeaderComponent {
-
-}
+export class DashboardHeaderComponent {}
