@@ -1,0 +1,20 @@
+.upcoming-matches-container {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 40vw;
+  min-height: 20vw;
+
+  margin-left: 150px;
+  margin-right: 25px;
+  border: solid 2px #00b227;
+  border-radius: 25px;
+  box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+h3 {
+  color: #00b227;
+  text-align: center;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}

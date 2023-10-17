@@ -1,0 +1,36 @@
+<div class="upcoming-match">
+  <div class="hometeam">
+    <img
+      src="{{ upcomingMatch?.homeTeam?.flag }}"
+      alt="team flag"
+      style="
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 25px;
+        border-right: solid 1px #00b227;
+      "
+    />
+    <div class="team-name">{{ upcomingMatch?.homeTeam?.name }}</div>
+    <div class="odds">{{ upcomingMatch?.homeTeamOdds }}</div>
+  </div>
+  <div class="upcoming-match-date">
+    <div class="day">10/12/2023</div>
+    <div class="hour">17:00</div>
+  </div>
+  <div class="awayteam">
+    <div class="odds">{{ upcomingMatch?.awayTeamOdds }}</div>
+    <div class="team-name">{{ upcomingMatch?.awayTeam?.name }}</div>
+    <img
+      src="{{ upcomingMatch?.awayTeam?.flag }}"
+      alt="team flag"
+      style="
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 25px;
+        border-left: solid 1px #00b227;
+      "
+    />
+  </div>
+</div>

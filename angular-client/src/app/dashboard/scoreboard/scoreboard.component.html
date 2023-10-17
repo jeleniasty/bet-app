@@ -1,0 +1,8 @@
+<div class="scoreboard">
+  <h3>Scoreboard</h3>
+  <betapp-user-score
+    *ngFor="let user of users; let i = index"
+    [user]="user"
+    [userStanding]="i"
+  ></betapp-user-score>
+</div>

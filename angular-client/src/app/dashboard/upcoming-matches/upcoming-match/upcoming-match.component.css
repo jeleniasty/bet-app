@@ -1,0 +1,53 @@
+.upcoming-match {
+  display: flex;
+
+  border: 1px solid;
+  border-radius: 25px;
+  margin: 10px 40px 10px 40px;
+  color: #00b227;
+  box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.hometeam,
+.awayteam {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  font-size: 18px;
+  width: 50%;
+}
+
+.awayteam {
+  justify-content: space-between;
+  border-left: solid 1px;
+}
+
+.hometeam {
+  border-right: solid 1px;
+}
+
+.upcoming-match-date {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  text-align: center;
+
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+.team-details {
+  padding-left: 20px;
+}
+
+.team-name {
+  margin-right: 20px;
+  margin-left: 20px;
+}
+
+.odds {
+  margin-right: 40px;
+  margin-left: 40px;
+}
