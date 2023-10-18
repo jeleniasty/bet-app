@@ -25,12 +25,7 @@ public class BetappUserService {
     return users
       .stream()
       .map(user ->
-        new UserScoreDTO(
-          user.getId(),
-          user.getUsername(),
-          user.getScore(),
-          user.getTotalBets()
-        )
+        new UserScoreDTO(user.getId(), user.getUsername(), user.getPoints())
       )
       .toList();
   }

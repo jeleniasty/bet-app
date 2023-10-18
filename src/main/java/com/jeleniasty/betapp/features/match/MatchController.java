@@ -1,6 +1,5 @@
 package com.jeleniasty.betapp.features.match;
 
-import com.jeleniasty.betapp.features.match.result.SaveMatchResultDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,15 +16,7 @@ public class MatchController {
 
   @PostMapping
   public ResponseEntity<Void> createMatch(@RequestBody SaveMatchDTO matchDTO) {
-    matchService.createMatch(matchDTO);
-    return ResponseEntity.status(201).build();
-  }
-
-  @PostMapping("/result")
-  public ResponseEntity<Void> addMatchResult(
-    @RequestBody SaveMatchResultDTO matchResultDTO
-  ) {
-    matchService.addMatchResultDTO(matchResultDTO);
+    matchService.saveMatch(matchDTO);
     return ResponseEntity.status(201).build();
   }
 }

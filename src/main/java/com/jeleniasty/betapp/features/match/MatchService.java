@@ -1,8 +1,5 @@
 package com.jeleniasty.betapp.features.match;
 
-import com.jeleniasty.betapp.features.match.result.MatchResult;
-import com.jeleniasty.betapp.features.match.result.MatchResultRepository;
-import com.jeleniasty.betapp.features.match.result.SaveMatchResultDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,27 +9,20 @@ import org.springframework.transaction.annotation.Transactional;
 public class MatchService {
 
   private final MatchRepository matchRepository;
-  private final MatchResultRepository matchResultRepository;
 
   @Transactional
-  public void createMatch(SaveMatchDTO matchDTO) {
+  public void saveMatch(SaveMatchDTO matchDTO) {
     matchRepository.save(
       new Match(
-        matchDTO.homeTeamCode(),
-        matchDTO.awayTeamCode(),
-        matchDTO.startTime(),
-        matchDTO.stadium_id()
-      )
-    );
-  }
-
-  @Transactional
-  public void addMatchResultDTO(SaveMatchResultDTO matchResultDTO) {
-    matchResultRepository.save(
-      new MatchResult(
-        matchResultDTO.homeTeamScore(),
-        matchResultDTO.awayTeamScore(),
-        matchResultDTO.duration()
+        matchDTO.status(),
+        matchDTO.stage(),
+        matchDTO.group(),
+        matchDTO.homeOdds(),
+        matchDTO.awayOdds(),
+        matchDTO.utcDate(),
+        matchDTO.competition(),
+        matchDTO.homeTeam(),
+        matchDTO.awayTeam()
       )
     );
   }

@@ -1,9 +1,13 @@
 package com.jeleniasty.betapp.features.bet;
 
-import com.jeleniasty.betapp.features.match.Match;
-import com.jeleniasty.betapp.features.match.result.MatchResult;
-import com.jeleniasty.betapp.features.user.repository.entity.BetappUser;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import lombok.Getter;
@@ -27,19 +31,13 @@ public class Bet {
     allocationSize = 1
   )
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bet_id_seq")
-  private Long id;
+  private long id;
 
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "match_result_id", referencedColumnName = "id")
-  private MatchResult matchResult;
+  @Column(name = "match")
+  private long match;
 
-  @ManyToOne
-  @JoinColumn(name = "user_id", referencedColumnName = "id")
-  private BetappUser betPlayer;
-
-  @ManyToOne
-  @JoinColumn(name = "match_id", referencedColumnName = "id")
-  private Match match;
+  @Column(name = "betapp_user")
+  private long player;
 
   @CreationTimestamp
   @Column(name = "created_at", updatable = false)
@@ -52,8 +50,4 @@ public class Bet {
   @Version
   @NotNull
   private Integer version;
-
-  public Bet(MatchResult matchResult) {
-    this.matchResult = matchResult;
-  }
 }

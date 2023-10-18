@@ -1,20 +1,25 @@
 package com.jeleniasty.betapp.features.match;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.jeleniasty.betapp.features.bet.Bet;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity(name = "match")
 @Table(schema = "betapp")
 @NoArgsConstructor
 @Getter
-@Setter
 public class Match {
 
   @Id
@@ -31,33 +36,68 @@ public class Match {
   @Column(name = "id", updatable = false)
   private Long id;
 
-  @Column(name = "home_team_code")
+  @Column(name = "status", nullable = false)
+  @Enumerated(EnumType.STRING)
   @NotNull
-  private String homeTeamCode;
+  private MatchStatus status;
 
+  @Column(name = "stage", nullable = false)
+  @Enumerated(EnumType.STRING)
   @NotNull
-  @Column(name = "away_team_code")
-  private String awayTeamCode;
+  private CompetitionStage stage;
 
-  @Column(name = "start_time")
-  private LocalDateTime startTime;
+  @Column(name = "\"group\"")
+  private char group;
 
-  @Column(name = "stadium_id")
-  private Long stadiumId;
+  @Column(name = "home_odds")
+  private float homeOdds;
 
-  @JsonIgnore
-  @OneToMany(mappedBy = "match", cascade = CascadeType.ALL)
-  private Set<Bet> matchBets;
+  @Column(name = "away_odds")
+  private float awayOdds;
+
+  @Column(name = "utc_date", nullable = false)
+  @NotNull
+  private LocalDateTime utcDate;
+
+  @Column(name = "created_at", updatable = false, nullable = false)
+  @CreationTimestamp
+  private LocalDateTime createdAt;
+
+  @Column(name = "updated_at", insertable = false)
+  @UpdateTimestamp
+  private LocalDateTime updatedAt;
+
+  @Column(name = "competition", nullable = false)
+  private long competition;
+
+  @Column(name = "result")
+  private long result;
+
+  @Column(name = "home_team", nullable = false)
+  private long homeTeam;
+
+  @Column(name = "away_team", nullable = false)
+  private long awayTeam;
 
   public Match(
-    @NotNull String homeTeamCode,
-    @NotNull String awayTeamCode,
-    LocalDateTime startTime,
-    Long stadiumId
+    @NotNull MatchStatus status,
+    @NotNull CompetitionStage stage,
+    char group,
+    float homeOdds,
+    float awayOdds,
+    @NotNull LocalDateTime utcDate,
+    long competition,
+    long homeTeam,
+    long awayTeam
   ) {
-    this.homeTeamCode = homeTeamCode;
-    this.awayTeamCode = awayTeamCode;
-    this.startTime = startTime;
-    this.stadiumId = stadiumId;
+    this.status = status;
+    this.stage = stage;
+    this.group = group;
+    this.homeOdds = homeOdds;
+    this.awayOdds = awayOdds;
+    this.utcDate = utcDate;
+    this.competition = competition;
+    this.homeTeam = homeTeam;
+    this.awayTeam = awayTeam;
   }
 }

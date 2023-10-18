@@ -1,14 +1,23 @@
 package com.jeleniasty.betapp.features.user.repository.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.jeleniasty.betapp.features.bet.Bet;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -49,21 +58,12 @@ public class BetappUser implements UserDetails {
   private BetappUserRole betappUserRole;
 
   @NotNull
-  private Integer score;
-
-  @NotNull
-  @Column(name = "total_bets")
-  private Integer totalBets;
-
-  @JsonIgnore
-  @OneToMany(mappedBy = "betPlayer", cascade = CascadeType.ALL)
-  private Set<Bet> playerBets;
+  private Integer points;
 
   @NotNull
   @Column(name = "created_at", updatable = false)
   private LocalDateTime createdAt;
 
-  @NotNull
   @Column(name = "updated_at", insertable = false)
   private LocalDateTime updatedAt;
 
