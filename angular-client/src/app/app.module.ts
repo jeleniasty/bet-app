@@ -7,8 +7,8 @@ import { DashboardHeaderComponent } from './dashboard-header/dashboard-header.co
 import { UpcomingMatchComponent } from './dashboard/upcoming-matches/upcoming-match/upcoming-match.component';
 import { UpcomingMatchesComponent } from './dashboard/upcoming-matches/upcoming-matches.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { ScoreboardComponent } from './dashboard/scoreboard/scoreboard.component';
-import { UserScoreComponent } from './dashboard/scoreboard/user-score/user-score.component';
+import { BestPlayersComponent } from './dashboard/best-players/best-players.component';
+import { UserScoreComponent } from './dashboard/best-players/user-score/user-score.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +17,7 @@ import { UserScoreComponent } from './dashboard/scoreboard/user-score/user-score
     UpcomingMatchComponent,
     UpcomingMatchesComponent,
     DashboardComponent,
-    ScoreboardComponent,
+    BestPlayersComponent,
     UserScoreComponent,
   ],
   imports: [BrowserModule, AppRoutingModule],

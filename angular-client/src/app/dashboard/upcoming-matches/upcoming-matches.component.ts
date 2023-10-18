@@ -24,7 +24,7 @@ export class UpcomingMatchesComponent {
     new Match(
       new Team('Croatia', 'https://flagcdn.com/w320/hr.png'),
       1.64,
-      new Team('France', 'https://flagcdn.com/w320/fr.png'),
+      new Team('France', 'https://crests.football-data.org/773.svg'),
       1.11
     ),
     new Match(
