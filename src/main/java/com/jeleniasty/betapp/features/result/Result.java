@@ -12,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -32,22 +33,26 @@ public class Result {
     strategy = GenerationType.SEQUENCE,
     generator = "result_id_seq"
   )
-  @Column(name = "id", updatable = false)
+  @Column(name = "id")
   private long id;
 
-  @Column(name = "winner", nullable = false)
+  @NotNull
   @Enumerated(EnumType.STRING)
+  @Column(name = "winner")
   private Winner winner;
 
-  @Column(name = "duration", nullable = false)
+  @NotNull
+  @Column(name = "duration")
   private Duration duration;
 
+  @NotNull
   @OneToOne
-  @JoinColumn(name = "half_time", nullable = false)
+  @JoinColumn(name = "half_time")
   private Score halfTimeScore;
 
+  @NotNull
   @OneToOne
-  @JoinColumn(name = "regular_time", nullable = false)
+  @JoinColumn(name = "regular_time")
   private Score regularTimeScore;
 
   @OneToOne

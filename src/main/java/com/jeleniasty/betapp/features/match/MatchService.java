@@ -1,10 +1,7 @@
 package com.jeleniasty.betapp.features.match;
 
-import com.jeleniasty.betapp.features.competition.Competition;
-import com.jeleniasty.betapp.features.competition.CompetitionRepository;
-import com.jeleniasty.betapp.features.competition.CompetitionType;
-import com.jeleniasty.betapp.features.team.Team;
-import com.jeleniasty.betapp.features.team.TeamRepository;
+import com.jeleniasty.betapp.features.competition.CompetitionService;
+import com.jeleniasty.betapp.features.team.TeamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,27 +11,19 @@ import org.springframework.transaction.annotation.Transactional;
 public class MatchService {
 
   private final MatchRepository matchRepository;
-  private final TeamRepository teamRepository;
-  private final CompetitionRepository competitionRepository;
+  private final TeamService teamService;
+  private final CompetitionService competitionService;
 
   @Transactional
   public void saveMatch(SaveMatchDTO matchDTO) {
-    var homeTeam = new Team("Kurwistan", "KRW", "flagag_ziuziuz.svg");
-    var awayTeam = new Team("Republika Bongo", "BNG", "bububuu.png");
-
-    teamRepository.save(homeTeam);
-    teamRepository.save(awayTeam);
-
-    var competition = new Competition(
-      "Mistrzostwa zjebów",
-      "ZJB",
-      CompetitionType.CUP,
-      2023
+    var competition = competitionService.fetchCompetition(
+      matchDTO.competitionId()
     );
 
-    competitionRepository.save(competition);
+    var homeTeam = teamService.fetchTeam(matchDTO.homeTeamId());
+    var awayTeam = teamService.fetchTeam(matchDTO.awayTeamId());
 
-    var match = new Match(
+    var newMatch = new Match(
       matchDTO.status(),
       matchDTO.stage(),
       matchDTO.group(),
@@ -42,9 +31,10 @@ public class MatchService {
       matchDTO.awayOdds(),
       matchDTO.utcDate()
     );
-    match.assignCompetition(competition);
-    match.assignAwayTeam(awayTeam);
-    match.assignHomeTeam(homeTeam);
-    matchRepository.save(match);
+    newMatch.assignCompetition(competition);
+    newMatch.assignAwayTeam(awayTeam);
+    newMatch.assignHomeTeam(homeTeam);
+
+    matchRepository.save(newMatch);
   }
 }

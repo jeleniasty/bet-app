@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -27,12 +28,19 @@ public class Score {
     strategy = GenerationType.SEQUENCE,
     generator = "score_id_seq"
   )
-  @Column(name = "id", updatable = false)
+  @Column(name = "id")
   private long id;
 
+  @NotNull
   @Column(name = "home")
-  private int home;
+  private Integer home;
 
+  @NotNull
   @Column(name = "away")
-  private int away;
+  private Integer away;
+
+  public Score(@NotNull Integer home, @NotNull Integer away) {
+    this.home = home;
+    this.away = away;
+  }
 }

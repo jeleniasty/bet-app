@@ -45,14 +45,14 @@ public class Match {
   @Column(name = "id", updatable = false)
   private Long id;
 
-  @Column(name = "status", nullable = false)
-  @Enumerated(EnumType.STRING)
   @NotNull
+  @Enumerated(EnumType.STRING)
+  @Column(name = "status")
   private MatchStatus status;
 
-  @Column(name = "stage", nullable = false)
-  @Enumerated(EnumType.STRING)
   @NotNull
+  @Enumerated(EnumType.STRING)
+  @Column(name = "stage")
   private CompetitionStage stage;
 
   @Column(name = "\"group\"")
@@ -64,32 +64,36 @@ public class Match {
   @Column(name = "away_odds")
   private float awayOdds;
 
-  @Column(name = "utc_date", nullable = false)
   @NotNull
+  @Column(name = "utc_date")
   private LocalDateTime utcDate;
 
-  @Column(name = "created_at", updatable = false, nullable = false)
+  @NotNull
   @CreationTimestamp
+  @Column(name = "created_at", updatable = false)
   private LocalDateTime createdAt;
 
-  @Column(name = "updated_at", insertable = false)
   @UpdateTimestamp
+  @Column(name = "updated_at", insertable = false)
   private LocalDateTime updatedAt;
 
+  @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "competition", nullable = false)
+  @JoinColumn(name = "competition")
   private Competition competition;
 
   @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "result")
   private Result result;
 
+  @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "home_team", nullable = false)
+  @JoinColumn(name = "home_team")
   private Team homeTeam;
 
+  @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "away_team", nullable = false)
+  @JoinColumn(name = "away_team")
   private Team awayTeam;
 
   public Match(

@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.Getter;
@@ -38,18 +39,22 @@ public class Competition {
   )
   private Long id;
 
-  @Column(name = "name", nullable = false)
+  @NotNull
+  @Column(name = "name")
   private String name;
 
-  @Column(name = "code", nullable = false)
+  @NotNull
+  @Column(name = "code")
   private String code;
 
-  @Column(name = "type", nullable = false)
+  @NotNull
+  @Column(name = "type")
   @Enumerated(EnumType.STRING)
   private CompetitionType type;
 
-  @Column(name = "season", nullable = false)
-  private int season;
+  @NotNull
+  @Column(name = "season")
+  private Integer season;
 
   @OneToMany(
     mappedBy = "competition",
@@ -59,10 +64,10 @@ public class Competition {
   private Set<Match> competitionMatches = new HashSet<>();
 
   public Competition(
-    String name,
-    String code,
-    CompetitionType type,
-    int season
+    @NotNull String name,
+    @NotNull String code,
+    @NotNull CompetitionType type,
+    @NotNull Integer season
   ) {
     this.name = name;
     this.code = code;
