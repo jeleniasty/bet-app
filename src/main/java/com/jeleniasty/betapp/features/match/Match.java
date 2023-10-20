@@ -1,8 +1,10 @@
 package com.jeleniasty.betapp.features.match;
 
+import com.jeleniasty.betapp.features.bet.Bet;
 import com.jeleniasty.betapp.features.competition.Competition;
 import com.jeleniasty.betapp.features.result.Result;
 import com.jeleniasty.betapp.features.team.Team;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -13,11 +15,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -95,6 +100,13 @@ public class Match {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "away_team")
   private Team awayTeam;
+
+  @OneToMany(
+    mappedBy = "match",
+    cascade = CascadeType.ALL,
+    orphanRemoval = true
+  )
+  private Set<Bet> matchBets = new HashSet<>();
 
   public Match(
     @NotNull MatchStatus status,

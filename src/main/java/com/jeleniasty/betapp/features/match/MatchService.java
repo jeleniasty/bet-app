@@ -1,6 +1,7 @@
 package com.jeleniasty.betapp.features.match;
 
 import com.jeleniasty.betapp.features.competition.CompetitionService;
+import com.jeleniasty.betapp.features.exceptions.MatchNotFoundException;
 import com.jeleniasty.betapp.features.team.TeamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -36,5 +37,11 @@ public class MatchService {
     newMatch.assignHomeTeam(homeTeam);
 
     matchRepository.save(newMatch);
+  }
+
+  public Match fetchMatch(Long matchId) {
+    return matchRepository
+      .findById(matchId)
+      .orElseThrow(() -> new MatchNotFoundException(matchId));
   }
 }

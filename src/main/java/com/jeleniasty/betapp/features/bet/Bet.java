@@ -1,10 +1,17 @@
 package com.jeleniasty.betapp.features.bet;
 
+import com.jeleniasty.betapp.features.match.Match;
+import com.jeleniasty.betapp.features.result.Result;
+import com.jeleniasty.betapp.features.user.repository.entity.BetappUser;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
@@ -13,6 +20,7 @@ import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -31,13 +39,19 @@ public class Bet {
     allocationSize = 1
   )
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bet_id_seq")
-  private long id;
+  private Long id;
 
-  @Column(name = "match")
-  private long match;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "match")
+  private Match match;
 
-  @Column(name = "betapp_user")
-  private long player;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "betapp_user")
+  private BetappUser player;
+
+  @OneToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "result")
+  private Result result;
 
   @CreationTimestamp
   @Column(name = "created_at", updatable = false)
@@ -47,7 +61,22 @@ public class Bet {
   @Column(name = "updated_at", insertable = false)
   private LocalDateTime updatedAt;
 
-  @Version
   @NotNull
+  @Version
   private Integer version;
+
+  public Bet(Result result) {
+    this.result = result;
+  }
+
+  public void assignMatch(@NotNull Match match) {
+    match.getMatchBets().add(this);
+    setMatch(match);
+  }
+
+  public void assignPlayer(@NotNull BetappUser betappUser) {
+    Hibernate.initialize(betappUser.getBetappUserRole());
+    betappUser.getPlayerBets().add(this);
+    setPlayer(betappUser);
+  }
 }

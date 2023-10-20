@@ -37,6 +37,12 @@ public class BetappUserService {
       .getPrincipal();
   }
 
+  public BetappUser fetchUser(long userId) {
+    return betappUserRepository
+      .findById(userId)
+      .orElseThrow(() -> new UserNotFoundException(userId));
+  }
+
   public UserDetailsService getUserDetailsService() {
     return username ->
       betappUserRepository

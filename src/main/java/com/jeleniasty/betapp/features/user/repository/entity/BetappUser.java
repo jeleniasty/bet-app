@@ -1,5 +1,7 @@
 package com.jeleniasty.betapp.features.user.repository.entity;
 
+import com.jeleniasty.betapp.features.bet.Bet;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -7,28 +9,33 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity(name = "betapp_user")
+@Table(schema = "betapp")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(schema = "betapp")
 public class BetappUser implements UserDetails {
 
   @Id
@@ -45,27 +52,41 @@ public class BetappUser implements UserDetails {
   private Long id;
 
   @NotNull
+  @Column(name = "username")
   private String username;
 
   @NotNull
+  @Column(name = "email")
   private String email;
 
   @NotNull
+  @Column(name = "password")
   private String password;
 
+  @NotNull
   @Enumerated(EnumType.STRING)
   @Column(name = "role")
   private BetappUserRole betappUserRole;
 
   @NotNull
+  @Column(name = "points")
   private Integer points;
 
   @NotNull
+  @CreationTimestamp
   @Column(name = "created_at", updatable = false)
   private LocalDateTime createdAt;
 
+  @UpdateTimestamp
   @Column(name = "updated_at", insertable = false)
   private LocalDateTime updatedAt;
+
+  @OneToMany(
+    mappedBy = "player",
+    cascade = CascadeType.ALL,
+    orphanRemoval = true
+  )
+  private Set<Bet> playerBets = new HashSet<>();
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -1,6 +1,6 @@
 package com.jeleniasty.betapp.features.team;
 
-import com.jeleniasty.betapp.features.match.TeamNotFoundException;
+import com.jeleniasty.betapp.features.exceptions.TeamNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

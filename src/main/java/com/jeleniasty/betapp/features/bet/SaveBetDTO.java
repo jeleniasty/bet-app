@@ -1,7 +1,5 @@
 package com.jeleniasty.betapp.features.bet;
 
-public record SaveBetDTO(
-  Integer homeTeamScore,
-  Integer awayTeamScore,
-  Long matchId
-) {}
+import com.jeleniasty.betapp.features.result.SaveResultDTO;
+
+public record SaveBetDTO(SaveResultDTO saveResultDTO, Long matchId) {}

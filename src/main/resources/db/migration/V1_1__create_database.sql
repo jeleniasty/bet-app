@@ -6,7 +6,8 @@ CREATE TABLE bet (
                 betapp_user bigint  NOT NULL,
                 result bigint  NOT NULL,
                 created_at timestamp NOT NULL,
-                updated_at timestamp NOT NULL,
+                updated_at timestamp NULL,
+                version int NOT NULL,
                 CONSTRAINT bet_pk PRIMARY KEY (id)
 );
 

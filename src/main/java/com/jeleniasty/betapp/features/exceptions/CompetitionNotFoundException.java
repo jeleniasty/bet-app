@@ -1,4 +1,4 @@
-package com.jeleniasty.betapp.features.match;
+package com.jeleniasty.betapp.features.exceptions;
 
 public class CompetitionNotFoundException extends RuntimeException {
 

@@ -1,6 +1,6 @@
 package com.jeleniasty.betapp.features.competition;
 
-import com.jeleniasty.betapp.features.match.CompetitionNotFoundException;
+import com.jeleniasty.betapp.features.exceptions.CompetitionNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

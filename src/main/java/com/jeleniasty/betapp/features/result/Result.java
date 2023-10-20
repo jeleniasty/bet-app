@@ -1,10 +1,11 @@
 package com.jeleniasty.betapp.features.result;
 
-import com.jeleniasty.betapp.features.Score;
+import com.jeleniasty.betapp.features.score.Score;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -46,20 +47,36 @@ public class Result {
   private Duration duration;
 
   @NotNull
-  @OneToOne
+  @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "half_time")
   private Score halfTimeScore;
 
   @NotNull
-  @OneToOne
+  @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "regular_time")
   private Score regularTimeScore;
 
-  @OneToOne
+  @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "extra_time")
   private Score extraTimeScore;
 
-  @OneToOne
+  @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "penalties")
   private Score penaltiesScore;
+
+  public Result(
+    @NotNull Winner winner,
+    @NotNull Duration duration,
+    @NotNull Score halfTimeScore,
+    @NotNull Score regularTimeScore,
+    Score extraTimeScore,
+    Score penaltiesScore
+  ) {
+    this.winner = winner;
+    this.duration = duration;
+    this.halfTimeScore = halfTimeScore;
+    this.regularTimeScore = regularTimeScore;
+    this.extraTimeScore = extraTimeScore;
+    this.penaltiesScore = penaltiesScore;
+  }
 }
