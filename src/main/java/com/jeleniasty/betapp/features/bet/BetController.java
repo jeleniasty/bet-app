@@ -15,8 +15,10 @@ public class BetController {
   private final BetService betService;
 
   @PostMapping
-  public ResponseEntity<Void> createBet(@RequestBody SaveBetDTO saveBetDTO) {
-    betService.createBet(saveBetDTO);
+  public ResponseEntity<Void> createBet(
+    @RequestBody MatchResultDTO matchResultDTO
+  ) {
+    betService.createBet(matchResultDTO);
     return ResponseEntity.status(201).build();
   }
 }

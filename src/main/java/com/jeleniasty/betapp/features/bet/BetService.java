@@ -11,15 +11,15 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class BetService {
 
-  private final BetRepository betRepository;
   private final BetappUserService betappUserService;
   private final MatchService matchService;
   private final ResultService resultService;
+  private final BetRepository betRepository;
 
   @Transactional
-  public void createBet(SaveBetDTO saveBetDTO) {
-    var matchToBet = matchService.fetchMatch(saveBetDTO.matchId());
-    var betResult = resultService.saveResult(saveBetDTO.saveResultDTO());
+  public void createBet(MatchResultDTO matchResultDTO) {
+    var matchToBet = matchService.fetchMatch(matchResultDTO.matchId());
+    var betResult = resultService.saveResult(matchResultDTO.saveResultDTO());
     var currentUser = betappUserService.fetchUser(
       betappUserService.getCurrentUser().getId()
     );
@@ -27,7 +27,12 @@ public class BetService {
     var newBet = new Bet(betResult);
     newBet.assignMatch(matchToBet);
     newBet.assignPlayer(currentUser);
+  }
 
-    betRepository.save(newBet);
+  void assignPoints(Long matchId) {
+    var matchResult = matchService.fetchMatch(matchId).getResult();
+
+    var bets = betRepository.findAllByMatchId(matchId);
+    //add logic to points assignment
   }
 }
