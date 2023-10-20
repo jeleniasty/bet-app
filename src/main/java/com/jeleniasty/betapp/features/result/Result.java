@@ -1,5 +1,6 @@
 package com.jeleniasty.betapp.features.result;
 
+import com.jeleniasty.betapp.features.Score;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -7,6 +8,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -39,15 +42,19 @@ public class Result {
   @Column(name = "duration", nullable = false)
   private Duration duration;
 
-  @Column(name = "half_time")
-  private long halfTimeScore;
+  @OneToOne
+  @JoinColumn(name = "half_time", nullable = false)
+  private Score halfTimeScore;
 
-  @Column(name = "regular_time")
-  private long regularTimeScore;
+  @OneToOne
+  @JoinColumn(name = "regular_time", nullable = false)
+  private Score regularTimeScore;
 
-  @Column(name = "extra_time")
-  private long extraTimeScore;
+  @OneToOne
+  @JoinColumn(name = "extra_time")
+  private Score extraTimeScore;
 
-  @Column(name = "penalties")
-  private long penaltiesScore;
+  @OneToOne
+  @JoinColumn(name = "penalties")
+  private Score penaltiesScore;
 }

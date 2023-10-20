@@ -1,18 +1,26 @@
 package com.jeleniasty.betapp.features.match;
 
+import com.jeleniasty.betapp.features.competition.Competition;
+import com.jeleniasty.betapp.features.result.Result;
+import com.jeleniasty.betapp.features.team.Team;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -20,6 +28,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Table(schema = "betapp")
 @NoArgsConstructor
 @Getter
+@Setter
 public class Match {
 
   @Id
@@ -67,17 +76,21 @@ public class Match {
   @UpdateTimestamp
   private LocalDateTime updatedAt;
 
-  @Column(name = "competition", nullable = false)
-  private long competition;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "competition", nullable = false)
+  private Competition competition;
 
-  @Column(name = "result")
-  private long result;
+  @OneToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "result")
+  private Result result;
 
-  @Column(name = "home_team", nullable = false)
-  private long homeTeam;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "home_team", nullable = false)
+  private Team homeTeam;
 
-  @Column(name = "away_team", nullable = false)
-  private long awayTeam;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "away_team", nullable = false)
+  private Team awayTeam;
 
   public Match(
     @NotNull MatchStatus status,
@@ -85,10 +98,7 @@ public class Match {
     char group,
     float homeOdds,
     float awayOdds,
-    @NotNull LocalDateTime utcDate,
-    long competition,
-    long homeTeam,
-    long awayTeam
+    @NotNull LocalDateTime utcDate
   ) {
     this.status = status;
     this.stage = stage;
@@ -96,8 +106,20 @@ public class Match {
     this.homeOdds = homeOdds;
     this.awayOdds = awayOdds;
     this.utcDate = utcDate;
-    this.competition = competition;
-    this.homeTeam = homeTeam;
-    this.awayTeam = awayTeam;
+  }
+
+  public void assignCompetition(Competition competition) {
+    competition.getCompetitionMatches().add(this);
+    this.setCompetition(competition);
+  }
+
+  public void assignHomeTeam(Team homeTeam) {
+    homeTeam.getHomeMatches().add(this);
+    this.setHomeTeam(homeTeam);
+  }
+
+  public void assignAwayTeam(Team awayTeam) {
+    awayTeam.getAwayMatches().add(this);
+    this.setAwayTeam(awayTeam);
   }
 }

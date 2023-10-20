@@ -9,7 +9,7 @@ public record SaveMatchDTO(
   float homeOdds,
   float awayOdds,
   LocalDateTime utcDate,
-  long competition,
-  long homeTeam,
-  long awayTeam
+  long competitionId,
+  long homeTeamId,
+  long awayTeamId
 ) {}

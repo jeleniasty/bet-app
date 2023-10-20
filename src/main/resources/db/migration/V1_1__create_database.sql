@@ -95,13 +95,6 @@ ALTER TABLE betapp.result ADD CONSTRAINT extra_time_score
             INITIALLY IMMEDIATE
 ;
 
-ALTER TABLE betapp.result ADD CONSTRAINT full_time_score
-    FOREIGN KEY (full_time)
-        REFERENCES betapp.score (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
-
 ALTER TABLE betapp.result ADD CONSTRAINT half_time_score
     FOREIGN KEY (regular_time)
         REFERENCES betapp.score (id)
