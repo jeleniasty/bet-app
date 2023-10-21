@@ -2,6 +2,7 @@ CREATE SCHEMA IF NOT EXISTS betapp;
 
 CREATE TABLE bet (
                 id serial NOT NULL,
+                type text NOT NULL,
                 match bigint  NOT NULL,
                 betapp_user bigint  NOT NULL,
                 result bigint  NOT NULL,

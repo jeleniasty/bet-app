@@ -5,6 +5,8 @@ import com.jeleniasty.betapp.features.result.Result;
 import com.jeleniasty.betapp.features.user.repository.entity.BetappUser;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -41,6 +43,11 @@ public class Bet {
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bet_id_seq")
   private Long id;
 
+  @NotNull
+  @Enumerated(EnumType.STRING)
+  @Column(name = "type")
+  private BetType betType;
+
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "match")
   private Match match;
@@ -65,7 +72,8 @@ public class Bet {
   @Version
   private Integer version;
 
-  public Bet(Result result) {
+  public Bet(Result result, @NotNull BetType betType) {
+    this.betType = betType;
     this.result = result;
   }
 
