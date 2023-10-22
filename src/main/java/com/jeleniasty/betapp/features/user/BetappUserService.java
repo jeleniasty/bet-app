@@ -19,8 +19,8 @@ public class BetappUserService {
     betappUserRepository.save(player);
   }
 
-  public BetappUser getCurrentUser() {
-    return (BetappUser) SecurityContextHolder
+  public UserPrincipal getCurrentUser() {
+    return (UserPrincipal) SecurityContextHolder
       .getContext()
       .getAuthentication()
       .getPrincipal();

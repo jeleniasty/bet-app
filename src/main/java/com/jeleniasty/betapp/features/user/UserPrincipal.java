@@ -4,15 +4,19 @@ import jakarta.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @EqualsAndHashCode
 public class UserPrincipal implements UserDetails {
 
+  @Getter
   private Long id;
+
   private String username;
   private String password;
 
@@ -41,7 +45,13 @@ public class UserPrincipal implements UserDetails {
       betappUser.getUsername(),
       betappUser.getPassword(),
       betappUser.getEmail(),
-      new HashSet<>()
+      new HashSet<>(
+        betappUser
+          .getRoles()
+          .stream()
+          .map(role -> new SimpleGrantedAuthority(role.getName().name()))
+          .collect(Collectors.toSet())
+      )
     );
   }
 

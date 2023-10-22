@@ -22,19 +22,17 @@ public class AuthenticationService {
   private final BetappUserRepository betappUserRepository;
 
   public AuthenticationResponse register(RegisterRequest request) {
-    var user = BetappUser
-      .builder()
-      .username(request.username())
-      .email(request.email())
-      .password(passwordEncoder.encode(request.password()))
-      .roles(
-        request
-          .roleNames()
-          .stream()
-          .map(roleService::findRoleByName)
-          .collect(Collectors.toSet())
-      )
-      .build();
+    var user = new BetappUser();
+    user.setUsername(request.username());
+    user.setEmail(request.email());
+    user.setPassword(passwordEncoder.encode(request.password()));
+    user.setRoles(
+      request
+        .roleNames()
+        .stream()
+        .map(roleService::findRoleByName)
+        .collect(Collectors.toSet())
+    );
 
     betappUserRepository.save(user);
 

@@ -24,7 +24,7 @@ CREATE TABLE betapp_user (
 );
 
 CREATE TABLE betapp.role (
-                id bigint  NOT NULL,
+                id serial  NOT NULL,
                 name text  NOT NULL,
                 CONSTRAINT role_pk PRIMARY KEY (id)
 );

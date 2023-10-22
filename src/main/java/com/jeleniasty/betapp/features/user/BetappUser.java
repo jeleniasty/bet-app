@@ -19,19 +19,13 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity(name = "betapp_user")
 @Table(schema = "betapp")
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 public class BetappUser {
@@ -76,6 +70,7 @@ public class BetappUser {
 
   @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
   @JoinTable(
+    schema = "betapp",
     name = "user_role",
     joinColumns = @JoinColumn(name = "betapp_user"),
     inverseJoinColumns = @JoinColumn(name = "role")
