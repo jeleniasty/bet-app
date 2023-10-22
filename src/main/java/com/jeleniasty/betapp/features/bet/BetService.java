@@ -4,11 +4,11 @@ import com.jeleniasty.betapp.features.match.MatchService;
 import com.jeleniasty.betapp.features.result.Result;
 import com.jeleniasty.betapp.features.result.ResultService;
 import com.jeleniasty.betapp.features.result.Winner;
-import com.jeleniasty.betapp.features.user.service.BetappUserService;
-import jakarta.transaction.Transactional;
+import com.jeleniasty.betapp.features.user.BetappUserService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -34,7 +34,8 @@ public class BetService {
     newBet.assignPlayer(currentUser);
   }
 
-  void assignPoints(Long matchId) {
+  @Transactional
+  public void assignPoints(Long matchId) {
     //getting match result
     var matchResult = matchService.fetchMatch(matchId).getResult();
 
@@ -42,15 +43,41 @@ public class BetService {
     var bets = betRepository.findAllByMatchId(matchId);
 
     //find winning bets
-    var winningFullTimeResultBets = findWinningFullTimeResultBets(
-      bets,
-      matchResult.getWinner()
+    assignPointsForFullTimeResultBets(
+      findWinningFullTimeResultBets(bets, matchResult.getWinner())
     );
-    var winningCorrectScoreBets = findWinningCorrectScoreBets(
-      bets,
-      matchResult
+
+    assignPointsForCorrectScoreBets(
+      findWinningCorrectScoreBets(bets, matchResult)
     );
-    //todo add logic to points assignment
+  }
+
+  private void assignPointsForFullTimeResultBets(List<Bet> fullTimeResultBets) {
+    var playersWithAssignedPoints = fullTimeResultBets
+      .stream()
+      .map(Bet::getPlayer)
+      .map(betappUser -> {
+        betappUser.setPoints(betappUser.getPoints() + FULL_TIME_RESULT_POINTS);
+        return betappUser;
+      })
+      .toList();
+
+    //todo calculation of points based on odds
+    betappUserService.savePlayers(playersWithAssignedPoints);
+  }
+
+  private void assignPointsForCorrectScoreBets(List<Bet> correctScoreBets) {
+    var playersWithAssignedPoints = correctScoreBets
+      .stream()
+      .map(Bet::getPlayer)
+      .map(betappUser -> {
+        betappUser.setPoints(betappUser.getPoints() + CORRECT_SCORE_POINTS);
+        return betappUser;
+      })
+      .toList();
+
+    //todo calculation of points based on odds
+    betappUserService.savePlayers(playersWithAssignedPoints);
   }
 
   private List<Bet> findWinningFullTimeResultBets(
@@ -59,6 +86,7 @@ public class BetService {
   ) {
     return bets
       .stream()
+      .filter(this::isBetFullTimeResult)
       .filter(bet -> bet.getResult().getWinner() == matchWinner)
       .toList();
   }
@@ -69,6 +97,7 @@ public class BetService {
   ) {
     return bets
       .stream()
+      .filter(this::isBetCorrectScore)
       .filter(bet -> checkExactScore(bet.getResult(), matchResult))
       .toList();
   }
@@ -84,7 +113,14 @@ public class BetService {
       case PENALTIES -> matchResult
         .getPenaltiesScore()
         .equals(betResult.getPenaltiesScore());
-      //todo add proper equals to Score entity object
     };
+  }
+
+  private boolean isBetFullTimeResult(Bet bet) {
+    return bet.getBetType() == BetType.FULL_TIME_RESULT;
+  }
+
+  private boolean isBetCorrectScore(Bet bet) {
+    return bet.getBetType() == BetType.CORRECT_SCORE;
   }
 }

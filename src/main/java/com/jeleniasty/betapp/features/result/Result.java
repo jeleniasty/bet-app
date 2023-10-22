@@ -43,6 +43,7 @@ public class Result {
   private Winner winner;
 
   @NotNull
+  @Enumerated(EnumType.STRING)
   @Column(name = "duration")
   private Duration duration;
 

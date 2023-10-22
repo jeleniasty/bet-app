@@ -2,7 +2,7 @@ package com.jeleniasty.betapp.features.bet;
 
 import com.jeleniasty.betapp.features.match.Match;
 import com.jeleniasty.betapp.features.result.Result;
-import com.jeleniasty.betapp.features.user.repository.entity.BetappUser;
+import com.jeleniasty.betapp.features.user.BetappUser;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -83,7 +83,6 @@ public class Bet {
   }
 
   public void assignPlayer(@NotNull BetappUser betappUser) {
-    Hibernate.initialize(betappUser.getBetappUserRole());
     betappUser.getPlayerBets().add(this);
     setPlayer(betappUser);
   }
