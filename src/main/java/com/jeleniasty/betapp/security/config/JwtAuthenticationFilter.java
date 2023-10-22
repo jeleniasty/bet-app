@@ -1,7 +1,7 @@
 package com.jeleniasty.betapp.security.config;
 
-import com.jeleniasty.betapp.features.user.repository.BetappUserRepository;
-import com.jeleniasty.betapp.features.user.repository.entity.BetappUser;
+import com.jeleniasty.betapp.features.user.CustomUserDetailsService;
+import com.jeleniasty.betapp.features.user.UserPrincipal;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,7 +11,6 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -21,7 +20,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
   private final JwtService jwtService;
-  private final BetappUserRepository betappUserRepository;
+  private final CustomUserDetailsService userDetailsService;
 
   @Override
   protected void doFilterInternal(
@@ -45,19 +44,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       userEmail != null &&
       SecurityContextHolder.getContext().getAuthentication() == null
     ) {
-      BetappUser betappUserDetails =
-        this.betappUserRepository.findByEmail(userEmail)
-          .orElseThrow(() ->
-            new UsernameNotFoundException(
-              "User with email :" + userEmail + " not found."
-            )
-          );
-      if (jwtService.isTokenValid(jwt, betappUserDetails)) {
+      UserPrincipal userPrincipal = userDetailsService.loadUserByUsername(
+        userEmail
+      );
+      if (jwtService.isTokenValid(jwt, userPrincipal)) {
         UsernamePasswordAuthenticationToken authToken =
           new UsernamePasswordAuthenticationToken(
-            betappUserDetails,
+            userPrincipal,
             null,
-            betappUserDetails.getAuthorities()
+            userPrincipal.getAuthorities()
           );
         authToken.setDetails(
           new WebAuthenticationDetailsSource().buildDetails(request)

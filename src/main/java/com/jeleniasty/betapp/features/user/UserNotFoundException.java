@@ -1,4 +1,4 @@
-package com.jeleniasty.betapp.features.user.service;
+package com.jeleniasty.betapp.features.user;
 
 public class UserNotFoundException extends RuntimeException {
 

@@ -1,8 +1,6 @@
 package com.jeleniasty.betapp.security.auth;
 
-import lombok.*;
+import lombok.Builder;
 
 @Builder
-record AuthenticationResponse(String token){
-
-}
+record AuthenticationResponse(String token) {}

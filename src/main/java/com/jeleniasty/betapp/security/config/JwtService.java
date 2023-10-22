@@ -1,6 +1,7 @@
 package com.jeleniasty.betapp.security.config;
 
-import com.jeleniasty.betapp.features.user.repository.entity.BetappUser;
+import com.jeleniasty.betapp.features.user.BetappUser;
+import com.jeleniasty.betapp.features.user.UserPrincipal;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -41,15 +42,15 @@ public class JwtService {
       .setClaims(extraClaims)
       .setSubject(betappUserDetails.getEmail())
       .setIssuedAt(new Date(System.currentTimeMillis()))
-      .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
+      .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 180))
       .signWith(getSignInKey(), SignatureAlgorithm.HS256)
       .compact();
   }
 
-  public boolean isTokenValid(String token, BetappUser betappUserDetails) {
+  public boolean isTokenValid(String token, UserPrincipal userPrincipal) {
     final String userEmail = extractUserEmail(token);
     return (
-      (userEmail.equals(betappUserDetails.getEmail())) && !isTokenExpired(token)
+      (userEmail.equals(userPrincipal.getUsername())) && !isTokenExpired(token)
     );
   }
 

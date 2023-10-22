@@ -1,9 +1,10 @@
 package com.jeleniasty.betapp.security.auth;
 
-import com.jeleniasty.betapp.features.user.repository.BetappUserRepository;
-import com.jeleniasty.betapp.features.user.repository.entity.BetappUser;
-import com.jeleniasty.betapp.features.user.repository.entity.BetappUserRole;
+import com.jeleniasty.betapp.features.role.RoleService;
+import com.jeleniasty.betapp.features.user.BetappUser;
+import com.jeleniasty.betapp.features.user.BetappUserRepository;
 import com.jeleniasty.betapp.security.config.JwtService;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,10 +15,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthenticationService {
 
-  private final BetappUserRepository betappUserRepository;
   private final JwtService jwtService;
   private final AuthenticationManager authManager;
   private final PasswordEncoder passwordEncoder;
+  private final RoleService roleService;
+  private final BetappUserRepository betappUserRepository;
 
   public AuthenticationResponse register(RegisterRequest request) {
     var user = BetappUser
@@ -25,7 +27,13 @@ public class AuthenticationService {
       .username(request.username())
       .email(request.email())
       .password(passwordEncoder.encode(request.password()))
-      .betappUserRole(BetappUserRole.PLAYER)
+      .roles(
+        request
+          .roleNames()
+          .stream()
+          .map(roleService::findRoleByName)
+          .collect(Collectors.toSet())
+      )
       .build();
 
     betappUserRepository.save(user);
@@ -42,7 +50,9 @@ public class AuthenticationService {
       )
     );
 
-    var user = betappUserRepository.findByEmail(request.email()).orElseThrow();
+    var user = betappUserRepository
+      .findByUsernameOrEmail(request.email(), request.email())
+      .orElseThrow();
 
     var jwtToken = jwtService.generateToken(user);
     return AuthenticationResponse.builder().token(jwtToken).build();
