@@ -104,15 +104,16 @@ public class BetService {
 
   private boolean checkExactScore(Result betResult, Result matchResult) {
     return switch (matchResult.getDuration()) {
-      case REGULAR_TIME -> matchResult
+      case REGULAR_TIME -> betResult
         .getRegularTimeScore()
-        .equals(betResult.getRegularTimeScore());
-      case EXTRA_TIME -> matchResult
+        .equals(matchResult.getRegularTimeScore());
+      //todo refactor equals method to handle hibernate proxies
+      case EXTRA_TIME -> betResult
         .getExtraTimeScore()
-        .equals(betResult.getExtraTimeScore());
-      case PENALTIES -> matchResult
+        .equals(matchResult.getExtraTimeScore());
+      case PENALTIES -> betResult
         .getPenaltiesScore()
-        .equals(betResult.getPenaltiesScore());
+        .equals(matchResult.getPenaltiesScore());
     };
   }
 

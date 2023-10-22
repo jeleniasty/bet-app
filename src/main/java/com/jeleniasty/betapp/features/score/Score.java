@@ -50,7 +50,10 @@ public class Score {
     if (this == obj) return true;
     if (obj == null || getClass() != obj.getClass()) return false;
     var score = (Score) obj;
-    return Objects.equals(home, score.home) && Objects.equals(away, score.away);
+    return (
+      Objects.equals(getHome(), score.getHome()) &&
+      Objects.equals(getAway(), score.getAway())
+    );
   }
 
   @Override
