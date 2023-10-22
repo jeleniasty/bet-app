@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -42,5 +43,18 @@ public class Score {
   public Score(@NotNull Integer home, @NotNull Integer away) {
     this.home = home;
     this.away = away;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) return true;
+    if (obj == null || getClass() != obj.getClass()) return false;
+    var score = (Score) obj;
+    return Objects.equals(home, score.home) && Objects.equals(away, score.away);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(home, away);
   }
 }
