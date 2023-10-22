@@ -1,22 +1,23 @@
-package com.jeleniasty.betapp.features.user.repository.entity;
+package com.jeleniasty.betapp.features.user;
 
 import com.jeleniasty.betapp.features.bet.Bet;
+import com.jeleniasty.betapp.features.role.Role;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,9 +26,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity(name = "betapp_user")
 @Table(schema = "betapp")
@@ -36,7 +34,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @AllArgsConstructor
 @Getter
 @Setter
-public class BetappUser implements UserDetails {
+public class BetappUser {
 
   @Id
   @SequenceGenerator(
@@ -64,11 +62,6 @@ public class BetappUser implements UserDetails {
   private String password;
 
   @NotNull
-  @Enumerated(EnumType.STRING)
-  @Column(name = "role")
-  private BetappUserRole betappUserRole;
-
-  @NotNull
   @Column(name = "points")
   private Integer points;
 
@@ -81,6 +74,14 @@ public class BetappUser implements UserDetails {
   @Column(name = "updated_at", insertable = false)
   private LocalDateTime updatedAt;
 
+  @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+  @JoinTable(
+    name = "user_role",
+    joinColumns = @JoinColumn(name = "betapp_user"),
+    inverseJoinColumns = @JoinColumn(name = "role")
+  )
+  private Set<Role> roles;
+
   @OneToMany(
     mappedBy = "player",
     cascade = CascadeType.ALL,
@@ -89,39 +90,20 @@ public class BetappUser implements UserDetails {
   private Set<Bet> playerBets = new HashSet<>();
 
   @Override
-  public Collection<? extends GrantedAuthority> getAuthorities() {
-    return List.of(new SimpleGrantedAuthority(betappUserRole.name()));
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    BetappUser that = (BetappUser) o;
+    return (
+      Objects.equals(id, that.id) &&
+      Objects.equals(username, that.username) &&
+      Objects.equals(email, that.email) &&
+      Objects.equals(password, that.password)
+    );
   }
 
   @Override
-  @NotNull
-  public String getPassword() {
-    return password;
-  }
-
-  @Override
-  @NotNull
-  public String getUsername() {
-    return username;
-  }
-
-  @Override
-  public boolean isAccountNonExpired() {
-    return true;
-  }
-
-  @Override
-  public boolean isAccountNonLocked() {
-    return true;
-  }
-
-  @Override
-  public boolean isCredentialsNonExpired() {
-    return true;
-  }
-
-  @Override
-  public boolean isEnabled() {
-    return true;
+  public int hashCode() {
+    return Objects.hash(id, username, email, password);
   }
 }

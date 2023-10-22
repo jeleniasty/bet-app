@@ -18,10 +18,21 @@ CREATE TABLE betapp_user (
                 password text  NOT NULL,
                 email text  NOT NULL,
                 points real  NOT NULL,
-                role text NOT NULL,
                 updated_at timestamp NULL,
                 created_at timestamp NOT NULL,
                 CONSTRAINT betapp_user_pk PRIMARY KEY (id)
+);
+
+CREATE TABLE betapp.role (
+                id bigint  NOT NULL,
+                name text  NOT NULL,
+                CONSTRAINT role_pk PRIMARY KEY (id)
+);
+
+CREATE TABLE betapp.user_role (
+                role bigint  NOT NULL,
+                betapp_user bigint  NOT NULL,
+                CONSTRAINT user_role_pk PRIMARY KEY (role, betapp_user)
 );
 
 CREATE TABLE betapp.competition (
@@ -149,6 +160,20 @@ ALTER TABLE betapp.result ADD CONSTRAINT penalties_score
 ALTER TABLE betapp.result ADD CONSTRAINT regular_time_score
     FOREIGN KEY (half_time)
         REFERENCES betapp.score (id)
+        NOT DEFERRABLE
+            INITIALLY IMMEDIATE
+;
+
+ALTER TABLE betapp.user_role ADD CONSTRAINT user_role_betapp_user
+    FOREIGN KEY (betapp_user)
+        REFERENCES betapp.betapp_user (id)
+        NOT DEFERRABLE
+            INITIALLY IMMEDIATE
+;
+
+ALTER TABLE betapp.user_role ADD CONSTRAINT user_role_role
+    FOREIGN KEY (role)
+        REFERENCES betapp.role (id)
         NOT DEFERRABLE
             INITIALLY IMMEDIATE
 ;
