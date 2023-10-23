@@ -51,8 +51,8 @@ public class Score {
     if (obj == null || getClass() != obj.getClass()) return false;
     var score = (Score) obj;
     return (
-      Objects.equals(getHome(), score.getHome()) &&
-      Objects.equals(getAway(), score.getAway())
+      Objects.equals(this.home, score.home) &&
+      Objects.equals(this.away, score.away)
     );
   }
 

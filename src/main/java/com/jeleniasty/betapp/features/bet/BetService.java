@@ -7,6 +7,7 @@ import com.jeleniasty.betapp.features.result.Winner;
 import com.jeleniasty.betapp.features.user.BetappUserService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -104,16 +105,15 @@ public class BetService {
 
   private boolean checkExactScore(Result betResult, Result matchResult) {
     return switch (matchResult.getDuration()) {
-      case REGULAR_TIME -> betResult
+      case REGULAR_TIME -> matchResult
         .getRegularTimeScore()
-        .equals(matchResult.getRegularTimeScore());
-      //todo refactor equals method to handle hibernate proxies
-      case EXTRA_TIME -> betResult
+        .equals(Hibernate.unproxy(betResult.getRegularTimeScore()));
+      case EXTRA_TIME -> matchResult
         .getExtraTimeScore()
-        .equals(matchResult.getExtraTimeScore());
-      case PENALTIES -> betResult
+        .equals(Hibernate.unproxy(betResult.getExtraTimeScore()));
+      case PENALTIES -> matchResult
         .getPenaltiesScore()
-        .equals(matchResult.getPenaltiesScore());
+        .equals(Hibernate.unproxy(betResult.getPenaltiesScore()));
     };
   }
 
