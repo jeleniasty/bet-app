@@ -51,6 +51,7 @@ CREATE TABLE match (
                 "group" char(1)  NULL,
                 home_odds float4  NULL,
                 away_odds float4 NULL,
+                draw_odds float4 NULL,
                 utc_date timestamp  NOT NULL,
                 created_at timestamp NOT NULL,
                 updated_at timestamp  NULL,

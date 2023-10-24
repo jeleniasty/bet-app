@@ -69,6 +69,9 @@ public class Match {
   @Column(name = "away_odds")
   private float awayOdds;
 
+  @Column(name = "draw_odds")
+  private float drawOdds;
+
   @NotNull
   @Column(name = "utc_date")
   private LocalDateTime utcDate;
