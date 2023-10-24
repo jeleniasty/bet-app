@@ -1,10 +1,12 @@
 package com.jeleniasty.betapp.features.bet;
 
+import com.jeleniasty.betapp.features.exceptions.PastMatchBetException;
 import com.jeleniasty.betapp.features.match.MatchService;
 import com.jeleniasty.betapp.features.result.Result;
 import com.jeleniasty.betapp.features.result.ResultService;
 import com.jeleniasty.betapp.features.result.Winner;
 import com.jeleniasty.betapp.features.user.BetappUserService;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
@@ -23,14 +25,18 @@ public class BetService {
   public final int CORRECT_SCORE_POINTS = 5;
 
   @Transactional
-  public void createBet(SaveBetDTO saveBetDTO) {
-    var matchToBet = matchService.fetchMatch(saveBetDTO.matchId());
-    var betResult = resultService.saveResult(saveBetDTO.saveResultDTO());
+  public void createBet(CreateBetDTO createBetDTO) {
+    var matchToBet = matchService.fetchMatch(createBetDTO.matchId());
+    if (
+      matchToBet.getDate().isBefore(LocalDateTime.now())
+    ) throw new PastMatchBetException(createBetDTO.matchId());
+
+    var betResult = resultService.saveResult(createBetDTO.saveResultDTO());
     var currentUser = betappUserService.fetchUser(
       betappUserService.getCurrentUser().getId()
     );
 
-    var newBet = new Bet(betResult, saveBetDTO.betType());
+    var newBet = new Bet(betResult, createBetDTO.betType());
     newBet.assignMatch(matchToBet);
     newBet.assignPlayer(currentUser);
   }

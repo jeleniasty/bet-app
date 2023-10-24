@@ -1,4 +1,4 @@
-INSERT INTO betapp.match(status, stage, "group", home_odds, away_odds, draw_odds, utc_date, created_at, competition, home_team, away_team)
+INSERT INTO betapp.match(status, stage, "group", home_odds,away_odds, draw_odds, date, created_at, competition, home_team, away_team)
 VALUES ('TIMED', 'GROUP', 'A', 1.65, 1.12, 1.30, '2024-07-01T08:00:00', now(), 1, 12, 9),
        ('TIMED', 'GROUP', 'B', 3.15, 1.05, 2.21, '2024-07-01T08:00:00', now(), 1, 15, 3),
        ('TIMED', 'GROUP', 'C', 1.12, 3.05, 2.56, '2024-07-01T08:00:00', now(), 1, 19, 8),

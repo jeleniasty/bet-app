@@ -1,12 +1,13 @@
 package com.jeleniasty.betapp.features.result;
 
 import com.jeleniasty.betapp.features.score.ScoreDTO;
+import jakarta.validation.Valid;
 
 public record SaveResultDTO(
   Winner winner,
   Duration duration,
-  ScoreDTO halfTimeScore,
-  ScoreDTO regularTimeScore,
-  ScoreDTO extraTimeScore,
-  ScoreDTO penaltiesScore
+  @Valid ScoreDTO halfTimeScore,
+  @Valid ScoreDTO regularTimeScore,
+  @Valid ScoreDTO extraTimeScore,
+  @Valid ScoreDTO penaltiesScore
 ) {}

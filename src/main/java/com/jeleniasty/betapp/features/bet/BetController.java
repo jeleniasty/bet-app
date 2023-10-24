@@ -1,5 +1,6 @@
 package com.jeleniasty.betapp.features.bet;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,8 +16,10 @@ public class BetController {
   private final BetService betService;
 
   @PostMapping
-  public ResponseEntity<Void> createBet(@RequestBody SaveBetDTO saveBetDTO) {
-    betService.createBet(saveBetDTO);
+  public ResponseEntity<Void> createBet(
+    @Valid @RequestBody CreateBetDTO createBetDTO
+  ) {
+    betService.createBet(createBetDTO);
     return ResponseEntity.status(201).build();
   }
 }

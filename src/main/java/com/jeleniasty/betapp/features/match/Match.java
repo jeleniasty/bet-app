@@ -73,8 +73,8 @@ public class Match {
   private float drawOdds;
 
   @NotNull
-  @Column(name = "utc_date")
-  private LocalDateTime utcDate;
+  @Column(name = "date")
+  private LocalDateTime date;
 
   @NotNull
   @CreationTimestamp
@@ -117,14 +117,14 @@ public class Match {
     char group,
     float homeOdds,
     float awayOdds,
-    @NotNull LocalDateTime utcDate
+    @NotNull LocalDateTime date
   ) {
     this.status = status;
     this.stage = stage;
     this.group = group;
     this.homeOdds = homeOdds;
     this.awayOdds = awayOdds;
-    this.utcDate = utcDate;
+    this.date = date;
   }
 
   public void assignCompetition(Competition competition) {

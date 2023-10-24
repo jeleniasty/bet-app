@@ -52,7 +52,7 @@ CREATE TABLE match (
                 home_odds float4  NULL,
                 away_odds float4 NULL,
                 draw_odds float4 NULL,
-                utc_date timestamp  NOT NULL,
+                date timestamp  NOT NULL,
                 created_at timestamp NOT NULL,
                 updated_at timestamp  NULL,
                 competition bigint  NOT NULL,
