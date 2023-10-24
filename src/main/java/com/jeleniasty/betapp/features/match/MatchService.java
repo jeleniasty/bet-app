@@ -5,6 +5,7 @@ import com.jeleniasty.betapp.features.competition.CompetitionService;
 import com.jeleniasty.betapp.features.exceptions.MatchNotFoundException;
 import com.jeleniasty.betapp.features.result.ResultService;
 import com.jeleniasty.betapp.features.team.TeamService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -57,5 +58,9 @@ public class MatchService {
     eventPublisher.publishEvent(
       new MatchResultSetEvent(matchToBeUpdated.getId())
     );
+  }
+
+  public List<UpcomingMatchDTO> getUpcomingMatches() {
+    return matchRepository.findTop10ByStatusOrderByDate();
   }
 }
