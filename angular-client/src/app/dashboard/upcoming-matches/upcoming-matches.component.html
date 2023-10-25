@@ -1,6 +1,10 @@
 <div class="upcoming-matches-container">
   <h3>Upcoming matches</h3>
   <div *ngFor="let match of matches">
-    <betapp-upcoming-match [upcomingMatch]="match"> </betapp-upcoming-match>
+    <betapp-upcoming-match
+      (click)="getUpcomingMatches()"
+      [upcomingMatch]="match"
+    >
+    </betapp-upcoming-match>
   </div>
 </div>

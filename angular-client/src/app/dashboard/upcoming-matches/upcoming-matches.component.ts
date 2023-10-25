@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Match } from './upcoming-match/match';
 import { Team } from './upcoming-match/team';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'betapp-upcoming-matches',
@@ -8,6 +9,8 @@ import { Team } from './upcoming-match/team';
   styleUrls: ['./upcoming-matches.component.css'],
 })
 export class UpcomingMatchesComponent {
+  constructor(private http: HttpClient) {}
+
   matches: Match[] = [
     new Match(
       new Team('Poland', 'https://flagcdn.com/w160/pl.png'),
@@ -34,4 +37,10 @@ export class UpcomingMatchesComponent {
       2.54
     ),
   ];
+
+  getUpcomingMatches() {
+    this.http
+      .get('http://localhost:8080/matches/upcoming')
+      .subscribe((upcomingMatches) => console.log(upcomingMatches));
+  }
 }

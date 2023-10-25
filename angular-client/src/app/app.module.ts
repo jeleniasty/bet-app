@@ -9,6 +9,9 @@ import { UpcomingMatchesComponent } from './dashboard/upcoming-matches/upcoming-
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { BestPlayersComponent } from './dashboard/best-players/best-players.component';
 import { UserScoreComponent } from './dashboard/best-players/user-score/user-score.component';
+import { HttpClientModule } from '@angular/common/http';
+import { LoginComponent } from './authentication/login/login.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -19,8 +22,14 @@ import { UserScoreComponent } from './dashboard/best-players/user-score/user-sco
     DashboardComponent,
     BestPlayersComponent,
     UserScoreComponent,
+    LoginComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })

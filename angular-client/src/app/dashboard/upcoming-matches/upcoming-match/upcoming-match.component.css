@@ -6,6 +6,19 @@
   margin: 10px 40px 10px 40px;
   color: #00b227;
   box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.3);
+  transition: 0.3s;
+}
+
+.upcoming-match:hover {
+  background-color: #00b227;
+  border-color: #00b227;
+  color: white;
+  transition: 0.3s;
+}
+
+.upcoming-match:active {
+  opacity: 0.85;
+  transition: 0.15s;
 }
 
 .hometeam,
