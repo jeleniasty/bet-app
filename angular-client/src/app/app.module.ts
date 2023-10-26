@@ -12,6 +12,7 @@ import { UserScoreComponent } from './dashboard/best-players/user-score/user-sco
 import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './authentication/login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { httpInterceptorProviders } from './http-request-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     HttpClientModule,
     ReactiveFormsModule,
   ],
-  providers: [],
+  providers: [httpInterceptorProviders],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
