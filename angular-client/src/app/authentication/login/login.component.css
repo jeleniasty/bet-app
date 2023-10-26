@@ -39,6 +39,8 @@ button {
   border-color: #00b227;
   padding: 9px;
   color: #00b227;
+
+  margin-top: 10px;
 }
 
 .register-button {
