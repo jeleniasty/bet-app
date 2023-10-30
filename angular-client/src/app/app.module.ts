@@ -13,6 +13,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './authentication/login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { httpInterceptorProviders } from './http-request-interceptor.service';
+import { RegisterComponent } from './authentication/register/register.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { httpInterceptorProviders } from './http-request-interceptor.service';
     BestPlayersComponent,
     UserScoreComponent,
     LoginComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,
