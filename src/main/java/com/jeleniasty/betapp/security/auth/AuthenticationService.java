@@ -22,11 +22,11 @@ public class AuthenticationService {
   private final BetappUserRepository betappUserRepository;
 
   public AuthenticationResponse register(RegisterRequest request) {
-    var user = new BetappUser();
-    user.setUsername(request.username());
-    user.setEmail(request.email());
-    user.setPassword(passwordEncoder.encode(request.password()));
-    user.setRoles(
+    var user = new BetappUser(
+      request.username(),
+      request.email(),
+      passwordEncoder.encode(request.password()),
+      0,
       request
         .roleNames()
         .stream()

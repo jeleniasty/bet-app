@@ -20,12 +20,14 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity(name = "betapp_user")
 @Table(schema = "betapp")
+@NoArgsConstructor
 @Getter
 @Setter
 public class BetappUser {
@@ -59,7 +61,6 @@ public class BetappUser {
   @Column(name = "points")
   private Integer points;
 
-  @NotNull
   @CreationTimestamp
   @Column(name = "created_at", updatable = false)
   private LocalDateTime createdAt;
@@ -100,5 +101,19 @@ public class BetappUser {
   @Override
   public int hashCode() {
     return Objects.hash(id, username, email, password);
+  }
+
+  public BetappUser(
+    @NotNull String username,
+    @NotNull String email,
+    @NotNull String password,
+    @NotNull Integer points,
+    Set<Role> roles
+  ) {
+    this.username = username;
+    this.email = email;
+    this.password = password;
+    this.points = points;
+    this.roles = roles;
   }
 }

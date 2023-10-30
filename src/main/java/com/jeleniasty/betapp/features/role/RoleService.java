@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class RoleService {
 
-  private RoleRepository roleRepository;
+  private final RoleRepository roleRepository;
 
   public Role findRoleByName(RoleName roleName) {
     return roleRepository
