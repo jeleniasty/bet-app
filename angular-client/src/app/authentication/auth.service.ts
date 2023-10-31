@@ -50,9 +50,10 @@ export class AuthService {
     }
   }
 
-  getAuthToken(token: string): void {
+  getAuthToken(): string | void {
     if (this.cookieService) {
-      this.cookieService.get(this.authTokenName);
+      return this.cookieService.get(this.authTokenName);
     }
+    return;
   }
 }
