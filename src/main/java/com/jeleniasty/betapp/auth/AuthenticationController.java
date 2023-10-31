@@ -1,6 +1,7 @@
 package com.jeleniasty.betapp.auth;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,19 +18,16 @@ public class AuthenticationController {
     value = "/api/register",
     consumes = "application/x-www-form-urlencoded"
   )
-  public ResponseEntity<AuthenticationResponse> register(
-    RegisterRequest request
-  ) {
-    return ResponseEntity.ok(authService.register(request));
+  public ResponseEntity<Void> register(RegisterRequest request) {
+    authService.register(request);
+    return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
   @PostMapping(
     value = "/api/login",
     consumes = "application/x-www-form-urlencoded"
   )
-  public ResponseEntity<AuthenticationResponse> login(
-    AuthenticationRequest request
-  ) {
+  public ResponseEntity<AuthResponse> login(AuthRequest request) {
     return ResponseEntity.ok(authService.authenticate(request));
   }
 }

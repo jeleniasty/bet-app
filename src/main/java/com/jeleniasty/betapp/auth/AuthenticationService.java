@@ -20,7 +20,7 @@ public class AuthenticationService {
   private final RoleService roleService;
   private final BetappUserRepository betappUserRepository;
 
-  public AuthenticationResponse register(RegisterRequest request) {
+  public AuthResponse register(RegisterRequest request) {
     var user = new BetappUser(
       request.username(),
       request.email(),
@@ -36,10 +36,10 @@ public class AuthenticationService {
     betappUserRepository.save(user);
 
     var jwtToken = jwtService.generateToken(user);
-    return AuthenticationResponse.builder().token(jwtToken).build();
+    return AuthResponse.builder().token(jwtToken).build();
   }
 
-  public AuthenticationResponse authenticate(AuthenticationRequest request) {
+  public AuthResponse authenticate(AuthRequest request) {
     authManager.authenticate(
       new UsernamePasswordAuthenticationToken(
         request.email(),
@@ -52,6 +52,6 @@ public class AuthenticationService {
       .orElseThrow();
 
     var jwtToken = jwtService.generateToken(user);
-    return AuthenticationResponse.builder().token(jwtToken).build();
+    return AuthResponse.builder().token(jwtToken).build();
   }
 }
