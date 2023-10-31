@@ -22,13 +22,14 @@ export class LoginComponent {
     });
   }
 
-  login() {
-    const formValues = this.loginForm.value;
+  login(): void {
+    const loginFormValues = this.loginForm.value;
 
-    if (formValues.email && formValues.password) {
+    if (loginFormValues.email && loginFormValues.password) {
       this.authService
-        .login(formValues.email, formValues.password)
-        .subscribe(() => {
+        .login(loginFormValues.email, loginFormValues.password)
+        .subscribe((response: any): void => {
+          this.authService.storeAuthToken(response.token);
           this.router.navigateByUrl('/');
         });
     }

@@ -14,6 +14,7 @@ import { LoginComponent } from './authentication/login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { httpInterceptorProviders } from './http-request-interceptor.service';
 import { RegisterComponent } from './authentication/register/register.component';
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,7 @@ import { RegisterComponent } from './authentication/register/register.component'
     HttpClientModule,
     ReactiveFormsModule,
   ],
-  providers: [httpInterceptorProviders],
+  providers: [httpInterceptorProviders, CookieService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

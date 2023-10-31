@@ -1,18 +1,21 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private http: HttpClient) {}
+  private readonly authTokenName: string = 'authToken';
+
+  constructor(private http: HttpClient, private cookieService: CookieService) {}
 
   login(email: string, password: string) {
     const headers: HttpHeaders = new HttpHeaders().set(
       'Content-Type',
       'application/x-www-form-urlencoded'
     );
-    const body = new URLSearchParams();
+    const body: URLSearchParams = new URLSearchParams();
     body.set('email', email);
     body.set('password', password);
 
@@ -26,7 +29,7 @@ export class AuthService {
       'Content-Type',
       'application/x-www-form-urlencoded'
     );
-    const body = new URLSearchParams();
+    const body: URLSearchParams = new URLSearchParams();
     body.set('username', username);
     body.set('email', email);
     body.set('password', password);
@@ -39,5 +42,17 @@ export class AuthService {
         headers,
       }
     );
+  }
+
+  storeAuthToken(token: string): void {
+    if (this.cookieService) {
+      this.cookieService.set(this.authTokenName, token);
+    }
+  }
+
+  getAuthToken(token: string): void {
+    if (this.cookieService) {
+      this.cookieService.get(this.authTokenName);
+    }
   }
 }
