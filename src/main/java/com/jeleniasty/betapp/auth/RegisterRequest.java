@@ -1,4 +1,4 @@
-package com.jeleniasty.betapp.security.auth;
+package com.jeleniasty.betapp.auth;
 
 import com.jeleniasty.betapp.features.role.RoleName;
 import java.util.Set;

@@ -1,4 +1,4 @@
-package com.jeleniasty.betapp.security.auth;
+package com.jeleniasty.betapp.auth;
 
 import com.jeleniasty.betapp.features.user.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;

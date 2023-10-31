@@ -1,4 +1,4 @@
-package com.jeleniasty.betapp.security.auth;
+package com.jeleniasty.betapp.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;

@@ -1,6 +1,7 @@
-package com.jeleniasty.betapp.security.config;
+package com.jeleniasty.betapp.config;
 
-import com.jeleniasty.betapp.security.auth.CustomAuthenticationEntryPoint;
+import com.jeleniasty.betapp.auth.CustomAuthenticationEntryPoint;
+import com.jeleniasty.betapp.auth.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

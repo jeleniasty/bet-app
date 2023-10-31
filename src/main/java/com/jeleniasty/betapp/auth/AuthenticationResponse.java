@@ -1,4 +1,4 @@
-package com.jeleniasty.betapp.security.auth;
+package com.jeleniasty.betapp.auth;
 
 import lombok.Builder;
 

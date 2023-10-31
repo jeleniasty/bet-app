@@ -1,4 +1,4 @@
-package com.jeleniasty.betapp.security.config;
+package com.jeleniasty.betapp.auth;
 
 import com.jeleniasty.betapp.features.user.BetappUser;
 import com.jeleniasty.betapp.features.user.UserPrincipal;
