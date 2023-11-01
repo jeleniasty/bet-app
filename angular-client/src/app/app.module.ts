@@ -15,6 +15,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { httpInterceptorProviders } from './http-request-interceptor.service';
 import { RegisterComponent } from './authentication/register/register.component';
 import { CookieService } from 'ngx-cookie-service';
+import { UserMenuComponent } from './dashboard-header/user-menu/user-menu.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { CookieService } from 'ngx-cookie-service';
     UserScoreComponent,
     LoginComponent,
     RegisterComponent,
+    UserMenuComponent,
   ],
   imports: [
     BrowserModule,
