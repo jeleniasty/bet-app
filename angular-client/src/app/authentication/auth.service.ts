@@ -56,4 +56,10 @@ export class AuthService {
     }
     return;
   }
+
+  removeAuthToken(): void {
+    if (this.cookieService) {
+      this.cookieService.delete(this.authTokenName);
+    }
+  }
 }
