@@ -16,6 +16,7 @@ import { httpInterceptorProviders } from './http-request-interceptor.service';
 import { RegisterComponent } from './authentication/register/register.component';
 import { CookieService } from 'ngx-cookie-service';
 import { UserMenuComponent } from './dashboard-header/user-menu/user-menu.component';
+import { AuthGuardService } from './authentication/auth-guard.service';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,7 @@ import { UserMenuComponent } from './dashboard-header/user-menu/user-menu.compon
     HttpClientModule,
     ReactiveFormsModule,
   ],
-  providers: [httpInterceptorProviders, CookieService],
+  providers: [httpInterceptorProviders, CookieService, AuthGuardService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
