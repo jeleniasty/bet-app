@@ -1,4 +1,5 @@
 export class UpcomingMatch {
+  id: number;
   homeTeam: string;
   homeFlag: string;
   homeOdds: number;
@@ -8,20 +9,22 @@ export class UpcomingMatch {
   matchDate: Date;
 
   constructor(
-    homeTeamName: string,
-    homeTeamFlag: string,
-    homeTeamOdds: number,
-    awayTeamName: string,
-    awayTeamFlag: string,
-    awayTeamOdds: number,
+    id: number,
+    homeTeam: string,
+    homeFlag: string,
+    homeOdds: number,
+    awayName: string,
+    awayFlag: string,
+    awayOdds: number,
     matchDate: Date
   ) {
-    this.homeTeam = homeTeamName;
-    this.homeFlag = homeTeamFlag;
-    this.homeOdds = homeTeamOdds;
-    this.awayTeam = awayTeamName;
-    this.awayFlag = awayTeamFlag;
-    this.awayOdds = awayTeamOdds;
+    this.id = id;
+    this.homeTeam = homeTeam;
+    this.homeFlag = homeFlag;
+    this.homeOdds = homeOdds;
+    this.awayTeam = awayName;
+    this.awayFlag = awayFlag;
+    this.awayOdds = awayOdds;
     this.matchDate = matchDate;
   }
 }

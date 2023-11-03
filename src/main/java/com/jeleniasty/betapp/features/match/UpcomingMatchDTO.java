@@ -1,10 +1,11 @@
 package com.jeleniasty.betapp.features.match;
 
 public interface UpcomingMatchDTO {
+  Long getId();
   String getHomeTeam();
-  String getHomeTeamFlag();
+  String getHomeFlag();
   String getAwayTeam();
-  String getAwayTeamFlag();
+  String getAwayFlag();
   String getHomeOdds();
   String getAwayOdds();
   String getMatchDate();
