@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 
@@ -18,8 +23,16 @@ export class LoginComponent {
   ) {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(5)]],
     });
+  }
+
+  get email(): AbstractControl | null {
+    return this.loginForm.get('email');
+  }
+
+  get password(): AbstractControl | null {
+    return this.loginForm.get('password');
   }
 
   login(): void {
@@ -33,5 +46,9 @@ export class LoginComponent {
           this.router.navigateByUrl('/');
         });
     }
+  }
+
+  isFormControlValid(formControl: AbstractControl | null): boolean {
+    return formControl ? formControl.invalid && formControl.touched : false;
   }
 }

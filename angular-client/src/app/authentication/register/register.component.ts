@@ -39,8 +39,7 @@ export class RegisterComponent {
     return this.registerForm.get('password');
   }
 
-  submit(event: Event): void {
-    event.preventDefault();
+  register(): void {
     const formValues = this.registerForm.value;
 
     if (formValues.username && formValues.email && formValues.password) {
