@@ -17,6 +17,7 @@ import { RegisterComponent } from './authentication/register/register.component'
 import { CookieService } from 'ngx-cookie-service';
 import { UserMenuComponent } from './dashboard-header/user-menu/user-menu.component';
 import { AuthGuardService } from './authentication/auth-guard.service';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,12 @@ import { AuthGuardService } from './authentication/auth-guard.service';
     HttpClientModule,
     ReactiveFormsModule,
   ],
-  providers: [httpInterceptorProviders, CookieService, AuthGuardService],
+  providers: [
+    httpInterceptorProviders,
+    CookieService,
+    AuthGuardService,
+    DatePipe,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
