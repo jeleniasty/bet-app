@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MatchRepository extends JpaRepository<Match, Long> {
   @Query(
-    value = "SELECT ht.name as homeTeam, at.name as awayTeam, m.home_odds as homeOdds, m.away_odds as awayOdds, m.date FROM betapp.match m JOIN betapp.team ht ON ht.id = m.home_team JOIN betapp.team at ON at.id = m.away_team WHERE m.status='TIMED' ORDER BY m.date LIMIT 10;",
+    value = "SELECT ht.name as homeTeam, ht.flag as homeTeamFlag, at.name as awayTeam, at.flag as awayTeamFlag , m.home_odds as homeOdds, m.away_odds as awayOdds, m.date as matchDate FROM betapp.match m JOIN betapp.team ht ON ht.id = m.home_team JOIN betapp.team at ON at.id = m.away_team WHERE m.status='TIMED' ORDER BY m.date LIMIT 10;",
     nativeQuery = true
   )
   List<UpcomingMatchDTO> findTop10ByStatusOrderByDate();
