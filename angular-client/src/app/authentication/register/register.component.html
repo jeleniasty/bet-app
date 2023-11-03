@@ -8,25 +8,75 @@
     <form [formGroup]="registerForm">
       <div class="form-group">
         <label>Username:</label>
-        <input name="username" formControlName="username" />
+
+        <input
+          class="form-control"
+          type="text"
+          formControlName="username"
+          placeholder="Enter your username"
+          [style.border-color]="isFormControlValid(username) ? 'red' : null"
+        />
+
+        <span style="color: red" *ngIf="isFormControlValid(username)">
+          <ng-container *ngIf="username?.errors as errors">
+            <div *ngIf="errors?.['required']">Username is required.</div>
+            <div *ngIf="errors?.['minlength']">
+              Username should be at least 5 characters long.
+            </div>
+          </ng-container>
+        </span>
       </div>
+
       <div class="form-group">
         <label>Email:</label>
-        <input name="email" formControlName="email" />
+        <input
+          class="form-control"
+          type="email"
+          formControlName="email"
+          placeholder="Enter your email"
+          [style.border-color]="isFormControlValid(email) ? 'red' : null"
+        />
+
+        <span style="color: red" *ngIf="isFormControlValid(email)">
+          <ng-container *ngIf="email?.errors as errors">
+            <div *ngIf="errors?.['required']">Email is required.</div>
+            <div *ngIf="errors?.['email']">Invalid email format.</div>
+          </ng-container>
+        </span>
       </div>
+
       <div class="form-group">
         <label>Password:</label>
-        <input name="password" formControlName="password" type="password" />
+        <input
+          class="form-control"
+          type="password"
+          formControlName="password"
+          placeholder="Enter your password"
+          [style.border-color]="isFormControlValid(password) ? 'red' : null"
+        />
+
+        <span style="color: red" *ngIf="isFormControlValid(password)">
+          <ng-container *ngIf="password?.errors as errors">
+            <div *ngIf="errors?.['required']">Password is required.</div>
+            <div *ngIf="errors?.['minlength']">
+              Password should be at least 5 characters long.
+            </div>
+          </ng-container>
+        </span>
       </div>
-      <div class="form-group">
-        <button class="register-button" (click)="register()" type="button">
-          Register
-        </button>
-        <p class="login-link">
-          Already registered? Login
-          <a href="http://localhost:4200/login"> here</a>.
-        </p>
-      </div>
+
+      <button
+        type="submit"
+        class="register-button"
+        [disabled]="registerForm.invalid"
+      >
+        Register
+      </button>
+
+      <p class="login-link">
+        Already registered? Login
+        <a href="http://localhost:4200/login"> here</a>.
+      </p>
     </form>
   </div>
 </div>

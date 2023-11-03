@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 
@@ -17,13 +22,25 @@ export class RegisterComponent {
     private router: Router
   ) {
     this.registerForm = this.formBuilder.group({
-      username: ['', Validators.required],
+      username: ['', [Validators.required, Validators.minLength(5)]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
 
-  register() {
+  get username(): AbstractControl | null {
+    return this.registerForm.get('username');
+  }
+
+  get email(): AbstractControl | null {
+    return this.registerForm.get('email');
+  }
+  get password(): AbstractControl | null {
+    return this.registerForm.get('password');
+  }
+
+  submit(event: Event): void {
+    event.preventDefault();
     const formValues = this.registerForm.value;
 
     if (formValues.username && formValues.email && formValues.password) {
@@ -33,5 +50,9 @@ export class RegisterComponent {
           this.router.navigateByUrl('/login');
         });
     }
+  }
+
+  isFormControlValid(formControl: AbstractControl | null): boolean {
+    return formControl ? formControl.invalid && formControl.touched : false;
   }
 }

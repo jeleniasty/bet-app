@@ -17,7 +17,6 @@ export class AppComponent {
   }
 
   modifyHeader(location: any): void {
-    console.log(location.url);
     this.showHeader = !(
       location.url === '/login' || location.url === '/register'
     );
