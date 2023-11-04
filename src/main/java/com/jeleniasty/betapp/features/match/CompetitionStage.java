@@ -5,5 +5,6 @@ public enum CompetitionStage {
   LAST_OF_16,
   QUARTER_FINALS,
   SEMI_FINALS,
+  THIRD_PLACE,
   FINAL,
 }

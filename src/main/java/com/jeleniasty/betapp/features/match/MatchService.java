@@ -1,9 +1,11 @@
 package com.jeleniasty.betapp.features.match;
 
 import com.jeleniasty.betapp.features.bet.MatchResultDTO;
+import com.jeleniasty.betapp.features.competition.CompetitionDTO;
 import com.jeleniasty.betapp.features.competition.CompetitionService;
 import com.jeleniasty.betapp.features.exceptions.MatchNotFoundException;
 import com.jeleniasty.betapp.features.result.ResultService;
+import com.jeleniasty.betapp.features.team.TeamDTO;
 import com.jeleniasty.betapp.features.team.TeamService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -62,5 +64,40 @@ public class MatchService {
 
   public List<UpcomingMatchDTO> getUpcomingMatches() {
     return matchRepository.findTop10ByStatusOrderByDate();
+  }
+
+  public MatchDTO getUpcomingMatch(Long id) {
+    var match = matchRepository
+      .findById(id)
+      .orElseThrow(() -> new MatchNotFoundException(id));
+
+    return new MatchDTO(
+      match.getId(),
+      new TeamDTO(
+        match.getHomeTeam().getId(),
+        match.getHomeTeam().getName(),
+        match.getHomeTeam().getCode(),
+        match.getHomeTeam().getFlag()
+      ),
+      match.getHomeOdds(),
+      new TeamDTO(
+        match.getAwayTeam().getId(),
+        match.getAwayTeam().getName(),
+        match.getAwayTeam().getCode(),
+        match.getAwayTeam().getFlag()
+      ),
+      match.getAwayOdds(),
+      match.getStatus(),
+      match.getStage(),
+      match.getGroup(),
+      new CompetitionDTO(
+        match.getCompetition().getId(),
+        match.getCompetition().getName(),
+        match.getCompetition().getCode(),
+        match.getCompetition().getType(),
+        match.getCompetition().getSeason()
+      ),
+      match.getDate()
+    );
   }
 }
