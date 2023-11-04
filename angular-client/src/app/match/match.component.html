@@ -1,0 +1,37 @@
+<div class="match-container">
+  <div>
+    <div class="match-title">
+      <h1>{{ match?.competition?.name }} {{ match?.competition?.season }}</h1>
+      <h1>{{ match?.matchDate | date : "medium" }}</h1>
+    </div>
+
+    <div class="teams-container">
+      <div class="home-team">
+        <h2>{{ match?.homeTeam?.name }}</h2>
+        <img
+          class="team-flag"
+          src="{{ match?.homeTeam?.flag }}"
+          alt="hometeam flag"
+        />
+        <p class="odds">{{ match?.homeOdds }}</p>
+      </div>
+
+      <div class="away-team">
+        <h2>{{ match?.awayTeam?.name }}</h2>
+        <img
+          class="team-flag"
+          src="{{ match?.awayTeam?.flag }}"
+          alt="hometeam flag"
+        />
+        <p class="odds">{{ match?.awayOdds }}</p>
+      </div>
+    </div>
+
+    <div class="full-time-result">full time result</div>
+    <div class="full-time-result-form">
+      <form [formGroup]="betForm"></form>
+    </div>
+
+    <div class="correct-score">correct score</div>
+  </div>
+</div>

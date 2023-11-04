@@ -18,6 +18,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { UserMenuComponent } from './dashboard-header/user-menu/user-menu.component';
 import { AuthGuardService } from './authentication/auth-guard.service';
 import { DatePipe } from '@angular/common';
+import { MatchComponent } from './match/match.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { DatePipe } from '@angular/common';
     LoginComponent,
     RegisterComponent,
     UserMenuComponent,
+    MatchComponent,
   ],
   imports: [
     BrowserModule,
