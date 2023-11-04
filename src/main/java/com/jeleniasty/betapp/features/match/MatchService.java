@@ -1,6 +1,6 @@
 package com.jeleniasty.betapp.features.match;
 
-import com.jeleniasty.betapp.features.bet.MatchResultDTO;
+import com.jeleniasty.betapp.features.bet.SaveMatchResultDTO;
 import com.jeleniasty.betapp.features.competition.CompetitionDTO;
 import com.jeleniasty.betapp.features.competition.CompetitionService;
 import com.jeleniasty.betapp.features.exceptions.MatchNotFoundException;
@@ -52,9 +52,9 @@ public class MatchService {
   }
 
   @Transactional
-  public void setMatchResult(MatchResultDTO matchResultDTO) {
-    var result = resultService.saveResult(matchResultDTO.saveResultDTO());
-    var matchToBeUpdated = fetchMatch(matchResultDTO.matchId());
+  public void setMatchResult(SaveMatchResultDTO saveMatchResultDTO) {
+    var result = resultService.saveResult(saveMatchResultDTO.matchResultDTO());
+    var matchToBeUpdated = fetchMatch(saveMatchResultDTO.matchId());
 
     matchToBeUpdated.setResult(result);
     eventPublisher.publishEvent(

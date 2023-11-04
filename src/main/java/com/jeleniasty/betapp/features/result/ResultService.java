@@ -11,15 +11,15 @@ public class ResultService {
   private final ResultRepository resultRepository;
   private final ScoreService scoreService;
 
-  public Result saveResult(SaveResultDTO saveResultDTO) {
+  public Result saveResult(MatchResultDTO matchResultDTO) {
     return resultRepository.save(
       new Result(
-        saveResultDTO.winner(),
-        saveResultDTO.duration(),
-        scoreService.saveScore(saveResultDTO.halfTimeScore()),
-        scoreService.saveScore(saveResultDTO.regularTimeScore()),
-        scoreService.saveScore(saveResultDTO.extraTimeScore()),
-        scoreService.saveScore(saveResultDTO.penaltiesScore())
+        matchResultDTO.winner(),
+        matchResultDTO.duration(),
+        scoreService.saveScore(matchResultDTO.halfTimeScore()),
+        scoreService.saveScore(matchResultDTO.regularTimeScore()),
+        scoreService.saveScore(matchResultDTO.extraTimeScore()),
+        scoreService.saveScore(matchResultDTO.penaltiesScore())
       )
     );
   }

@@ -47,12 +47,10 @@ public class Result {
   @Column(name = "duration")
   private Duration duration;
 
-  @NotNull
   @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "half_time")
   private Score halfTimeScore;
 
-  @NotNull
   @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "regular_time")
   private Score regularTimeScore;

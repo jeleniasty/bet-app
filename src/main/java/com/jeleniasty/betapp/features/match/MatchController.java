@@ -1,6 +1,6 @@
 package com.jeleniasty.betapp.features.match;
 
-import com.jeleniasty.betapp.features.bet.MatchResultDTO;
+import com.jeleniasty.betapp.features.bet.SaveMatchResultDTO;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,11 +23,11 @@ public class MatchController {
     return ResponseEntity.status(201).build();
   }
 
-  @PatchMapping("match")
+  @PatchMapping("/match")
   public ResponseEntity<Void> updateMatchResult(
-    @RequestBody MatchResultDTO matchResultDTO
+    @RequestBody SaveMatchResultDTO saveMatchResultDTO
   ) {
-    matchService.setMatchResult(matchResultDTO);
+    matchService.setMatchResult(saveMatchResultDTO);
     return ResponseEntity.status(204).build();
   }
 

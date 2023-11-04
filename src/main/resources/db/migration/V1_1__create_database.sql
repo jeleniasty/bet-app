@@ -67,7 +67,7 @@ CREATE TABLE betapp.result (
                 winner text  NOT NULL,
                 duration text  NOT NULL,
                 half_time bigint  NULL,
-                regular_time bigint  NOT NULL,
+                regular_time bigint  NULL,
                 extra_time bigint  NULL,
                 penalties bigint  NULL,
                 CONSTRAINT result_pk PRIMARY KEY (id)
