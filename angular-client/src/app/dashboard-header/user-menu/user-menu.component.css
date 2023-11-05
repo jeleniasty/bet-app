@@ -1,7 +1,7 @@
 .user-menu-container {
   display: flex;
   flex-direction: column;
-  margin-right: 8px;
+  margin-right: 16px;
   margin-top: 6px;
 }
 
@@ -75,6 +75,8 @@ img {
 }
 
 .menu-item {
+  background-color: white;
+  text-align: center;
   color: #00b227;
   font-weight: bold;
   padding: 10px 8px;
