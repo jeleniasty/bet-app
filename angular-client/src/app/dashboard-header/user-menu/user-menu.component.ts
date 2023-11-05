@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../authentication/auth.service';
 import { Router } from '@angular/router';
+import { jwtDecode } from 'jwt-decode';
 
 @Component({
   selector: 'betapp-user-menu',
@@ -14,6 +15,20 @@ export class UserMenuComponent {
 
   toggleDropdown() {
     this.isDropdownExpanded = !this.isDropdownExpanded;
+  }
+
+  //TODO change email to username (need to change backend jwtToken stored data)
+  getEmailFromJWT(): string | void {
+    try {
+      const jwtToken: string | void = this.authService.getAuthToken();
+      if (!jwtToken) {
+        return;
+      }
+      const decodedToken: any = jwtDecode(jwtToken);
+      return decodedToken.sub;
+    } catch (error) {
+      console.error('Error decoding JWT:', error);
+    }
   }
 
   logout() {
