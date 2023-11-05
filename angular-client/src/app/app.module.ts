@@ -17,7 +17,7 @@ import { RegisterComponent } from './authentication/register/register.component'
 import { CookieService } from 'ngx-cookie-service';
 import { UserMenuComponent } from './dashboard-header/user-menu/user-menu.component';
 import { AuthGuardService } from './authentication/auth-guard.service';
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgOptimizedImage } from '@angular/common';
 import { MatchComponent } from './match/match.component';
 
 @NgModule({
@@ -39,6 +39,7 @@ import { MatchComponent } from './match/match.component';
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
+    NgOptimizedImage,
   ],
   providers: [
     httpInterceptorProviders,

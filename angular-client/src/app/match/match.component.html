@@ -12,6 +12,7 @@
           class="team-flag"
           src="{{ match?.homeTeam?.flag }}"
           alt="hometeam flag"
+          #homeTeamFlag
         />
         <p class="odds">{{ match?.homeOdds }}</p>
       </div>
@@ -22,16 +23,62 @@
           class="team-flag"
           src="{{ match?.awayTeam?.flag }}"
           alt="hometeam flag"
+          #awayTeamFlag
         />
         <p class="odds">{{ match?.awayOdds }}</p>
       </div>
     </div>
 
-    <div class="full-time-result">full time result</div>
-    <div class="full-time-result-form">
-      <form [formGroup]="betForm"></form>
+    <div
+      class="full-time-result"
+      (click)="toggleFullTimeResultForm()"
+      [ngClass]="{ expanded: isFullTimeResultFormExpanded }"
+    >
+      full time result
+    </div>
+    <div class="full-time-result-form" *ngIf="isFullTimeResultFormExpanded">
+      <button class="home-button">home</button>
+      <button class="draw-button">draw</button>
+      <button class="away-button">away</button>
     </div>
 
-    <div class="correct-score">correct score</div>
+    <div
+      class="correct-score"
+      (click)="toggleCorrectScoreForm()"
+      [ngClass]="{ expanded: isCorrectScoreFormExpanded }"
+    >
+      correct score
+    </div>
+    <div class="correct-score-form" *ngIf="isCorrectScoreFormExpanded">
+      <form [formGroup]="correctScoreBetForm">
+        <div>
+          <select>
+            <option formControlName="duration" [value]="Duration.REGULAR_TIME">
+              regular time
+            </option>
+            <option formControlName="duration" [value]="Duration.EXTRA_TIME">
+              extra time
+            </option>
+            <option formControlName="duration" [value]="Duration.PENALTIES">
+              penalties
+            </option>
+          </select>
+        </div>
+
+        <div class="team-scores">
+          <div class="home-score">
+            <label> Home Score:</label>
+            <input type="number" formControlName="homeScore" />
+          </div>
+
+          <div class="away-score">
+            <label> Away Score:</label>
+            <input type="number" formControlName="awayScore" />
+          </div>
+        </div>
+
+        <button class="bet-button">Bet !</button>
+      </form>
+    </div>
   </div>
 </div>

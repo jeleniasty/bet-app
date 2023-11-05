@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Match } from './Match';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Duration } from './Duration';
 
 @Component({
   selector: 'betapp-match',
@@ -12,19 +13,23 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class MatchComponent implements OnInit {
   match: Match | undefined;
-  betForm: FormGroup;
+  correctScoreBetForm: FormGroup;
+
+  isFullTimeResultFormExpanded: boolean = false;
+  isCorrectScoreFormExpanded: boolean = false;
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private http: HttpClient
   ) {
-    this.betForm = this.formBuilder.group({
+    this.correctScoreBetForm = this.formBuilder.group({
+      duration: [Duration.REGULAR_TIME, Validators.required],
       home: ['', [Validators.required, Validators.min(0), Validators.max(200)]],
       away: ['', [Validators.required, Validators.min(0), Validators.max(200)]],
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     const matchId = this.route.snapshot.paramMap.get('id');
     if (matchId) {
       this.getMatch(+matchId).subscribe((match: Match) => {
@@ -34,7 +39,17 @@ export class MatchComponent implements OnInit {
     }
   }
 
+  toggleFullTimeResultForm(): void {
+    this.isFullTimeResultFormExpanded = !this.isFullTimeResultFormExpanded;
+  }
+
+  toggleCorrectScoreForm(): void {
+    this.isCorrectScoreFormExpanded = !this.isCorrectScoreFormExpanded;
+  }
+
   getMatch(matchId: number): Observable<Match> {
     return this.http.get<Match>(`http://localhost:8080/match/${matchId}`);
   }
+
+  protected readonly Duration = Duration;
 }
