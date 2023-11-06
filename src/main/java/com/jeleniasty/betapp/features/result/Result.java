@@ -42,7 +42,6 @@ public class Result {
   @Column(name = "winner")
   private Winner winner;
 
-  @NotNull
   @Enumerated(EnumType.STRING)
   @Column(name = "duration")
   private Duration duration;
