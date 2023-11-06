@@ -201,4 +201,5 @@ option {
   padding: 15px;
   margin-top: 20px;
   width: 20%;
+  cursor: pointer;
 }

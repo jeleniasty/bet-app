@@ -1,5 +1,5 @@
 export enum Winner {
-  HOME,
-  AWAY,
-  DRAW,
+  HOME = 'HOME',
+  AWAY = 'AWAY',
+  DRAW = 'DRAW',
 }
