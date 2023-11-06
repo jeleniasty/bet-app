@@ -17,15 +17,14 @@ export class UserMenuComponent {
     this.isDropdownExpanded = !this.isDropdownExpanded;
   }
 
-  //TODO change email to username (need to change backend jwtToken stored data)
-  getEmailFromJWT(): string | void {
+  getUsernameFromJWT(): string | void {
     try {
       const jwtToken: string | void = this.authService.getAuthToken();
       if (!jwtToken) {
         return;
       }
       const decodedToken: any = jwtDecode(jwtToken);
-      return decodedToken.sub;
+      return decodedToken.username;
     } catch (error) {
       console.error('Error decoding JWT:', error);
     }
