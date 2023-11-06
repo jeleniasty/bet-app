@@ -12,7 +12,6 @@
           class="team-flag"
           src="{{ match?.homeTeam?.flag }}"
           alt="hometeam flag"
-          #homeTeamFlag
         />
         <p class="odds">{{ match?.homeOdds }}</p>
       </div>
@@ -23,7 +22,6 @@
           class="team-flag"
           src="{{ match?.awayTeam?.flag }}"
           alt="hometeam flag"
-          #awayTeamFlag
         />
         <p class="odds">{{ match?.awayOdds }}</p>
       </div>
@@ -37,9 +35,33 @@
       full time result
     </div>
     <div class="full-time-result-form" *ngIf="isFullTimeResultFormExpanded">
-      <button class="home-button">home</button>
-      <button class="draw-button">draw</button>
-      <button class="away-button">away</button>
+      <div class="full-time-result-options">
+        <button
+          class="home-button"
+          (click)="selectFullTimeResultWinner(Winner.HOME)"
+          [ngClass]="{ selected: fullTimeResultWinner === Winner.HOME }"
+        >
+          home
+        </button>
+        <button
+          class="draw-button"
+          (click)="selectFullTimeResultWinner(Winner.DRAW)"
+          [ngClass]="{ selected: fullTimeResultWinner === Winner.DRAW }"
+        >
+          draw
+        </button>
+        <button
+          class="away-button"
+          (click)="selectFullTimeResultWinner(Winner.AWAY)"
+          [ngClass]="{ selected: fullTimeResultWinner === Winner.AWAY }"
+        >
+          away
+        </button>
+      </div>
+
+      <div class="button-container">
+        <button class="bet-button">Bet !</button>
+      </div>
     </div>
 
     <div

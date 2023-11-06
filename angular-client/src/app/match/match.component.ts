@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Match } from './Match';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Duration } from './Duration';
+import { Winner } from './Winner';
 
 @Component({
   selector: 'betapp-match',
@@ -14,6 +15,7 @@ import { Duration } from './Duration';
 export class MatchComponent implements OnInit {
   match: Match | undefined;
   correctScoreBetForm: FormGroup;
+  fullTimeResultWinner: Winner | undefined;
 
   isFullTimeResultFormExpanded: boolean = false;
   isCorrectScoreFormExpanded: boolean = false;
@@ -39,6 +41,10 @@ export class MatchComponent implements OnInit {
     }
   }
 
+  selectFullTimeResultWinner(winner: Winner): void {
+    this.fullTimeResultWinner = winner;
+  }
+
   toggleFullTimeResultForm(): void {
     this.isFullTimeResultFormExpanded = !this.isFullTimeResultFormExpanded;
   }
@@ -52,4 +58,5 @@ export class MatchComponent implements OnInit {
   }
 
   protected readonly Duration = Duration;
+  protected readonly Winner = Winner;
 }

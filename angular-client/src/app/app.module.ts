@@ -11,7 +11,7 @@ import { BestPlayersComponent } from './dashboard/best-players/best-players.comp
 import { UserScoreComponent } from './dashboard/best-players/user-score/user-score.component';
 import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './authentication/login/login.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { httpInterceptorProviders } from './http-request-interceptor.service';
 import { RegisterComponent } from './authentication/register/register.component';
 import { CookieService } from 'ngx-cookie-service';
@@ -40,6 +40,7 @@ import { MatchComponent } from './match/match.component';
     HttpClientModule,
     ReactiveFormsModule,
     NgOptimizedImage,
+    FormsModule,
   ],
   providers: [
     httpInterceptorProviders,
