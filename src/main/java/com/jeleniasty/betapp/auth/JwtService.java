@@ -9,7 +9,6 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import java.security.Key;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 import org.springframework.stereotype.Service;
@@ -30,7 +29,10 @@ public class JwtService {
   }
 
   public String generateToken(BetappUser betappUserDetails) {
-    return generateToken(new HashMap<>(), betappUserDetails);
+    var extraClaims = Jwts.claims();
+    extraClaims.put("username", betappUserDetails.getUsername());
+
+    return generateToken(extraClaims, betappUserDetails);
   }
 
   public String generateToken(
