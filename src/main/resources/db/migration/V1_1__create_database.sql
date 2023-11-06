@@ -65,7 +65,7 @@ CREATE TABLE match (
 CREATE TABLE betapp.result (
                 id serial  NOT NULL,
                 winner text  NOT NULL,
-                duration text  NOT NULL,
+                duration text  NULL,
                 half_time bigint  NULL,
                 regular_time bigint  NULL,
                 extra_time bigint  NULL,
