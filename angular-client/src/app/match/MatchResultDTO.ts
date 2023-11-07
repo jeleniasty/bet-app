@@ -1,6 +1,6 @@
 import { Winner } from './Winner';
 import { Duration } from './Duration';
-class ScoreDTO {
+export class ScoreDTO {
   private home: number;
   private away: number;
 

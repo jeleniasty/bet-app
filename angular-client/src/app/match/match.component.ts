@@ -7,7 +7,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Duration } from './Duration';
 import { Winner } from './Winner';
 import { CreateBetDTO } from './CreateBetDTO';
-import { MatchResultDTO } from './MatchResultDTO';
+import { MatchResultDTO, ScoreDTO } from './MatchResultDTO';
 import { BetType } from './BetType';
 
 @Component({
@@ -20,6 +20,7 @@ export class MatchComponent implements OnInit {
   match: Match | undefined;
   correctScoreBetForm: FormGroup;
   fullTimeResultWinner: Winner | undefined;
+  correctScoreWinner: Winner | undefined;
 
   isFullTimeResultFormExpanded: boolean = false;
   isCorrectScoreFormExpanded: boolean = false;
@@ -30,8 +31,14 @@ export class MatchComponent implements OnInit {
   ) {
     this.correctScoreBetForm = this.formBuilder.group({
       duration: [Duration.REGULAR_TIME, Validators.required],
-      home: ['', [Validators.required, Validators.min(0), Validators.max(200)]],
-      away: ['', [Validators.required, Validators.min(0), Validators.max(200)]],
+      homeScore: [
+        '',
+        [Validators.required, Validators.min(0), Validators.max(200)],
+      ],
+      awayScore: [
+        '',
+        [Validators.required, Validators.min(0), Validators.max(200)],
+      ],
     });
   }
 
@@ -45,11 +52,16 @@ export class MatchComponent implements OnInit {
     }
   }
 
+  toggleFullTimeResultForm(): void {
+    this.isFullTimeResultFormExpanded = !this.isFullTimeResultFormExpanded;
+  }
+
+  toggleCorrectScoreForm(): void {
+    this.isCorrectScoreFormExpanded = !this.isCorrectScoreFormExpanded;
+  }
+
   submitFullTimeResultBet(): void {
-    if (!this.fullTimeResultWinner) {
-      return;
-    }
-    if (!this.matchId) {
+    if (!this.fullTimeResultWinner || !this.matchId) {
       return;
     }
 
@@ -58,21 +70,71 @@ export class MatchComponent implements OnInit {
       BetType.FULL_TIME_RESULT,
       +this.matchId
     );
-    this.createBet(createBetDTO).subscribe(() => console.log('dupa'));
+    this.createBet(createBetDTO).subscribe();
   }
 
-  submitCorrectScoreBet(): void {}
+  submitCorrectScoreBet(): void {
+    if (!this.matchId || this.correctScoreBetForm.invalid) {
+      return;
+    }
+
+    const formValues = this.correctScoreBetForm.value;
+    const createBetDTO: CreateBetDTO = new CreateBetDTO(
+      this.constructCorrectScoreMatchResult(formValues),
+      BetType.CORRECT_SCORE,
+      +this.matchId
+    );
+
+    this.createBet(createBetDTO).subscribe();
+  }
+
+  private constructCorrectScoreMatchResult(formValues: any): MatchResultDTO {
+    if (formValues.duration === Duration.REGULAR_TIME) {
+      return new MatchResultDTO(
+        this.determineCorrectScoreWinner(),
+        formValues.duration,
+        undefined,
+        new ScoreDTO(formValues.homeScore, formValues.awayScore)
+      );
+    }
+
+    if (formValues.duration === Duration.EXTRA_TIME) {
+      return new MatchResultDTO(
+        this.determineCorrectScoreWinner(),
+        formValues.duration,
+        undefined,
+        undefined,
+        new ScoreDTO(formValues.homeScore, formValues.awayScore)
+      );
+    }
+
+    return new MatchResultDTO(
+      this.determineCorrectScoreWinner(),
+      formValues.duration,
+      undefined,
+      undefined,
+      undefined,
+      new ScoreDTO(formValues.homeScore, formValues.awayScore)
+    );
+  }
+
+  private determineCorrectScoreWinner(): Winner {
+    const home: number = this.correctScoreBetForm.get('homeScore')?.value;
+    const away: number = this.correctScoreBetForm.get('awayScore')?.value;
+
+    if (home > away) {
+      return Winner.HOME;
+    }
+
+    if (away > home) {
+      return Winner.AWAY;
+    }
+
+    return Winner.DRAW;
+  }
 
   selectFullTimeResultWinner(winner: Winner): void {
     this.fullTimeResultWinner = winner;
-  }
-
-  toggleFullTimeResultForm(): void {
-    this.isFullTimeResultFormExpanded = !this.isFullTimeResultFormExpanded;
-  }
-
-  toggleCorrectScoreForm(): void {
-    this.isCorrectScoreFormExpanded = !this.isCorrectScoreFormExpanded;
   }
 
   createBet(createBetDTO: CreateBetDTO) {
