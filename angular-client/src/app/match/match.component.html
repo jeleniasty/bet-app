@@ -27,6 +27,9 @@
       </div>
     </div>
 
+    <div class="user-bets">
+      <betapp-user-bets [matchId]="match?.id!"></betapp-user-bets>
+    </div>
     <div
       class="full-time-result"
       (click)="toggleFullTimeResultForm()"

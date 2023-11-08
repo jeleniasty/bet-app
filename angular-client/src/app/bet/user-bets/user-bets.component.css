@@ -1,0 +1,23 @@
+.user-bets-container {
+  display: flex;
+  justify-content: center;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+th {
+  font-weight: 600;
+}
+
+th,
+td {
+  padding: 12px 8px;
+  text-align: center;
+}
+
+tr:nth-child(even) {
+  background-color: #00b227;
+  color: white;
+}

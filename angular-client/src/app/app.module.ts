@@ -19,6 +19,7 @@ import { UserMenuComponent } from './dashboard-header/user-menu/user-menu.compon
 import { AuthGuardService } from './authentication/auth-guard.service';
 import { DatePipe, NgOptimizedImage } from '@angular/common';
 import { MatchComponent } from './match/match.component';
+import { UserBetsComponent } from './bet/user-bets/user-bets.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { MatchComponent } from './match/match.component';
     RegisterComponent,
     UserMenuComponent,
     MatchComponent,
+    UserBetsComponent,
   ],
   imports: [
     BrowserModule,

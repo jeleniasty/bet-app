@@ -1,0 +1,24 @@
+<h2>User bets</h2>
+<div class="user-bets-container">
+  <table>
+    <tr>
+      <th>No.</th>
+      <th>Type</th>
+      <th>Home Score</th>
+      <th>Away Score</th>
+      <th>Match Duration</th>
+      <th>Creation Date</th>
+    </tr>
+    <tr *ngFor="let bet of bets; let i = index">
+      <td>{{ i + 1 }}</td>
+      <td>{{ bet?.type }}</td>
+      <td>{{ bet?.homeScore }}</td>
+      <td>{{ bet?.awayScore }}</td>
+      <td>{{ bet?.matchDuration }}</td>
+      <td>
+        {{ bet?.creationDate | date }},
+        {{ bet?.creationDate | date : "shortTime" }}
+      </td>
+    </tr>
+  </table>
+</div>
