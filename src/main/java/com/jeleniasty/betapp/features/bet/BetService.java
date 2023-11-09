@@ -5,6 +5,7 @@ import com.jeleniasty.betapp.features.match.MatchService;
 import com.jeleniasty.betapp.features.result.Result;
 import com.jeleniasty.betapp.features.result.ResultService;
 import com.jeleniasty.betapp.features.result.Winner;
+import com.jeleniasty.betapp.features.score.Score;
 import com.jeleniasty.betapp.features.user.BetappUserService;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,6 +26,29 @@ public class BetService {
   public final int CORRECT_SCORE_POINTS = 5;
 
   @Transactional
+  public List<BetDTO> getCurrentUserBets(long matchId) {
+    var currentUserId = betappUserService.getCurrentUser().getId();
+    return betRepository
+      .findAllByMatchAndAndPlayer(matchId, currentUserId)
+      .stream()
+      .map(bet ->
+        new BetDTO(
+          bet.getId(),
+          bet.getBetType(),
+          bet.getResult().getWinner(),
+          bet.getResult().getDuration(),
+          (Score) Hibernate.unproxy(bet.getResult().getHalfTimeScore()),
+          (Score) Hibernate.unproxy(bet.getResult().getRegularTimeScore()),
+          (Score) Hibernate.unproxy(bet.getResult().getExtraTimeScore()),
+          (Score) Hibernate.unproxy(bet.getResult().getPenaltiesScore()),
+          bet.getCreatedAt()
+        )
+      )
+      .toList();
+    //TODO analyse need of usign Hibernate.unproxy here and why double getter did not initialize related entity
+  }
+
+  @Transactional
   public void createBet(CreateBetDTO createBetDTO) {
     var matchToBet = matchService.fetchMatch(createBetDTO.matchId());
     if (
@@ -43,13 +67,10 @@ public class BetService {
 
   @Transactional
   public void assignPoints(Long matchId) {
-    //getting match result
     var matchResult = matchService.fetchMatch(matchId).getResult();
 
-    //getting bets on that match
     var bets = betRepository.findAllByMatchId(matchId);
 
-    //find winning bets
     assignPointsForFullTimeResultBets(
       findWinningFullTimeResultBets(bets, matchResult.getWinner())
     );
