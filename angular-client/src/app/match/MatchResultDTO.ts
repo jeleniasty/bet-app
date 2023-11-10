@@ -1,8 +1,8 @@
 import { Winner } from './Winner';
 import { Duration } from './Duration';
 export class ScoreDTO {
-  private home: number;
-  private away: number;
+  home: number;
+  away: number;
 
   constructor(home: number, away: number) {
     this.home = home;

@@ -1,8 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BetType } from '../../match/BetType';
-import { Duration } from '../../match/Duration';
 import { Bet } from '../Bet';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'betapp-user-bets',
@@ -10,30 +9,23 @@ import { Bet } from '../Bet';
   styleUrls: ['./user-bets.component.css'],
 })
 export class UserBetsComponent implements OnInit {
-  @Input() matchId: number | undefined;
+  matchId: number | null = null;
   bets: Bet[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private route: ActivatedRoute) {}
   ngOnInit() {
-    this.bets = [
-      new Bet(3, BetType.CORRECT_SCORE, 4, 5, new Date()),
-      new Bet(
-        2,
-        BetType.FULL_TIME_RESULT,
-        5,
-        1,
-        new Date(),
-        Duration.EXTRA_TIME
-      ),
-      new Bet(1, BetType.CORRECT_SCORE, 2, 2, new Date()),
-      new Bet(
-        4,
-        BetType.FULL_TIME_RESULT,
-        1,
-        1,
-        new Date(),
-        Duration.REGULAR_TIME
-      ),
-    ];
+    const idString = this.route.snapshot.paramMap.get('id');
+    if (idString) {
+      this.matchId = +idString;
+    }
+    if (this.matchId) {
+      this.getUserBets(this.matchId).subscribe(
+        (bets: Bet[]) => (this.bets = bets)
+      );
+    }
+  }
+
+  private getUserBets(matchId: number) {
+    return this.http.get<Bet[]>(`http://localhost:8080/bets/user/${matchId}`);
   }
 }

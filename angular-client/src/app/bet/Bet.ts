@@ -1,27 +1,38 @@
 import { Duration } from '../match/Duration';
 import { BetType } from '../match/BetType';
+import { Winner } from '../match/Winner';
+import { ScoreDTO } from '../match/MatchResultDTO';
 
 export class Bet {
   public id: number;
   public type: BetType;
-  public homeScore: number;
-  public awayScore: number;
-  public creationDate: Date;
+  public winner: Winner;
   public matchDuration: Duration | null;
+  public halfTimeScore: ScoreDTO | null;
+  public regularTimeScore: ScoreDTO | null;
+  public extraTimeScore: ScoreDTO | null;
+  public penaltiesScore: ScoreDTO | null;
+  public creationDate: Date;
 
   constructor(
     id: number,
     type: BetType,
-    homeScore: number,
-    awayScore: number,
+    winner: Winner,
     creationDate: Date,
-    matchDuration?: Duration
+    regularTimeScore: ScoreDTO | null,
+    matchDuration: Duration | null,
+    halfTimeScore: ScoreDTO | null,
+    extraTimeScore: ScoreDTO | null,
+    penaltiesScore: ScoreDTO | null
   ) {
     this.id = id;
     this.type = type;
-    this.homeScore = homeScore;
-    this.awayScore = awayScore;
+    this.winner = winner;
+    this.matchDuration = matchDuration;
+    this.halfTimeScore = halfTimeScore;
+    this.regularTimeScore = regularTimeScore;
+    this.extraTimeScore = extraTimeScore;
+    this.penaltiesScore = penaltiesScore;
     this.creationDate = creationDate;
-    this.matchDuration = matchDuration || null;
   }
 }

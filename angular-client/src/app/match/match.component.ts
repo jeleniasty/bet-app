@@ -16,7 +16,7 @@ import { BetType } from './BetType';
   styleUrls: ['./match.component.css'],
 })
 export class MatchComponent implements OnInit {
-  matchId: string | null = null;
+  matchId: number | null = null;
   match: Match | undefined;
   correctScoreBetForm: FormGroup;
   fullTimeResultWinner: Winner | undefined;
@@ -43,7 +43,11 @@ export class MatchComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.matchId = this.route.snapshot.paramMap.get('id');
+    const idString = this.route.snapshot.paramMap.get('id');
+    if (idString) {
+      this.matchId = +idString;
+    }
+
     if (this.matchId) {
       this.getMatch(+this.matchId).subscribe((match: Match) => {
         console.log(match);

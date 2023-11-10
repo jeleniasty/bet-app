@@ -12,8 +12,8 @@
     <tr *ngFor="let bet of bets; let i = index">
       <td>{{ i + 1 }}</td>
       <td>{{ bet?.type }}</td>
-      <td>{{ bet?.homeScore }}</td>
-      <td>{{ bet?.awayScore }}</td>
+      <td>{{ bet?.regularTimeScore?.home }}</td>
+      <td>{{ bet?.regularTimeScore?.away }}</td>
       <td>{{ bet?.matchDuration }}</td>
       <td>
         {{ bet?.creationDate | date }},
