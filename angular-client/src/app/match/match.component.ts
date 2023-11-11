@@ -58,10 +58,12 @@ export class MatchComponent implements OnInit {
 
   toggleFullTimeResultForm(): void {
     this.isFullTimeResultFormExpanded = !this.isFullTimeResultFormExpanded;
+    this.isCorrectScoreFormExpanded = false;
   }
 
   toggleCorrectScoreForm(): void {
     this.isCorrectScoreFormExpanded = !this.isCorrectScoreFormExpanded;
+    this.isFullTimeResultFormExpanded = false;
   }
 
   submitFullTimeResultBet(): void {
