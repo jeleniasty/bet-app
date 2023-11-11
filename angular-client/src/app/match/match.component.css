@@ -65,26 +65,26 @@ h2 {
 .bets-container {
   display: flex;
   justify-content: center;
+
+  border: 2px solid #00b227;
+  border-radius: 4px;
+  margin-top: 40px;
 }
 
 .user-bets {
   text-align: center;
-  margin-top: 30px;
+  margin: 40px 0;
 }
 
 .full-time-result,
 .correct-score {
   text-align: center;
   padding: 20px 50px;
-  margin-top: 40px;
   width: 100%;
 
   font-size: 18px;
   font-weight: 600;
   color: #00b227;
-
-  border: 2px solid #00b227;
-  border-radius: 4px;
 }
 
 .full-time-result:hover,
@@ -104,9 +104,11 @@ h2 {
 
 .full-time-result.expanded,
 .correct-score.expanded {
-  border-bottom: none;
-  border-bottom-right-radius: unset;
-  border-bottom-left-radius: unset;
+  .bets-container {
+    border-bottom: none;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
 
   background-color: #00b227;
   border-color: #00b227;
