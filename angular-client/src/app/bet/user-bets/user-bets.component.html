@@ -1,20 +1,37 @@
-<h2>User bets</h2>
 <div class="user-bets-container">
   <table>
+    <caption>
+      Full time result
+    </caption>
     <tr>
       <th>No.</th>
-      <th>Type</th>
-      <th>Home Score</th>
-      <th>Away Score</th>
-      <th>Match Duration</th>
+      <th>Bet</th>
       <th>Creation Date</th>
     </tr>
     <tr *ngFor="let bet of bets; let i = index">
       <td>{{ i + 1 }}</td>
-      <td>{{ bet?.type }}</td>
-      <td>{{ bet?.regularTimeScore?.home }}</td>
-      <td>{{ bet?.regularTimeScore?.away }}</td>
-      <td>{{ bet?.matchDuration }}</td>
+      <td>{{ bet?.winner }}</td>
+
+      <td>
+        {{ bet?.creationDate | date }},
+        {{ bet?.creationDate | date : "shortTime" }}
+      </td>
+    </tr>
+  </table>
+
+  <table>
+    <caption>
+      Correct score
+    </caption>
+    <tr>
+      <th>No.</th>
+      <th>Bet</th>
+      <th>Creation Date</th>
+    </tr>
+    <tr *ngFor="let bet of bets; let i = index">
+      <td>{{ i + 1 }}</td>
+      <td>{{ bet?.winner }}</td>
+
       <td>
         {{ bet?.creationDate | date }},
         {{ bet?.creationDate | date : "shortTime" }}
