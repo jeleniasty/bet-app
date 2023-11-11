@@ -61,12 +61,23 @@ h2 {
   border: 2px solid #00b227;
   border-radius: 4px;
 }
-.user-bets,
+
+.bets-container {
+  display: flex;
+  justify-content: center;
+}
+
+.user-bets {
+  text-align: center;
+  margin-top: 30px;
+}
+
 .full-time-result,
 .correct-score {
   text-align: center;
   padding: 20px 50px;
   margin-top: 40px;
+  width: 100%;
 
   font-size: 18px;
   font-weight: 600;
