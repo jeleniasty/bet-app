@@ -19,7 +19,8 @@ public class ResultService {
         scoreService.saveScore(matchResultDTO.halfTimeScore()),
         scoreService.saveScore(matchResultDTO.regularTimeScore()),
         scoreService.saveScore(matchResultDTO.extraTimeScore()),
-        scoreService.saveScore(matchResultDTO.penaltiesScore())
+        scoreService.saveScore(matchResultDTO.penaltiesScore()),
+        scoreService.saveScore(matchResultDTO.fullTimeScore())
       )
     );
   }

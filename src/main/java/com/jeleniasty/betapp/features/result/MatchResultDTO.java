@@ -9,5 +9,6 @@ public record MatchResultDTO(
   @Valid ScoreDTO halfTimeScore,
   @Valid ScoreDTO regularTimeScore,
   @Valid ScoreDTO extraTimeScore,
-  @Valid ScoreDTO penaltiesScore
+  @Valid ScoreDTO penaltiesScore,
+  @Valid ScoreDTO fullTimeScore
 ) {}

@@ -62,13 +62,18 @@ public class Result {
   @JoinColumn(name = "penalties")
   private Score penaltiesScore;
 
+  @OneToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "full_time")
+  private Score fullTimeScore;
+
   public Result(
     @NotNull Winner winner,
-    @NotNull Duration duration,
-    @NotNull Score halfTimeScore,
-    @NotNull Score regularTimeScore,
+    Duration duration,
+    Score halfTimeScore,
+    Score regularTimeScore,
     Score extraTimeScore,
-    Score penaltiesScore
+    Score penaltiesScore,
+    Score fullTimeScore
   ) {
     this.winner = winner;
     this.duration = duration;
@@ -76,5 +81,6 @@ public class Result {
     this.regularTimeScore = regularTimeScore;
     this.extraTimeScore = extraTimeScore;
     this.penaltiesScore = penaltiesScore;
+    this.fullTimeScore = fullTimeScore;
   }
 }
