@@ -1,14 +1,14 @@
 <div class="user-bets-container">
   <table>
     <caption>
-      Full time result
+      full time result bets
     </caption>
     <tr>
       <th>No.</th>
       <th>Bet</th>
       <th>Creation Date</th>
     </tr>
-    <tr *ngFor="let bet of bets; let i = index">
+    <tr *ngFor="let bet of fullTimeResultBets; let i = index">
       <td>{{ i + 1 }}</td>
       <td>{{ bet?.winner }}</td>
 
@@ -21,14 +21,14 @@
 
   <table>
     <caption>
-      Correct score
+      correct score bets
     </caption>
     <tr>
       <th>No.</th>
       <th>Bet</th>
       <th>Creation Date</th>
     </tr>
-    <tr *ngFor="let bet of bets; let i = index">
+    <tr *ngFor="let bet of correctScoreBets; let i = index">
       <td>{{ i + 1 }}</td>
       <td>{{ bet?.winner }}</td>
 
