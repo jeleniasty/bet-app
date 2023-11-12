@@ -184,8 +184,6 @@ button:hover {
 .away-score {
   display: flex;
   flex-direction: column;
-
-  margin-top: 20px;
 }
 
 select {

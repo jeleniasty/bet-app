@@ -20,7 +20,6 @@ export class MatchComponent implements OnInit {
   match: Match | undefined;
   correctScoreBetForm: FormGroup;
   fullTimeResultWinner: Winner | undefined;
-  correctScoreWinner: Winner | undefined;
 
   isFullTimeResultFormExpanded: boolean = false;
   isCorrectScoreFormExpanded: boolean = false;
@@ -30,7 +29,6 @@ export class MatchComponent implements OnInit {
     private http: HttpClient
   ) {
     this.correctScoreBetForm = this.formBuilder.group({
-      duration: [Duration.REGULAR_TIME, Validators.required],
       homeScore: [
         '',
         [Validators.required, Validators.min(0), Validators.max(200)],
@@ -86,42 +84,15 @@ export class MatchComponent implements OnInit {
 
     const formValues = this.correctScoreBetForm.value;
     const createBetDTO: CreateBetDTO = new CreateBetDTO(
-      this.constructCorrectScoreMatchResult(formValues),
+      new MatchResultDTO(
+        this.determineCorrectScoreWinner(),
+        new ScoreDTO(formValues.homeScore, formValues.awayScore)
+      ),
       BetType.CORRECT_SCORE,
       +this.matchId
     );
 
     this.createBet(createBetDTO).subscribe();
-  }
-
-  private constructCorrectScoreMatchResult(formValues: any): MatchResultDTO {
-    if (formValues.duration === Duration.REGULAR_TIME) {
-      return new MatchResultDTO(
-        this.determineCorrectScoreWinner(),
-        formValues.duration,
-        undefined,
-        new ScoreDTO(formValues.homeScore, formValues.awayScore)
-      );
-    }
-
-    if (formValues.duration === Duration.EXTRA_TIME) {
-      return new MatchResultDTO(
-        this.determineCorrectScoreWinner(),
-        formValues.duration,
-        undefined,
-        undefined,
-        new ScoreDTO(formValues.homeScore, formValues.awayScore)
-      );
-    }
-
-    return new MatchResultDTO(
-      this.determineCorrectScoreWinner(),
-      formValues.duration,
-      undefined,
-      undefined,
-      undefined,
-      new ScoreDTO(formValues.homeScore, formValues.awayScore)
-    );
   }
 
   private determineCorrectScoreWinner(): Winner {

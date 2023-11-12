@@ -78,14 +78,6 @@
 
     <div class="correct-score-form" *ngIf="isCorrectScoreFormExpanded">
       <form [formGroup]="correctScoreBetForm">
-        <div>
-          <select formControlName="duration">
-            <option [value]="Duration.REGULAR_TIME">regular time</option>
-            <option [value]="Duration.EXTRA_TIME">extra time</option>
-            <option [value]="Duration.PENALTIES">penalties</option>
-          </select>
-        </div>
-
         <div class="team-scores">
           <div class="home-score">
             <label> Home Score:</label>
