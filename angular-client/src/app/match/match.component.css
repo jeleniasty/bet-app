@@ -154,7 +154,7 @@ button {
   border-radius: 5px;
   border-style: solid;
   border-color: #00b227;
-  padding: 10px 14px;
+  padding: 13px 14px 14px 14px;
   margin: 0 10px;
 }
 
@@ -181,13 +181,18 @@ button:hover {
 
 .team-scores {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
 .home-score,
 .away-score {
   display: flex;
   flex-direction: column;
+  align-items: center;
+}
+
+input {
+  width: 15%;
 }
 
 select {
