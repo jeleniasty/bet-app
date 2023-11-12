@@ -13,7 +13,7 @@ export class UserMenuComponent {
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  toggleDropdown() {
+  toggleDropdown(): void {
     this.isDropdownExpanded = !this.isDropdownExpanded;
   }
 

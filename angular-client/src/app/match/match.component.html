@@ -27,16 +27,22 @@
       </div>
     </div>
 
-    <div class="bets-container">
+    <div
+      class="bets-container"
+      [ngClass]="{
+        'bets-container-expanded':
+          isFullTimeResultFormExpanded || isCorrectScoreFormExpanded
+      }"
+    >
       <div
-        class="full-time-result"
+        class="full-time-result-container"
         (click)="toggleFullTimeResultForm()"
         [ngClass]="{ expanded: isFullTimeResultFormExpanded }"
       >
         full time result
       </div>
       <div
-        class="correct-score"
+        class="correct-score-container"
         (click)="toggleCorrectScoreForm()"
         [ngClass]="{ expanded: isCorrectScoreFormExpanded }"
       >

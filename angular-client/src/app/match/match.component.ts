@@ -48,7 +48,6 @@ export class MatchComponent implements OnInit {
 
     if (this.matchId) {
       this.getMatch(+this.matchId).subscribe((match: Match) => {
-        console.log(match);
         this.match = match;
       });
     }
