@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Bet } from '../Bet';
 import { ActivatedRoute } from '@angular/router';
 import { BetType } from '../../match/BetType';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'betapp-user-bets',
@@ -11,13 +12,12 @@ import { BetType } from '../../match/BetType';
 })
 export class UserBetsComponent implements OnInit {
   matchId: number | null = null;
-  bets: Bet[] = [];
   fullTimeResultBets: Bet[] = [];
   correctScoreBets: Bet[] = [];
 
   constructor(private http: HttpClient, private route: ActivatedRoute) {}
-  ngOnInit() {
-    const idString = this.route.snapshot.paramMap.get('id');
+  ngOnInit(): void {
+    const idString: string | null = this.route.snapshot.paramMap.get('id');
     if (idString) {
       this.matchId = +idString;
     }
@@ -34,7 +34,7 @@ export class UserBetsComponent implements OnInit {
     }
   }
 
-  private getUserBets(matchId: number) {
+  private getUserBets(matchId: number): Observable<Bet[]> {
     return this.http.get<Bet[]>(`http://localhost:8080/bets/user/${matchId}`);
   }
 }

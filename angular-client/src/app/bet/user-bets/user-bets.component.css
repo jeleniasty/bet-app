@@ -21,7 +21,7 @@ caption {
 table {
   border-collapse: collapse;
   width: 100%;
-  margin-bottom: 40px;
+  margin-top: 40px;
 }
 
 th:first-of-type,
@@ -60,5 +60,11 @@ tr:nth-child(even) {
 }
 
 tr:nth-child(odd) {
+  border-bottom: 1px solid rgba(0, 178, 39, 0.4);
+}
+
+.no-past-bets-info {
+  color: #00b227;
+  padding: 10px;
   border-bottom: 1px solid rgba(0, 178, 39, 0.4);
 }

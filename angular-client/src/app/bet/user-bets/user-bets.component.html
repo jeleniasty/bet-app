@@ -1,41 +1,50 @@
 <div class="user-bets-container">
-  <table>
-    <caption>
-      full time result bets
-    </caption>
-    <tr>
-      <th>No.</th>
-      <th>Bet</th>
-      <th>Creation Date</th>
-    </tr>
-    <tr *ngFor="let bet of fullTimeResultBets; let i = index">
-      <td>{{ i + 1 }}</td>
-      <td>{{ bet?.winner }}</td>
+  <div>
+    <table>
+      <caption>
+        full time result bets
+      </caption>
+      <tr>
+        <th>No.</th>
+        <th>Winner prediction</th>
+        <th>Creation Date</th>
+      </tr>
+      <tr *ngFor="let bet of fullTimeResultBets; let i = index">
+        <td>{{ i + 1 }}.</td>
+        <td>{{ bet?.winner }}</td>
 
-      <td>
-        {{ bet?.creationDate | date }},
-        {{ bet?.creationDate | date : "shortTime" }}
-      </td>
-    </tr>
-  </table>
+        <td>
+          {{ bet?.creationDate | date }},
+          {{ bet?.creationDate | date : "shortTime" }}
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="no-past-bets-info" *ngIf="fullTimeResultBets.length === 0">
+    There is no past bets
+  </div>
 
-  <table>
-    <caption>
-      correct score bets
-    </caption>
-    <tr>
-      <th>No.</th>
-      <th>Bet</th>
-      <th>Creation Date</th>
-    </tr>
-    <tr *ngFor="let bet of correctScoreBets; let i = index">
-      <td>{{ i + 1 }}</td>
-      <td>{{ bet?.winner }}</td>
+  <div>
+    <table>
+      <caption>
+        correct score bets
+      </caption>
+      <tr>
+        <th>No.</th>
+        <th>Bet</th>
+        <th>Creation Date</th>
+      </tr>
+      <tr *ngFor="let bet of correctScoreBets; let i = index">
+        <td>{{ i + 1 }}.</td>
+        <td>
+          {{ bet?.creationDate | date }},
+          {{ bet?.creationDate | date : "shortTime" }}
+        </td>
+      </tr>
+    </table>
+  </div>
 
-      <td>
-        {{ bet?.creationDate | date }},
-        {{ bet?.creationDate | date : "shortTime" }}
-      </td>
-    </tr>
-  </table>
+  <div class="no-past-bets-info" *ngIf="fullTimeResultBets.length === 0">
+    There is no past bets
+  </div>
 </div>
