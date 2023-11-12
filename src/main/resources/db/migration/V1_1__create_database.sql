@@ -103,7 +103,7 @@ ALTER TABLE match ADD CONSTRAINT away_team_match
             INITIALLY IMMEDIATE
 ;
 
-ALTER TABLE betapp.result ADD CONSTRAINT extra_time_score
+ALTER TABLE betapp.result ADD CONSTRAINT full_time_score
     FOREIGN KEY (full_time)
         REFERENCES betapp.score (id)
         NOT DEFERRABLE
