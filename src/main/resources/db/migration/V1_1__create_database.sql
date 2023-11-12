@@ -70,6 +70,7 @@ CREATE TABLE betapp.result (
                 regular_time bigint  NULL,
                 extra_time bigint  NULL,
                 penalties bigint  NULL,
+                full_time bigint NULL,
                 CONSTRAINT result_pk PRIMARY KEY (id)
 );
 
@@ -98,6 +99,13 @@ ALTER TABLE match ADD CONSTRAINT home_team_match
 ALTER TABLE match ADD CONSTRAINT away_team_match
     FOREIGN KEY (away_team)
         REFERENCES team (id)
+        NOT DEFERRABLE
+            INITIALLY IMMEDIATE
+;
+
+ALTER TABLE betapp.result ADD CONSTRAINT extra_time_score
+    FOREIGN KEY (full_time)
+        REFERENCES betapp.score (id)
         NOT DEFERRABLE
             INITIALLY IMMEDIATE
 ;
