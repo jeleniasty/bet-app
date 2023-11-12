@@ -192,6 +192,7 @@ button:hover {
 }
 
 input {
+  margin-top: 6px;
   width: 15%;
 }
 
