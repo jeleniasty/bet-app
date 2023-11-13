@@ -17,7 +17,6 @@ export class UpcomingMatchesComponent implements OnInit {
   ngOnInit() {
     this.getUpcomingMatches().subscribe((upcomingMatches: UpcomingMatch[]) => {
       this.matches = upcomingMatches;
-      console.log(upcomingMatches);
     });
   }
 

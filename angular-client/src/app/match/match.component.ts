@@ -4,11 +4,11 @@ import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Match } from './Match';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Duration } from './Duration';
 import { Winner } from './Winner';
 import { CreateBetDTO } from './CreateBetDTO';
 import { MatchResultDTO, ScoreDTO } from './MatchResultDTO';
 import { BetType } from './BetType';
+import { BetService } from '../bet/bet.service';
 
 @Component({
   selector: 'betapp-match',
@@ -16,6 +16,7 @@ import { BetType } from './BetType';
   styleUrls: ['./match.component.css'],
 })
 export class MatchComponent implements OnInit {
+  protected readonly Winner = Winner;
   matchId: number | null = null;
   match: Match | undefined;
   correctScoreBetForm: FormGroup;
@@ -23,10 +24,12 @@ export class MatchComponent implements OnInit {
 
   isFullTimeResultFormExpanded: boolean = false;
   isCorrectScoreFormExpanded: boolean = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
-    private http: HttpClient
+    private http: HttpClient,
+    private betService: BetService
   ) {
     this.correctScoreBetForm = this.formBuilder.group({
       homeScore: [
@@ -73,7 +76,9 @@ export class MatchComponent implements OnInit {
       BetType.FULL_TIME_RESULT,
       +this.matchId
     );
-    this.createBet(createBetDTO).subscribe();
+    this.createBet(createBetDTO).subscribe(() =>
+      this.betService.notifyBetCreated()
+    );
   }
 
   submitCorrectScoreBet(): void {
@@ -91,7 +96,9 @@ export class MatchComponent implements OnInit {
       +this.matchId
     );
 
-    this.createBet(createBetDTO).subscribe();
+    this.createBet(createBetDTO).subscribe(() =>
+      this.betService.notifyBetCreated()
+    );
   }
 
   private determineCorrectScoreWinner(): Winner {
@@ -114,13 +121,9 @@ export class MatchComponent implements OnInit {
   }
 
   createBet(createBetDTO: CreateBetDTO) {
-    console.log(createBetDTO);
     return this.http.post('http://localhost:8080/bet', createBetDTO);
   }
   getMatch(matchId: number): Observable<Match> {
     return this.http.get<Match>(`http://localhost:8080/match/${matchId}`);
   }
-
-  protected readonly Duration = Duration;
-  protected readonly Winner = Winner;
 }

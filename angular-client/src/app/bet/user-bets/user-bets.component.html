@@ -2,14 +2,14 @@
   <div>
     <table>
       <caption>
-        full time result bets
+        Current full time result bets
       </caption>
       <tr>
         <th>No.</th>
         <th>Winner prediction</th>
         <th>Creation Date</th>
       </tr>
-      <tr *ngFor="let bet of fullTimeResultBets; let i = index">
+      <tr *ngFor="let bet of getFullTimeResultBets(); let i = index">
         <td>{{ i + 1 }}.</td>
         <td>{{ bet?.winner }}</td>
 
@@ -20,22 +20,27 @@
       </tr>
     </table>
   </div>
-  <div class="no-past-bets-info" *ngIf="fullTimeResultBets.length === 0">
+  <div class="no-past-bets-info" *ngIf="getFullTimeResultBets().length === 0">
     There is no past bets
   </div>
 
   <div>
     <table>
       <caption>
-        correct score bets
+        Current correct score bets
       </caption>
       <tr>
         <th>No.</th>
-        <th>Bet</th>
+        <th>Winner prediction</th>
+        <th>Home score</th>
+        <th>Away score</th>
         <th>Creation Date</th>
       </tr>
-      <tr *ngFor="let bet of correctScoreBets; let i = index">
+      <tr *ngFor="let bet of getCorrectScoreBets(); let i = index">
         <td>{{ i + 1 }}.</td>
+        <td>{{ bet?.winner }}</td>
+        <td>{{ bet?.fullTimeScore?.home }}</td>
+        <td>{{ bet?.fullTimeScore?.away }}</td>
         <td>
           {{ bet?.creationDate | date }},
           {{ bet?.creationDate | date : "shortTime" }}
@@ -44,7 +49,7 @@
     </table>
   </div>
 
-  <div class="no-past-bets-info" *ngIf="fullTimeResultBets.length === 0">
+  <div class="no-past-bets-info" *ngIf="getCorrectScoreBets().length === 0">
     There is no past bets
   </div>
 </div>

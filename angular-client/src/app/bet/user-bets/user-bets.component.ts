@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Bet } from '../Bet';
 import { ActivatedRoute } from '@angular/router';
 import { BetType } from '../../match/BetType';
-import { Observable } from 'rxjs';
+import { BetService } from '../bet.service';
 
 @Component({
   selector: 'betapp-user-bets',
@@ -12,29 +11,47 @@ import { Observable } from 'rxjs';
 })
 export class UserBetsComponent implements OnInit {
   matchId: number | null = null;
-  fullTimeResultBets: Bet[] = [];
-  correctScoreBets: Bet[] = [];
+  private fullTimeResultBets: Bet[] = [];
+  private correctScoreBets: Bet[] = [];
 
-  constructor(private http: HttpClient, private route: ActivatedRoute) {}
+  constructor(private betService: BetService, private route: ActivatedRoute) {}
   ngOnInit(): void {
     const idString: string | null = this.route.snapshot.paramMap.get('id');
     if (idString) {
       this.matchId = +idString;
     }
     if (this.matchId) {
-      this.getUserBets(this.matchId).subscribe((bets: Bet[]): void => {
-        this.fullTimeResultBets = bets.filter(
-          (bet: Bet): boolean => bet.type === BetType.FULL_TIME_RESULT
-        );
+      this.betService.getUserBets(this.matchId).subscribe((bets: Bet[]) => {
+        this.setFullTimeResultBets(bets);
+        this.setCorrectScoreBets(bets);
+      });
 
-        this.correctScoreBets = bets.filter(
-          (bet: Bet): boolean => bet.type === BetType.CORRECT_SCORE
-        );
+      this.betService.onBetCreated().subscribe(() => {
+        this.betService.getUserBets(this.matchId!).subscribe((bets: Bet[]) => {
+          this.setFullTimeResultBets(bets);
+          this.setCorrectScoreBets(bets);
+        });
       });
     }
   }
 
-  private getUserBets(matchId: number): Observable<Bet[]> {
-    return this.http.get<Bet[]>(`http://localhost:8080/bets/user/${matchId}`);
+  setFullTimeResultBets(bets: Bet[]): void {
+    this.fullTimeResultBets = bets.filter(
+      (bet: Bet): boolean => bet.type === BetType.FULL_TIME_RESULT
+    );
+  }
+
+  setCorrectScoreBets(bets: Bet[]): void {
+    this.correctScoreBets = bets.filter(
+      (bet: Bet): boolean => bet.type === BetType.CORRECT_SCORE
+    );
+  }
+
+  getFullTimeResultBets(): Bet[] {
+    return this.fullTimeResultBets;
+  }
+
+  getCorrectScoreBets(): Bet[] {
+    return this.correctScoreBets;
   }
 }

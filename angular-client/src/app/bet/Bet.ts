@@ -12,6 +12,7 @@ export class Bet {
   public regularTimeScore: ScoreDTO | null;
   public extraTimeScore: ScoreDTO | null;
   public penaltiesScore: ScoreDTO | null;
+  public fullTimeScore: ScoreDTO | null;
   public creationDate: Date;
 
   constructor(
@@ -23,6 +24,7 @@ export class Bet {
     matchDuration: Duration | null,
     halfTimeScore: ScoreDTO | null,
     extraTimeScore: ScoreDTO | null,
+    fullTimeScore: ScoreDTO | null,
     penaltiesScore: ScoreDTO | null
   ) {
     this.id = id;
@@ -33,6 +35,7 @@ export class Bet {
     this.regularTimeScore = regularTimeScore;
     this.extraTimeScore = extraTimeScore;
     this.penaltiesScore = penaltiesScore;
+    this.fullTimeScore = fullTimeScore;
     this.creationDate = creationDate;
   }
 }
