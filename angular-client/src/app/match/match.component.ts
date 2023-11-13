@@ -76,9 +76,15 @@ export class MatchComponent implements OnInit {
       BetType.FULL_TIME_RESULT,
       +this.matchId
     );
-    this.createBet(createBetDTO).subscribe(() =>
-      this.betService.notifyBetCreated()
-    );
+    this.createBet(createBetDTO).subscribe(() => {
+      this.betService.notifyBetCreated();
+      this.resetFullTimeResultBetForm();
+    });
+  }
+
+  resetFullTimeResultBetForm() {
+    this.fullTimeResultWinner = undefined;
+    this.isFullTimeResultFormExpanded = false;
   }
 
   submitCorrectScoreBet(): void {
@@ -96,9 +102,15 @@ export class MatchComponent implements OnInit {
       +this.matchId
     );
 
-    this.createBet(createBetDTO).subscribe(() =>
-      this.betService.notifyBetCreated()
-    );
+    this.createBet(createBetDTO).subscribe(() => {
+      this.betService.notifyBetCreated();
+      this.resetCorrectScoreBetForm();
+    });
+  }
+
+  resetCorrectScoreBetForm() {
+    this.correctScoreBetForm.reset();
+    this.isCorrectScoreFormExpanded = false;
   }
 
   private determineCorrectScoreWinner(): Winner {
@@ -123,6 +135,7 @@ export class MatchComponent implements OnInit {
   createBet(createBetDTO: CreateBetDTO) {
     return this.http.post('http://localhost:8080/bet', createBetDTO);
   }
+
   getMatch(matchId: number): Observable<Match> {
     return this.http.get<Match>(`http://localhost:8080/match/${matchId}`);
   }
