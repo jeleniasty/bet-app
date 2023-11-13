@@ -11,9 +11,13 @@
 
 p {
   display: inline-block;
-  width: 100px;
+  width: 60px;
   padding-right: 4px;
   padding-left: 4px;
   text-align: center;
-  margin: auto;
+  text-wrap: normal;
+}
+
+.username {
+  width: 200px;
 }
