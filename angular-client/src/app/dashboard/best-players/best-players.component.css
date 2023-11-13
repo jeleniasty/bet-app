@@ -1,13 +1,8 @@
 .best-players {
-  width: 40vw;
-  margin-left: 25px;
-  margin-right: 150px;
-
+  margin: 10px;
   border: solid 2px #00b227;
   border-radius: 25px;
   box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.3);
-
-  min-height: 20vw;
 }
 
 h3 {
