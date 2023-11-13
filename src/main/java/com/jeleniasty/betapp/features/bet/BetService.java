@@ -41,6 +41,7 @@ public class BetService {
           (Score) Hibernate.unproxy(bet.getResult().getRegularTimeScore()),
           (Score) Hibernate.unproxy(bet.getResult().getExtraTimeScore()),
           (Score) Hibernate.unproxy(bet.getResult().getPenaltiesScore()),
+          (Score) Hibernate.unproxy(bet.getResult().getFullTimeScore()),
           bet.getCreatedAt()
         )
       )

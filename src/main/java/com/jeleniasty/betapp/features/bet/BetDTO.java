@@ -15,5 +15,6 @@ public record BetDTO(
   Score regularTimeScore,
   Score extraTimeScore,
   Score penaltiesScore,
+  Score fullTimeScore,
   LocalDateTime creationDate
 ) {}
