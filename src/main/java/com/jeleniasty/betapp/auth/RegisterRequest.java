@@ -1,6 +1,6 @@
 package com.jeleniasty.betapp.auth;
 
-import com.jeleniasty.betapp.features.role.RoleName;
+import com.jeleniasty.betapp.features.user.role.RoleName;
 import java.util.Set;
 
 public record RegisterRequest(

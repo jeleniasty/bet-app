@@ -1,8 +1,8 @@
 package com.jeleniasty.betapp.auth;
 
-import com.jeleniasty.betapp.features.role.RoleService;
 import com.jeleniasty.betapp.features.user.BetappUser;
 import com.jeleniasty.betapp.features.user.BetappUserRepository;
+import com.jeleniasty.betapp.features.user.role.RoleService;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;

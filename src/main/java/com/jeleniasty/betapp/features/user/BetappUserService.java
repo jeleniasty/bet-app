@@ -1,5 +1,7 @@
 package com.jeleniasty.betapp.features.user;
 
+import com.jeleniasty.betapp.features.user.dto.UserScoreDTO;
+import com.jeleniasty.betapp.features.user.role.RoleName;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,10 +17,6 @@ public class BetappUserService {
     betappUserRepository.saveAll(players);
   }
 
-  public void savePlayer(BetappUser player) {
-    betappUserRepository.save(player);
-  }
-
   public UserPrincipal getCurrentUser() {
     return (UserPrincipal) SecurityContextHolder
       .getContext()
@@ -30,5 +28,19 @@ public class BetappUserService {
     return betappUserRepository
       .findById(userId)
       .orElseThrow(() -> new UserNotFoundException(userId));
+  }
+
+  public List<UserScoreDTO> getPlayerScores() {
+    var players = this.betappUserRepository.findByRolesName(RoleName.PLAYER);
+    return players
+      .stream()
+      .map(player ->
+        new UserScoreDTO(
+          player.getId(),
+          player.getUsername(),
+          player.getPoints()
+        )
+      )
+      .toList();
   }
 }

@@ -1,7 +1,7 @@
 package com.jeleniasty.betapp.features.user;
 
 import com.jeleniasty.betapp.features.bet.Bet;
-import com.jeleniasty.betapp.features.role.Role;
+import com.jeleniasty.betapp.features.user.role.Role;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
