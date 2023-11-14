@@ -1,4 +1,4 @@
-package com.jeleniasty.betapp.features.role;
+package com.jeleniasty.betapp.features.user.role;
 
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;

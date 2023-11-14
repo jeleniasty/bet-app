@@ -1,4 +1,4 @@
-package com.jeleniasty.betapp.features.role;
+package com.jeleniasty.betapp.features.user.role;
 
 public class RoleNotFoundException extends RuntimeException {
 

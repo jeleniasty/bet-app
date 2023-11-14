@@ -1,4 +1,4 @@
-package com.jeleniasty.betapp.features.role;
+package com.jeleniasty.betapp.features.user.role;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

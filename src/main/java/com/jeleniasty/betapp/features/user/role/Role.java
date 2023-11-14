@@ -1,4 +1,4 @@
-package com.jeleniasty.betapp.features.role;
+package com.jeleniasty.betapp.features.user.role;
 
 import com.jeleniasty.betapp.features.user.BetappUser;
 import jakarta.persistence.Column;
