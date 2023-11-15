@@ -20,6 +20,7 @@ import { AuthGuardService } from './authentication/auth-guard.service';
 import { DatePipe, NgOptimizedImage } from '@angular/common';
 import { MatchComponent } from './match/match.component';
 import { UserBetsComponent } from './bet/user-bets/user-bets.component';
+import { ScoreboardComponent } from './scoreboard/scoreboard.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { UserBetsComponent } from './bet/user-bets/user-bets.component';
     UserMenuComponent,
     MatchComponent,
     UserBetsComponent,
+    ScoreboardComponent,
   ],
   imports: [
     BrowserModule,
