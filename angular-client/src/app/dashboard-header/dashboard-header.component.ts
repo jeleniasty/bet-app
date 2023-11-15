@@ -12,4 +12,8 @@ export class DashboardHeaderComponent {
   redirectToDashboard(): void {
     this.router.navigateByUrl('');
   }
+
+  navigateToScoreboard() {
+    this.router.navigateByUrl('scoreboard');
+  }
 }
