@@ -8,6 +8,12 @@
   box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.3);
   margin: 10px 20px;
 }
+.user-icon {
+  width: 40px;
+  height: 40px;
+  border: solid 1px #00b227;
+  border-radius: 20px;
+}
 
 p {
   display: inline-block;
