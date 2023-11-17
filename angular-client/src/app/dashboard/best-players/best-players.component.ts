@@ -15,7 +15,10 @@ export class BestPlayersComponent implements OnInit {
 
   ngOnInit() {
     this.getUserScores().subscribe(
-      (userScores: UserScore[]) => (this.users = userScores)
+      (userScores: UserScore[]) =>
+        (this.users = userScores.sort(
+          (a: UserScore, b: UserScore) => b.points - a.points
+        ))
     );
   }
 
