@@ -1,6 +1,6 @@
 package com.jeleniasty.betapp.features.result;
 
-import com.jeleniasty.betapp.features.score.ScoreService;
+import com.jeleniasty.betapp.features.result.score.ScoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

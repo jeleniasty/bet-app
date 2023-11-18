@@ -1,6 +1,6 @@
 package com.jeleniasty.betapp.features.result;
 
-import com.jeleniasty.betapp.features.score.Score;
+import com.jeleniasty.betapp.features.result.score.Score;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

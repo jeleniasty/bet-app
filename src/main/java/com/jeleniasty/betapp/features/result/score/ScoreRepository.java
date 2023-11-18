@@ -1,4 +1,4 @@
-package com.jeleniasty.betapp.features.score;
+package com.jeleniasty.betapp.features.result.score;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

@@ -1,6 +1,6 @@
 package com.jeleniasty.betapp.features.result;
 
-import com.jeleniasty.betapp.features.score.ScoreDTO;
+import com.jeleniasty.betapp.features.result.score.ScoreDTO;
 import jakarta.validation.Valid;
 
 public record MatchResultDTO(

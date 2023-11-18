@@ -1,4 +1,4 @@
-package com.jeleniasty.betapp.features.score;
+package com.jeleniasty.betapp.features.result.score;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

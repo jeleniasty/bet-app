@@ -5,7 +5,7 @@ import com.jeleniasty.betapp.features.match.MatchService;
 import com.jeleniasty.betapp.features.result.Result;
 import com.jeleniasty.betapp.features.result.ResultService;
 import com.jeleniasty.betapp.features.result.Winner;
-import com.jeleniasty.betapp.features.score.Score;
+import com.jeleniasty.betapp.features.result.score.Score;
 import com.jeleniasty.betapp.features.user.BetappUserService;
 import java.time.LocalDateTime;
 import java.util.List;

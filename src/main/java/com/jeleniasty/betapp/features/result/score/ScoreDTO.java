@@ -1,4 +1,4 @@
-package com.jeleniasty.betapp.features.score;
+package com.jeleniasty.betapp.features.result.score;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
