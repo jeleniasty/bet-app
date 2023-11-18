@@ -17,3 +17,9 @@ spring:
     user: postgres
     password: password
 
+betapp:
+  url:
+    footballdata: "http://api.football-data.org"
+
+  apikey:
+    footballdata: "2012103e35f84b5eaf52686ee0ae34dc"
