@@ -133,13 +133,13 @@ public class BetService {
 
   private boolean checkExactScore(Result betResult, Result matchResult) {
     return switch (matchResult.getDuration()) {
-      case REGULAR_TIME -> matchResult
+      case REGULAR -> matchResult
         .getRegularTimeScore()
         .equals(Hibernate.unproxy(betResult.getRegularTimeScore()));
-      case EXTRA_TIME -> matchResult
+      case EXTRA -> matchResult
         .getExtraTimeScore()
         .equals(Hibernate.unproxy(betResult.getExtraTimeScore()));
-      case PENALTIES -> matchResult
+      case PENALTY_SHOOTOUT -> matchResult
         .getPenaltiesScore()
         .equals(Hibernate.unproxy(betResult.getPenaltiesScore()));
     };

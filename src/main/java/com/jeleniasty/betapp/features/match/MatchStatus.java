@@ -1,7 +1,13 @@
 package com.jeleniasty.betapp.features.match;
 
 public enum MatchStatus {
+  SCHEDULED,
   TIMED,
-  IN_PROGRESS,
+  CANCELLED,
+  POSTPONED,
+  SUSPENDED,
+  AWARDED,
+  IN_PLAY,
+  PAUSED,
   FINISHED,
 }
