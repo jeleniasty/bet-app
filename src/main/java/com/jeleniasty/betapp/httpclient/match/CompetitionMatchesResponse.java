@@ -11,7 +11,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-class CompetitionMatchesResponse {
+public class CompetitionMatchesResponse {
 
   private Filters filters;
   private ResultSet resultSet;

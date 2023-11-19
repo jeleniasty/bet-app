@@ -1,5 +1,6 @@
 package com.jeleniasty.betapp.httpclient.match;
 
+import com.jeleniasty.betapp.features.competition.CreateCompetitonRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -16,18 +17,27 @@ public class MatchesHttpClient {
   WebClient client = WebClient.create();
 
   public CompetitionMatchesResponse getCompetitionMatches(
-    String competitionCode
+    CreateCompetitonRequest createCompetitonRequest
   ) {
     return client
       .get()
-      .uri(constructGetCompetitionMatches(competitionCode))
+      .uri(constructGetCompetitionMatchesURL(createCompetitonRequest))
       .header("X-Auth-Token", apiKey)
       .retrieve()
       .bodyToMono(CompetitionMatchesResponse.class)
       .block();
   }
 
-  private String constructGetCompetitionMatches(String competitionCode) {
-    return baseUrl + "/v4/competitions/" + competitionCode + "/matches";
+  private String constructGetCompetitionMatchesURL(
+    CreateCompetitonRequest createCompetitonRequest
+  ) {
+    return (
+      baseUrl +
+      "/v4/competitions/" +
+      createCompetitonRequest.code() +
+      "/matches" +
+      "?season=" +
+      createCompetitonRequest.season()
+    );
   }
 }
