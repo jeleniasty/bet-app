@@ -54,8 +54,8 @@
       <div class="full-time-result-options">
         <button
           class="home-button"
-          (click)="selectFullTimeResultWinner(Winner.HOME)"
-          [ngClass]="{ selected: fullTimeResultWinner === Winner.HOME }"
+          (click)="selectFullTimeResultWinner(Winner.HOME_TEAM)"
+          [ngClass]="{ selected: fullTimeResultWinner === Winner.HOME_TEAM }"
         >
           home
         </button>
@@ -68,8 +68,8 @@
         </button>
         <button
           class="away-button"
-          (click)="selectFullTimeResultWinner(Winner.AWAY)"
-          [ngClass]="{ selected: fullTimeResultWinner === Winner.AWAY }"
+          (click)="selectFullTimeResultWinner(Winner.AWAY_TEAM)"
+          [ngClass]="{ selected: fullTimeResultWinner === Winner.AWAY_TEAM }"
         >
           away
         </button>

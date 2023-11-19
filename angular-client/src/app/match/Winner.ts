@@ -1,5 +1,5 @@
 export enum Winner {
-  HOME = 'HOME',
-  AWAY = 'AWAY',
+  HOME_TEAM = 'HOME_TEAM',
+  AWAY_TEAM = 'AWAY_TEAM',
   DRAW = 'DRAW',
 }

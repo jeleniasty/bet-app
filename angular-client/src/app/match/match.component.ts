@@ -118,11 +118,11 @@ export class MatchComponent implements OnInit {
     const away: number = this.correctScoreBetForm.get('awayScore')?.value;
 
     if (home > away) {
-      return Winner.HOME;
+      return Winner.HOME_TEAM;
     }
 
     if (away > home) {
-      return Winner.AWAY;
+      return Winner.AWAY_TEAM;
     }
 
     return Winner.DRAW;
