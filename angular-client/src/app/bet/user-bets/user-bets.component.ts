@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Bet } from '../Bet';
 import { ActivatedRoute } from '@angular/router';
-import { BetType } from '../../match/BetType';
+import { BetType } from '../../match/model/BetType';
 import { BetService } from '../bet.service';
 
 @Component({

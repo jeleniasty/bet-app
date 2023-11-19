@@ -1,7 +1,7 @@
-import { Duration } from '../match/Duration';
-import { BetType } from '../match/BetType';
-import { Winner } from '../match/Winner';
-import { ScoreDTO } from '../match/MatchResultDTO';
+import { Duration } from '../match/model/Duration';
+import { BetType } from '../match/model/BetType';
+import { Winner } from '../match/model/Winner';
+import { ScoreDTO } from '../match/model/MatchResultDTO';
 
 export class Bet {
   public id: number;

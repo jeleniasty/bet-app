@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { Match } from './Match';
+import { Match } from './model/Match';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Winner } from './Winner';
-import { CreateBetDTO } from './CreateBetDTO';
-import { MatchResultDTO, ScoreDTO } from './MatchResultDTO';
-import { BetType } from './BetType';
+import { Winner } from './model/Winner';
+import { CreateBetDTO } from './model/CreateBetDTO';
+import { MatchResultDTO, ScoreDTO } from './model/MatchResultDTO';
+import { BetType } from './model/BetType';
 import { BetService } from '../bet/bet.service';
 
 @Component({

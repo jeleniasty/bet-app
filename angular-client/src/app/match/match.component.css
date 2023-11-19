@@ -43,9 +43,9 @@ h2 {
 }
 
 .team-flag {
-  width: 355px;
-  height: 200px;
-  object-fit: cover;
+  width: 255px;
+  height: 255px;
+  /*object-fit: cover;*/
 }
 
 .odds {
