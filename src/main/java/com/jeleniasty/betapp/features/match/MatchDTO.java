@@ -12,7 +12,7 @@ public record MatchDTO(
   Float awayOdds,
   MatchStatus status,
   CompetitionStage stage,
-  Character group,
+  Group group,
   CompetitionDTO competition,
   LocalDateTime matchDate
 ) {}

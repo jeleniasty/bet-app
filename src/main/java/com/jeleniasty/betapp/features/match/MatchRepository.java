@@ -1,6 +1,8 @@
 package com.jeleniasty.betapp.features.match;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -12,4 +14,10 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
     nativeQuery = true
   )
   List<UpcomingMatchDTO> findTop10ByStatusOrderByDate();
+
+  Optional<Match> findByHomeTeamNameAndAwayTeamNameAndDate(
+    String homeTeamName,
+    String awayTeamName,
+    LocalDateTime date
+  );
 }

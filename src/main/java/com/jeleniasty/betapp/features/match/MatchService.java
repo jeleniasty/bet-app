@@ -1,12 +1,13 @@
 package com.jeleniasty.betapp.features.match;
 
 import com.jeleniasty.betapp.features.bet.SaveMatchResultDTO;
+import com.jeleniasty.betapp.features.competition.Competition;
 import com.jeleniasty.betapp.features.competition.CompetitionDTO;
-import com.jeleniasty.betapp.features.competition.CompetitionService;
 import com.jeleniasty.betapp.features.exceptions.MatchNotFoundException;
 import com.jeleniasty.betapp.features.result.ResultService;
 import com.jeleniasty.betapp.features.team.TeamDTO;
 import com.jeleniasty.betapp.features.team.TeamService;
+import com.jeleniasty.betapp.httpclient.match.CompetitionMatchesResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -19,30 +20,66 @@ public class MatchService {
 
   private final MatchRepository matchRepository;
   private final TeamService teamService;
-  private final CompetitionService competitionService;
   private final ResultService resultService;
   private final ApplicationEventPublisher eventPublisher;
 
-  @Transactional
-  public void saveMatch(SaveMatchDTO matchDTO) {
-    var competition = competitionService.fetchCompetition(
-      matchDTO.competitionId()
-    );
+  public void fetchOrSaveMatch(
+    CompetitionMatchesResponse.MatchResponse matchResponse,
+    Competition competition
+  ) {
+    //firstly find if there is already match in db by looking at teams code and match date
 
-    var homeTeam = teamService.fetchTeam(matchDTO.homeTeamId());
-    var awayTeam = teamService.fetchTeam(matchDTO.awayTeamId());
+    //if match not found create new match, if any team doesn't exist save it in db
+    var homeTeam = matchResponse.getHomeTeam();
+    var awayTeam = matchResponse.getAwayTeam();
 
-    var newMatch = new Match(
-      matchDTO.status(),
-      matchDTO.stage(),
-      matchDTO.group(),
-      matchDTO.homeOdds(),
-      matchDTO.awayOdds(),
-      matchDTO.utcDate()
-    );
-    newMatch.assignCompetition(competition);
-    newMatch.assignAwayTeam(awayTeam);
-    newMatch.assignHomeTeam(homeTeam);
+    this.matchRepository.findByHomeTeamNameAndAwayTeamNameAndDate(
+        homeTeam.getTla(),
+        awayTeam.getTla(),
+        matchResponse.getUtcDate()
+      )
+      .orElseGet(() -> {
+        var match = new Match(
+          matchResponse.getStatus(),
+          matchResponse.getStage(),
+          matchResponse.getGroup(),
+          2.11f,
+          1.23f,
+          1.45f,
+          matchResponse.getUtcDate()
+        );
+
+        //TODO change mocked odds with real fetching odds from external api
+
+        match.assignCompetition(competition);
+
+        if (homeTeam.getTla() == null && awayTeam.getTla() == null) {
+          return match;
+        }
+
+        match.assignHomeTeam(
+          this.teamService.fetchOrSaveTeam(
+              new TeamDTO(
+                null,
+                homeTeam.getName(),
+                homeTeam.getTla(),
+                homeTeam.getCrest()
+              )
+            )
+        );
+        match.assignAwayTeam(
+          this.teamService.fetchOrSaveTeam(
+              new TeamDTO(
+                null,
+                awayTeam.getName(),
+                awayTeam.getTla(),
+                awayTeam.getCrest()
+              )
+            )
+        );
+
+        return match;
+      });
   }
 
   public Match fetchMatch(Long matchId) {

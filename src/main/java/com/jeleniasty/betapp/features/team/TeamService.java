@@ -1,6 +1,5 @@
 package com.jeleniasty.betapp.features.team;
 
-import com.jeleniasty.betapp.features.exceptions.TeamNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +9,13 @@ public class TeamService {
 
   private final TeamRepository teamRepository;
 
-  public Team fetchTeam(long teamId) {
+  public Team fetchOrSaveTeam(TeamDTO teamDTO) {
     return teamRepository
-      .findById(teamId)
-      .orElseThrow(() -> new TeamNotFoundException(teamId));
+      .findByNameAndCode(teamDTO.name(), teamDTO.code())
+      .orElseGet(() -> this.teamRepository.save(mapToEntity(teamDTO)));
+  }
+
+  private Team mapToEntity(TeamDTO teamDTO) {
+    return new Team(teamDTO.name(), teamDTO.code(), teamDTO.flag());
   }
 }

@@ -1,6 +1,8 @@
 package com.jeleniasty.betapp.httpclient.match;
 
+import com.jeleniasty.betapp.features.competition.CompetitionType;
 import com.jeleniasty.betapp.features.match.CompetitionStage;
+import com.jeleniasty.betapp.features.match.Group;
 import com.jeleniasty.betapp.features.match.MatchStatus;
 import com.jeleniasty.betapp.features.result.Duration;
 import com.jeleniasty.betapp.features.result.Winner;
@@ -22,14 +24,14 @@ public class CompetitionMatchesResponse {
 
   @Getter
   @Setter
-  private static class Filters {
+  public static class Filters {
 
-    private String season;
+    private int season;
   }
 
   @Getter
   @Setter
-  private static class ResultSet {
+  public static class ResultSet {
 
     private int count;
     private String first;
@@ -39,20 +41,20 @@ public class CompetitionMatchesResponse {
 
   @Getter
   @Setter
-  private static class CompetitionResponse {
+  public static class CompetitionResponse {
 
     private String name;
     private String code;
-    private String type;
+    private CompetitionType type;
   }
 
   @Getter
   @Setter
-  private static class MatchResponse {
+  public static class MatchResponse {
 
     private MatchStatus status;
     private CompetitionStage stage;
-    private String group;
+    private Group group;
     private LocalDateTime utcDate;
     private TeamResponse homeTeam;
     private TeamResponse awayTeam;
@@ -61,15 +63,16 @@ public class CompetitionMatchesResponse {
 
   @Getter
   @Setter
-  private static class TeamResponse {
+  public static class TeamResponse {
 
     private String name;
     private String tla;
+    private String crest;
   }
 
   @Getter
   @Setter
-  private static class ScoreResponse {
+  public static class ScoreResponse {
 
     private Winner winner;
     private Duration duration;
@@ -82,7 +85,7 @@ public class CompetitionMatchesResponse {
 
   @Getter
   @Setter
-  private static class BasicScoreResponse {
+  public static class BasicScoreResponse {
 
     private int home;
     private int away;

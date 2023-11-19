@@ -60,8 +60,9 @@ public class Match {
   @Column(name = "stage")
   private CompetitionStage stage;
 
+  @Enumerated(EnumType.STRING)
   @Column(name = "\"group\"")
-  private char group;
+  private Group group;
 
   @Column(name = "home_odds")
   private float homeOdds;
@@ -76,7 +77,6 @@ public class Match {
   @Column(name = "date")
   private LocalDateTime date;
 
-  @NotNull
   @CreationTimestamp
   @Column(name = "created_at", updatable = false)
   private LocalDateTime createdAt;
@@ -94,12 +94,10 @@ public class Match {
   @JoinColumn(name = "result")
   private Result result;
 
-  @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "home_team")
   private Team homeTeam;
 
-  @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "away_team")
   private Team awayTeam;
@@ -114,9 +112,10 @@ public class Match {
   public Match(
     @NotNull MatchStatus status,
     @NotNull CompetitionStage stage,
-    char group,
+    Group group,
     float homeOdds,
     float awayOdds,
+    float drawOdds,
     @NotNull LocalDateTime date
   ) {
     this.status = status;
@@ -124,6 +123,7 @@ public class Match {
     this.group = group;
     this.homeOdds = homeOdds;
     this.awayOdds = awayOdds;
+    this.drawOdds = drawOdds;
     this.date = date;
   }
 

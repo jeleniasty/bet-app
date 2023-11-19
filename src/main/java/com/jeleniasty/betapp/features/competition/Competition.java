@@ -14,6 +14,7 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -73,5 +74,10 @@ public class Competition {
     this.code = code;
     this.type = type;
     this.season = season;
+  }
+
+  public void assignMatches(List<Match> matches) {
+    this.competitionMatches.addAll(matches);
+    matches.forEach(match -> match.assignCompetition(this));
   }
 }
