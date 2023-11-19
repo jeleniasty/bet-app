@@ -83,7 +83,7 @@ CREATE TABLE betapp.score (
 
 CREATE TABLE team (
                 id serial  NOT NULL,
-                name text  NOT NULL,
+                name text  NOT NULL UNIQUE,
                 code varchar(3)  NOT NULL,
                 flag text NOT NULL,
                 CONSTRAINT team_pk PRIMARY KEY (id)
