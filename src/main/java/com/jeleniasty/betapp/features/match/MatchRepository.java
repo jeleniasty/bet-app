@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -15,9 +16,12 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
   )
   List<UpcomingMatchDTO> findTop10ByStatusOrderByDate();
 
+  @Query(
+    "select m from match m where m.homeTeam.name = :homeTeamName and m.awayTeam.name = :awayTeamName and m.date = :date"
+  )
   Optional<Match> findByHomeTeamNameAndAwayTeamNameAndDate(
-    String homeTeamName,
-    String awayTeamName,
-    LocalDateTime date
+    @Param("homeTeamName") String homeTeamName,
+    @Param("awayTeamName") String awayTeamName,
+    @Param("date") LocalDateTime date
   );
 }

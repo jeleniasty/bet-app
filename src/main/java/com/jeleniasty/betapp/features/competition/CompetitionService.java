@@ -30,6 +30,11 @@ public class CompetitionService {
     //save matches
     competitionData
       .getMatches()
+      .stream()
+      .filter(matchResponse ->
+        matchResponse.getAwayTeam().getName() != null &&
+        matchResponse.getHomeTeam().getName() != null
+      )
       .forEach(matchResponse ->
         this.matchService.fetchOrSaveMatch(matchResponse, savedCompetition)
       );

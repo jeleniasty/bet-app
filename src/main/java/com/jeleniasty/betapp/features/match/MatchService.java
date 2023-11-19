@@ -35,8 +35,8 @@ public class MatchService {
     var awayTeam = matchResponse.getAwayTeam();
 
     this.matchRepository.findByHomeTeamNameAndAwayTeamNameAndDate(
-        homeTeam.getTla(),
-        awayTeam.getTla(),
+        homeTeam.getName(),
+        awayTeam.getName(),
         matchResponse.getUtcDate()
       )
       .orElseGet(() -> {
