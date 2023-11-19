@@ -48,7 +48,7 @@ CREATE TABLE match (
                 id serial  NOT NULL,
                 status text  NOT NULL,
                 stage text  NOT NULL,
-                "group" char(1)  NULL,
+                "group" varchar(7)  NULL,
                 home_odds float4  NULL,
                 away_odds float4 NULL,
                 draw_odds float4 NULL,
@@ -57,8 +57,8 @@ CREATE TABLE match (
                 updated_at timestamp  NULL,
                 competition bigint  NOT NULL,
                 result bigint  NULL,
-                home_team bigint  NOT NULL,
-                away_team bigint  NOT NULL,
+                home_team bigint NULL,
+                away_team bigint NULL,
                 CONSTRAINT match_pk PRIMARY KEY (id)
 );
 
@@ -84,7 +84,7 @@ CREATE TABLE betapp.score (
 CREATE TABLE team (
                 id serial  NOT NULL,
                 name text  NOT NULL,
-                code varchar(3)  NOT NULL UNIQUE,
+                code varchar(3)  NOT NULL,
                 flag text NOT NULL,
                 CONSTRAINT team_pk PRIMARY KEY (id)
 );
