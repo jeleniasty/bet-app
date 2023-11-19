@@ -5,6 +5,7 @@ import com.jeleniasty.betapp.httpclient.match.CompetitionMatchesResponse;
 import com.jeleniasty.betapp.httpclient.match.MatchesHttpClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -14,6 +15,7 @@ public class CompetitionService {
   private final MatchesHttpClient matchesHttpClient;
   private final MatchService matchService;
 
+  @Transactional
   public void createNewCompetition(
     CreateCompetitonRequest createCompetitonRequest
   ) {

@@ -23,6 +23,7 @@ public class MatchService {
   private final ResultService resultService;
   private final ApplicationEventPublisher eventPublisher;
 
+  @Transactional
   public void fetchOrSaveMatch(
     CompetitionMatchesResponse.MatchResponse matchResponse,
     Competition competition
