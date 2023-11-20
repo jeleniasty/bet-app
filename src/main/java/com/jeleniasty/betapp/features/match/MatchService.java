@@ -28,9 +28,6 @@ public class MatchService {
     CompetitionMatchesResponse.MatchResponse matchResponse,
     Competition competition
   ) {
-    //firstly find if there is already match in db by looking at teams code and match date
-
-    //if match not found create new match, if any team doesn't exist save it in db
     var homeTeam = matchResponse.getHomeTeam();
     var awayTeam = matchResponse.getAwayTeam();
 

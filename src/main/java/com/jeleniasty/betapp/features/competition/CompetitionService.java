@@ -19,16 +19,22 @@ public class CompetitionService {
   public void createNewCompetition(
     CreateCompetitonRequest createCompetitonRequest
   ) {
-    //get competition data from api
-    var competitionData = matchesHttpClient.getCompetitionMatches(
+    var competitionExternalData = matchesHttpClient.getCompetitionMatches(
       createCompetitonRequest
     );
 
-    //save or fetch competition
-    var savedCompetition = fetchOrSaveCompetition(mapToDTO(competitionData));
+    var savedCompetitionFromDb = fetchOrSaveCompetition(
+      mapToDTO(competitionExternalData)
+    );
 
-    //save matches
-    competitionData
+    saveCompetitionMatches(competitionExternalData, savedCompetitionFromDb);
+  }
+
+  private void saveCompetitionMatches(
+    CompetitionMatchesResponse competitionExternalData,
+    Competition competition
+  ) {
+    competitionExternalData
       .getMatches()
       .stream()
       .filter(matchResponse ->
@@ -36,7 +42,7 @@ public class CompetitionService {
         matchResponse.getHomeTeam().getName() != null
       )
       .forEach(matchResponse ->
-        this.matchService.fetchOrSaveMatch(matchResponse, savedCompetition)
+        this.matchService.fetchOrSaveMatch(matchResponse, competition)
       );
   }
 
