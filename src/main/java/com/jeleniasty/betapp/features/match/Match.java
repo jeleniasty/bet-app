@@ -85,6 +85,7 @@ public class Match {
   @Column(name = "updated_at", insertable = false)
   private LocalDateTime updatedAt;
 
+  @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "competition")
   private Competition competition;
