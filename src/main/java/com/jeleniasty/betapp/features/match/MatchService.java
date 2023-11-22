@@ -1,7 +1,6 @@
 package com.jeleniasty.betapp.features.match;
 
 import com.jeleniasty.betapp.features.bet.SaveMatchResultDTO;
-import com.jeleniasty.betapp.features.competition.Competition;
 import com.jeleniasty.betapp.features.competition.CompetitionDTO;
 import com.jeleniasty.betapp.features.exceptions.MatchNotFoundException;
 import com.jeleniasty.betapp.features.result.ResultService;
@@ -24,60 +23,53 @@ public class MatchService {
   private final ApplicationEventPublisher eventPublisher;
 
   @Transactional
-  public void fetchOrSaveMatch(
-    CompetitionMatchesResponse.MatchResponse matchResponse,
-    Competition competition
-  ) {
-    var homeTeam = matchResponse.getHomeTeam();
-    var awayTeam = matchResponse.getAwayTeam();
+  public Match saveOrUpdateMatch(MatchDTO matchDTO) {
+    var homeTeam = matchDTO.homeTeam();
+    var awayTeam = matchDTO.awayTeam();
 
-    this.matchRepository.findByHomeTeamNameAndAwayTeamNameAndDate(
-        homeTeam.getName(),
-        awayTeam.getName(),
-        matchResponse.getUtcDate()
-      )
-      .orElseGet(() -> {
-        var match = new Match(
-          matchResponse.getStatus(),
-          matchResponse.getStage(),
-          matchResponse.getGroup(),
-          2.11f,
-          1.23f,
-          1.45f,
-          matchResponse.getUtcDate()
-        );
+    var matchToSave =
+      this.matchRepository.findByHomeTeamNameAndAwayTeamNameAndDate(
+          homeTeam.name(),
+          awayTeam.name(),
+          matchDTO.matchDate()
+        )
+        .map(match -> {
+          match.setStatus(matchDTO.status());
+          match.setStage(matchDTO.stage());
+          match.setGroup(matchDTO.group());
+          match.setHomeOdds(matchDTO.homeOdds());
+          match.setAwayOdds(matchDTO.awayOdds());
+          match.setDrawOdds(matchDTO.drawOdds());
+          match.setDate(matchDTO.matchDate());
 
-        //TODO change mocked odds with real fetching odds from external api
-
-        match.assignCompetition(competition);
-
-        if (homeTeam.getTla() == null && awayTeam.getTla() == null) {
           return match;
-        }
+        })
+        .orElseGet(() -> {
+          return new Match(
+            matchDTO.status(),
+            matchDTO.stage(),
+            matchDTO.group(),
+            2.11f,
+            1.23f,
+            1.45f,
+            matchDTO.matchDate()
+          );
+          //TODO change mocked odds with real fetching odds from external API
+        });
 
-        match.assignHomeTeam(
-          this.teamService.fetchOrSaveTeam(
-              new TeamDTO(
-                null,
-                homeTeam.getName(),
-                homeTeam.getTla(),
-                homeTeam.getCrest()
-              )
-            )
-        );
-        match.assignAwayTeam(
-          this.teamService.fetchOrSaveTeam(
-              new TeamDTO(
-                null,
-                awayTeam.getName(),
-                awayTeam.getTla(),
-                awayTeam.getCrest()
-              )
-            )
-        );
-
-        return match;
-      });
+    if (areTeamsAssigned(homeTeam, awayTeam)) {
+      matchToSave.assignHomeTeam(
+        this.teamService.fetchOrSaveTeam(
+            new TeamDTO(null, homeTeam.name(), homeTeam.code(), homeTeam.flag())
+          )
+      );
+      matchToSave.assignAwayTeam(
+        this.teamService.fetchOrSaveTeam(
+            new TeamDTO(null, awayTeam.name(), awayTeam.code(), awayTeam.flag())
+          )
+      );
+    }
+    return matchToSave;
   }
 
   public Match fetchMatch(Long matchId) {
@@ -101,38 +93,66 @@ public class MatchService {
     return matchRepository.findTop10ByStatusOrderByDate();
   }
 
-  public MatchDTO getUpcomingMatch(Long id) {
+  public CompetitionDTO getUpcomingMatch(Long id) {
     var match = matchRepository
       .findById(id)
       .orElseThrow(() -> new MatchNotFoundException(id));
 
+    return mapToDTO(match);
+  }
+
+  private boolean areTeamsAssigned(TeamDTO homeTeam, TeamDTO awayTeam) {
+    return homeTeam.name() != null && awayTeam.name() != null;
+  }
+
+  public MatchDTO mapToDTO(
+    CompetitionMatchesResponse.MatchResponse matchResponse
+  ) {
     return new MatchDTO(
-      match.getId(),
-      new TeamDTO(
-        match.getHomeTeam().getId(),
-        match.getHomeTeam().getName(),
-        match.getHomeTeam().getCode(),
-        match.getHomeTeam().getFlag()
-      ),
-      match.getHomeOdds(),
-      new TeamDTO(
-        match.getAwayTeam().getId(),
-        match.getAwayTeam().getName(),
-        match.getAwayTeam().getCode(),
-        match.getAwayTeam().getFlag()
-      ),
-      match.getAwayOdds(),
-      match.getStatus(),
-      match.getStage(),
-      match.getGroup(),
-      new CompetitionDTO(
-        match.getCompetition().getId(),
-        match.getCompetition().getName(),
-        match.getCompetition().getCode(),
-        match.getCompetition().getType(),
-        match.getCompetition().getSeason()
-      ),
-      match.getDate()
+      null,
+      this.teamService.mapToDTO(matchResponse.getHomeTeam()),
+      this.teamService.mapToDTO(matchResponse.getAwayTeam()),
+      1f,
+      2f,
+      3f,
+      matchResponse.getStatus(),
+      matchResponse.getStage(),
+      matchResponse.getGroup(),
+      matchResponse.getUtcDate()
+    );
+  }
+
+  public CompetitionDTO mapToDTO(Match match) {
+    return new CompetitionDTO(
+      match.getCompetition().getId(),
+      match.getCompetition().getName(),
+      match.getCompetition().getCode(),
+      match.getCompetition().getType(),
+      match.getCompetition().getSeason(),
+      List.of(
+        new MatchDTO(
+          match.getId(),
+          new TeamDTO(
+            match.getHomeTeam().getId(),
+            match.getHomeTeam().getName(),
+            match.getHomeTeam().getCode(),
+            match.getHomeTeam().getFlag()
+          ),
+          new TeamDTO(
+            match.getAwayTeam().getId(),
+            match.getAwayTeam().getName(),
+            match.getAwayTeam().getCode(),
+            match.getAwayTeam().getFlag()
+          ),
+          match.getHomeOdds(),
+          match.getAwayOdds(),
+          match.getDrawOdds(),
+          match.getStatus(),
+          match.getStage(),
+          match.getGroup(),
+          match.getDate()
+        )
+      )
     );
   }
 }

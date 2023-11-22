@@ -1,8 +1,13 @@
 package com.jeleniasty.betapp.features.competition;
 
+import com.jeleniasty.betapp.features.match.Match;
+import com.jeleniasty.betapp.features.match.MatchDTO;
 import com.jeleniasty.betapp.features.match.MatchService;
 import com.jeleniasty.betapp.httpclient.match.CompetitionMatchesResponse;
 import com.jeleniasty.betapp.httpclient.match.MatchesHttpClient;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,52 +24,31 @@ public class CompetitionService {
   public void createNewCompetition(
     CreateCompetitonRequest createCompetitonRequest
   ) {
-    var competitionExternalData = matchesHttpClient.getCompetitionMatches(
-      createCompetitonRequest
+    var competitionDTO = mapToDTO(
+      matchesHttpClient.getCompetitionMatches(createCompetitonRequest)
     );
 
-    var savedCompetitionFromDb = fetchOrSaveCompetition(
-      mapToDTO(competitionExternalData)
-    );
-
-    saveCompetitionMatches(competitionExternalData, savedCompetitionFromDb);
+    saveOrUpdateCompetition(competitionDTO);
   }
 
-  private void saveCompetitionMatches(
-    CompetitionMatchesResponse competitionExternalData,
-    Competition competition
-  ) {
-    competitionExternalData
-      .getMatches()
-      .stream()
-      .filter(matchResponse ->
-        matchResponse.getAwayTeam().getName() != null &&
-        matchResponse.getHomeTeam().getName() != null
-      )
-      .forEach(matchResponse ->
-        this.matchService.fetchOrSaveMatch(matchResponse, competition)
-      );
-  }
-
-  private CompetitionDTO mapToDTO(
-    CompetitionMatchesResponse competitionMatchesResponse
-  ) {
-    var competition = competitionMatchesResponse.getCompetition();
-    return new CompetitionDTO(
-      null,
-      competition.getName(),
-      competition.getCode(),
-      competition.getType(),
-      competitionMatchesResponse.getFilters().getSeason()
-    );
-  }
-
-  private Competition fetchOrSaveCompetition(CompetitionDTO competitionDTO) {
-    return competitionRepository
+  private void saveOrUpdateCompetition(CompetitionDTO competitionDTO) {
+    var competitionEntity = competitionRepository
       .findCompetitionByCodeAndSeason(
         competitionDTO.code(),
         competitionDTO.season()
       )
+      .map(competition -> {
+        competition.setName(competitionDTO.name());
+        competition.setCode(competitionDTO.code());
+        competition.setType(competitionDTO.type());
+        competition.setSeason(competitionDTO.season());
+
+        competition.assignMatches(
+          saveCompetitionMatches(competitionDTO.matchDTOs())
+        );
+
+        return competition;
+      })
       .orElseGet(() -> {
         var competition = new Competition(
           competitionDTO.name(),
@@ -72,8 +56,45 @@ public class CompetitionService {
           competitionDTO.type(),
           competitionDTO.season()
         );
-        this.competitionRepository.save(competition);
+
+        competition.assignMatches(
+          saveCompetitionMatches(competitionDTO.matchDTOs())
+        );
+
         return competition;
       });
+
+    this.competitionRepository.save(competitionEntity);
+  }
+
+  private Set<Match> saveCompetitionMatches(List<MatchDTO> matches) {
+    return matches
+      .stream()
+      .filter(this::areTeamsAssigned)
+      .map(this.matchService::saveOrUpdateMatch)
+      .collect(Collectors.toSet());
+  }
+
+  private boolean areTeamsAssigned(MatchDTO matchDTO) {
+    return (
+      matchDTO.homeTeam().name() != null && matchDTO.awayTeam().name() != null
+    );
+  }
+
+  private CompetitionDTO mapToDTO(
+    CompetitionMatchesResponse competitionMatchesResponse
+  ) {
+    return new CompetitionDTO(
+      null,
+      competitionMatchesResponse.getCompetition().getName(),
+      competitionMatchesResponse.getCompetition().getCode(),
+      competitionMatchesResponse.getCompetition().getType(),
+      competitionMatchesResponse.getFilters().getSeason(),
+      competitionMatchesResponse
+        .getMatches()
+        .stream()
+        .map(this.matchService::mapToDTO)
+        .toList()
+    );
   }
 }

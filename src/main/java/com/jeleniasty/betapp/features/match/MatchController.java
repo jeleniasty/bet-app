@@ -1,6 +1,7 @@
 package com.jeleniasty.betapp.features.match;
 
 import com.jeleniasty.betapp.features.bet.SaveMatchResultDTO;
+import com.jeleniasty.betapp.features.competition.CompetitionDTO;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,9 @@ public class MatchController {
   }
 
   @GetMapping("/match/{id}")
-  public ResponseEntity<MatchDTO> getUpcomingMatch(@PathVariable Long id) {
+  public ResponseEntity<CompetitionDTO> getUpcomingMatch(
+    @PathVariable Long id
+  ) {
     return ResponseEntity.ok(matchService.getUpcomingMatch(id));
   }
 

@@ -1,18 +1,17 @@
 package com.jeleniasty.betapp.features.match;
 
-import com.jeleniasty.betapp.features.competition.CompetitionDTO;
 import com.jeleniasty.betapp.features.team.TeamDTO;
 import java.time.LocalDateTime;
 
 public record MatchDTO(
   Long id,
   TeamDTO homeTeam,
-  Float homeOdds,
   TeamDTO awayTeam,
+  Float homeOdds,
   Float awayOdds,
+  Float drawOdds,
   MatchStatus status,
   CompetitionStage stage,
   Group group,
-  CompetitionDTO competition,
   LocalDateTime matchDate
 ) {}

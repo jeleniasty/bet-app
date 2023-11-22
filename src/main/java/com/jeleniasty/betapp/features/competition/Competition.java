@@ -58,7 +58,7 @@ public class Competition {
 
   @OneToMany(
     mappedBy = "competition",
-    cascade = CascadeType.ALL,
+    cascade = CascadeType.PERSIST,
     orphanRemoval = true
   )
   private Set<Match> competitionMatches = new HashSet<>();
