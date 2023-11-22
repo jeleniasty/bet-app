@@ -13,6 +13,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.Getter;
@@ -56,6 +57,18 @@ public class Competition {
   @Column(name = "season")
   private Integer season;
 
+  @NotNull
+  @Column(name = "emblem")
+  private String emblem;
+
+  @NotNull
+  @Column(name = "start_date")
+  private LocalDate startDate;
+
+  @NotNull
+  @Column(name = "end_date")
+  private LocalDate endDate;
+
   @OneToMany(
     mappedBy = "competition",
     cascade = CascadeType.PERSIST,
@@ -67,12 +80,18 @@ public class Competition {
     @NotNull String name,
     @NotNull String code,
     @NotNull CompetitionType type,
-    @NotNull Integer season
+    @NotNull Integer season,
+    @NotNull String emblem,
+    @NotNull LocalDate startDate,
+    @NotNull LocalDate endDate
   ) {
     this.name = name;
     this.code = code;
     this.type = type;
     this.season = season;
+    this.emblem = emblem;
+    this.startDate = startDate;
+    this.endDate = endDate;
   }
 
   public void assignMatches(Set<Match> matches) {

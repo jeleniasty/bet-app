@@ -129,6 +129,9 @@ public class MatchService {
       match.getCompetition().getCode(),
       match.getCompetition().getType(),
       match.getCompetition().getSeason(),
+      match.getCompetition().getEmblem(),
+      match.getCompetition().getStartDate(),
+      match.getCompetition().getEndDate(),
       List.of(
         new MatchDTO(
           match.getId(),

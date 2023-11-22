@@ -6,6 +6,7 @@ import com.jeleniasty.betapp.features.match.Group;
 import com.jeleniasty.betapp.features.match.MatchStatus;
 import com.jeleniasty.betapp.features.result.Duration;
 import com.jeleniasty.betapp.features.result.Winner;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Getter;
@@ -34,8 +35,8 @@ public class CompetitionMatchesResponse {
   public static class ResultSet {
 
     private int count;
-    private String first;
-    private String last;
+    private LocalDate first;
+    private LocalDate last;
     private int played;
   }
 
@@ -46,6 +47,7 @@ public class CompetitionMatchesResponse {
     private String name;
     private String code;
     private CompetitionType type;
+    private String emblem;
   }
 
   @Getter

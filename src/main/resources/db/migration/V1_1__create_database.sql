@@ -41,6 +41,9 @@ CREATE TABLE betapp.competition (
                 code char(5)  NULL,
                 type char(10)  NOT NULL,
                 season int  NOT NULL,
+                emblem text NOT NULL,
+                start_date date NOT NULL,
+                end_date date NOT NULL,
                 CONSTRAINT competition_pk PRIMARY KEY (id)
 );
 

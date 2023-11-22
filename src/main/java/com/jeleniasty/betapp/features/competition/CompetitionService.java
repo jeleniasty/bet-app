@@ -42,6 +42,9 @@ public class CompetitionService {
         competition.setCode(competitionDTO.code());
         competition.setType(competitionDTO.type());
         competition.setSeason(competitionDTO.season());
+        competition.setEmblem(competitionDTO.emblem());
+        competition.setStartDate(competitionDTO.startDate());
+        competition.setEndDate(competitionDTO.endDate());
 
         competition.assignMatches(
           saveCompetitionMatches(competitionDTO.matchDTOs())
@@ -54,7 +57,10 @@ public class CompetitionService {
           competitionDTO.name(),
           competitionDTO.code(),
           competitionDTO.type(),
-          competitionDTO.season()
+          competitionDTO.season(),
+          competitionDTO.emblem(),
+          competitionDTO.startDate(),
+          competitionDTO.endDate()
         );
 
         competition.assignMatches(
@@ -90,6 +96,9 @@ public class CompetitionService {
       competitionMatchesResponse.getCompetition().getCode(),
       competitionMatchesResponse.getCompetition().getType(),
       competitionMatchesResponse.getFilters().getSeason(),
+      competitionMatchesResponse.getCompetition().getEmblem(),
+      competitionMatchesResponse.getResultSet().getFirst(),
+      competitionMatchesResponse.getResultSet().getLast(),
       competitionMatchesResponse
         .getMatches()
         .stream()
