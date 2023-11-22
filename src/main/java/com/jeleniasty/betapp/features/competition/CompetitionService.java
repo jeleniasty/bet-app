@@ -1,8 +1,8 @@
 package com.jeleniasty.betapp.features.competition;
 
-import com.jeleniasty.betapp.features.match.Match;
-import com.jeleniasty.betapp.features.match.MatchDTO;
 import com.jeleniasty.betapp.features.match.MatchService;
+import com.jeleniasty.betapp.features.match.dto.MatchDTO;
+import com.jeleniasty.betapp.features.match.model.Match;
 import com.jeleniasty.betapp.httpclient.match.CompetitionMatchesResponse;
 import com.jeleniasty.betapp.httpclient.match.MatchesHttpClient;
 import java.util.List;

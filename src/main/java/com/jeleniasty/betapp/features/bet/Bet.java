@@ -1,6 +1,6 @@
 package com.jeleniasty.betapp.features.bet;
 
-import com.jeleniasty.betapp.features.match.Match;
+import com.jeleniasty.betapp.features.match.model.Match;
 import com.jeleniasty.betapp.features.result.Result;
 import com.jeleniasty.betapp.features.user.BetappUser;
 import jakarta.persistence.Column;

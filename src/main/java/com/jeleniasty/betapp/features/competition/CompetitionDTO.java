@@ -1,6 +1,6 @@
 package com.jeleniasty.betapp.features.competition;
 
-import com.jeleniasty.betapp.features.match.MatchDTO;
+import com.jeleniasty.betapp.features.match.dto.MatchDTO;
 import java.time.LocalDate;
 import java.util.List;
 

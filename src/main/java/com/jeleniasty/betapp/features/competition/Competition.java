@@ -1,6 +1,6 @@
 package com.jeleniasty.betapp.features.competition;
 
-import com.jeleniasty.betapp.features.match.Match;
+import com.jeleniasty.betapp.features.match.model.Match;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

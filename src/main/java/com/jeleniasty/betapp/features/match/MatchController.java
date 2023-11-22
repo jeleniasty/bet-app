@@ -2,6 +2,7 @@ package com.jeleniasty.betapp.features.match;
 
 import com.jeleniasty.betapp.features.bet.SaveMatchResultDTO;
 import com.jeleniasty.betapp.features.competition.CompetitionDTO;
+import com.jeleniasty.betapp.features.match.dto.UpcomingMatchDTO;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

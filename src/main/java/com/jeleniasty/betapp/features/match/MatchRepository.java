@@ -1,5 +1,7 @@
 package com.jeleniasty.betapp.features.match;
 
+import com.jeleniasty.betapp.features.match.dto.UpcomingMatchDTO;
+import com.jeleniasty.betapp.features.match.model.Match;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package com.jeleniasty.betapp.features.match;
+package com.jeleniasty.betapp.features.match.model;
 
 import com.jeleniasty.betapp.features.bet.Bet;
 import com.jeleniasty.betapp.features.competition.Competition;

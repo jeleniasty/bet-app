@@ -1,4 +1,4 @@
-package com.jeleniasty.betapp.features.match;
+package com.jeleniasty.betapp.features.match.model;
 
 public enum CompetitionStage {
   FINAL,

@@ -1,9 +1,9 @@
 package com.jeleniasty.betapp.httpclient.match;
 
 import com.jeleniasty.betapp.features.competition.CompetitionType;
-import com.jeleniasty.betapp.features.match.CompetitionStage;
-import com.jeleniasty.betapp.features.match.Group;
-import com.jeleniasty.betapp.features.match.MatchStatus;
+import com.jeleniasty.betapp.features.match.model.CompetitionStage;
+import com.jeleniasty.betapp.features.match.model.Group;
+import com.jeleniasty.betapp.features.match.model.MatchStatus;
 import com.jeleniasty.betapp.features.result.Duration;
 import com.jeleniasty.betapp.features.result.Winner;
 import java.time.LocalDate;
