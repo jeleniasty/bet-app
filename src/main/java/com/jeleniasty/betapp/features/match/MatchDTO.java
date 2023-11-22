@@ -13,5 +13,5 @@ public record MatchDTO(
   MatchStatus status,
   CompetitionStage stage,
   Group group,
-  LocalDateTime matchDate
+  LocalDateTime date
 ) {}

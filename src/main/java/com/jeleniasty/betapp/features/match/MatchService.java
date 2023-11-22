@@ -31,7 +31,7 @@ public class MatchService {
       this.matchRepository.findByHomeTeamNameAndAwayTeamNameAndDate(
           homeTeam.name(),
           awayTeam.name(),
-          matchDTO.matchDate()
+          matchDTO.date()
         )
         .map(match -> {
           match.setStatus(matchDTO.status());
@@ -40,7 +40,7 @@ public class MatchService {
           match.setHomeOdds(matchDTO.homeOdds());
           match.setAwayOdds(matchDTO.awayOdds());
           match.setDrawOdds(matchDTO.drawOdds());
-          match.setDate(matchDTO.matchDate());
+          match.setDate(matchDTO.date());
 
           return match;
         })
@@ -52,7 +52,7 @@ public class MatchService {
             2.11f,
             1.23f,
             1.45f,
-            matchDTO.matchDate()
+            matchDTO.date()
           );
           //TODO change mocked odds with real fetching odds from external API
         });
