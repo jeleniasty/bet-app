@@ -17,6 +17,11 @@ spring:
     user: postgres
     password: password
 
+scheduler:
+  enabled: true
+  duration:
+    match-result-task: 5
+
 betapp:
   url:
     footballdata: "http://api.football-data.org"

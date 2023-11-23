@@ -26,4 +26,9 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
     @Param("awayTeamName") String awayTeamName,
     @Param("date") LocalDateTime date
   );
+
+  List<Match> findAllByDateBetween(
+    LocalDateTime startDate,
+    LocalDateTime endDate
+  );
 }

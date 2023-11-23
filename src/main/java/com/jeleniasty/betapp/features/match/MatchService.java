@@ -9,7 +9,11 @@ import com.jeleniasty.betapp.features.match.model.Match;
 import com.jeleniasty.betapp.features.result.ResultService;
 import com.jeleniasty.betapp.features.team.TeamDTO;
 import com.jeleniasty.betapp.features.team.TeamService;
-import com.jeleniasty.betapp.httpclient.match.CompetitionMatchesResponse;
+import com.jeleniasty.betapp.httpclient.competition.CompetitionMatchesResponse;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -44,6 +48,7 @@ public class MatchService {
           match.setAwayOdds(matchDTO.awayOdds());
           match.setDrawOdds(matchDTO.drawOdds());
           match.setDate(matchDTO.date());
+          match.setExternalId(matchDTO.externalId());
 
           return match;
         })
@@ -55,7 +60,8 @@ public class MatchService {
             2.11f,
             1.23f,
             1.45f,
-            matchDTO.date()
+            matchDTO.date(),
+            matchDTO.externalId()
           );
           //TODO change mocked odds with real fetching odds from external API
         });
@@ -81,6 +87,13 @@ public class MatchService {
       .orElseThrow(() -> new MatchNotFoundException(matchId));
   }
 
+  public List<Match> fetchMatchesFromDate(Instant utcDate) {
+    return this.matchRepository.findAllByDateBetween(
+        getDateWithGivenTime(utcDate, LocalTime.MIN),
+        getDateWithGivenTime(utcDate, LocalTime.MAX)
+      );
+  }
+
   @Transactional
   public void setMatchResult(SaveMatchResultDTO saveMatchResultDTO) {
     var result = resultService.saveResult(saveMatchResultDTO.matchResultDTO());
@@ -104,10 +117,6 @@ public class MatchService {
     return mapToDTO(match);
   }
 
-  private boolean areTeamsAssigned(TeamDTO homeTeam, TeamDTO awayTeam) {
-    return homeTeam.name() != null && awayTeam.name() != null;
-  }
-
   public MatchDTO mapToDTO(
     CompetitionMatchesResponse.MatchResponse matchResponse
   ) {
@@ -121,7 +130,8 @@ public class MatchService {
       matchResponse.getStatus(),
       matchResponse.getStage(),
       matchResponse.getGroup(),
-      matchResponse.getUtcDate()
+      matchResponse.getUtcDate(),
+      matchResponse.getId()
     );
   }
 
@@ -156,9 +166,18 @@ public class MatchService {
           match.getStatus(),
           match.getStage(),
           match.getGroup(),
-          match.getDate()
+          match.getDate(),
+          match.getExternalId()
         )
       )
     );
+  }
+
+  private boolean areTeamsAssigned(TeamDTO homeTeam, TeamDTO awayTeam) {
+    return homeTeam.name() != null && awayTeam.name() != null;
+  }
+
+  private LocalDateTime getDateWithGivenTime(Instant utcDate, LocalTime time) {
+    return LocalDateTime.ofInstant(utcDate, ZoneOffset.UTC).with(time);
   }
 }
