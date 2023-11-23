@@ -78,7 +78,7 @@ public class Match {
   private LocalDateTime date;
 
   @NotNull
-  @Column(name = "external_id")
+  @Column(name = "external_id", unique = true)
   private Long externalId;
 
   @CreationTimestamp
