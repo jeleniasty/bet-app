@@ -1,4 +1,4 @@
-package com.jeleniasty.betapp.httpclient.match;
+package com.jeleniasty.betapp.httpclient.competition;
 
 import com.jeleniasty.betapp.features.competition.CompetitionType;
 import com.jeleniasty.betapp.features.match.model.CompetitionStage;
@@ -54,6 +54,7 @@ public class CompetitionMatchesResponse {
   @Setter
   public static class MatchResponse {
 
+    private Long id;
     private MatchStatus status;
     private CompetitionStage stage;
     private Group group;
@@ -92,4 +93,5 @@ public class CompetitionMatchesResponse {
     private int home;
     private int away;
   }
+  //TODO add results
 }

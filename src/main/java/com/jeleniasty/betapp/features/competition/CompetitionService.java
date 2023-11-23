@@ -3,8 +3,8 @@ package com.jeleniasty.betapp.features.competition;
 import com.jeleniasty.betapp.features.match.MatchService;
 import com.jeleniasty.betapp.features.match.dto.MatchDTO;
 import com.jeleniasty.betapp.features.match.model.Match;
-import com.jeleniasty.betapp.httpclient.match.CompetitionMatchesResponse;
-import com.jeleniasty.betapp.httpclient.match.MatchesHttpClient;
+import com.jeleniasty.betapp.httpclient.competition.CompetitionHttpClient;
+import com.jeleniasty.betapp.httpclient.competition.CompetitionMatchesResponse;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CompetitionService {
 
   private final CompetitionRepository competitionRepository;
-  private final MatchesHttpClient matchesHttpClient;
+  private final CompetitionHttpClient competitionHttpClient;
   private final MatchService matchService;
 
   @Transactional
@@ -25,7 +25,7 @@ public class CompetitionService {
     CreateCompetitonRequest createCompetitonRequest
   ) {
     var competitionDTO = mapToDTO(
-      matchesHttpClient.getCompetitionMatches(createCompetitonRequest)
+      competitionHttpClient.getCompetitionMatches(createCompetitonRequest)
     );
 
     saveOrUpdateCompetition(competitionDTO);

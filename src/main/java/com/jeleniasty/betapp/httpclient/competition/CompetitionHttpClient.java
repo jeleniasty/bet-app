@@ -1,4 +1,4 @@
-package com.jeleniasty.betapp.httpclient.match;
+package com.jeleniasty.betapp.httpclient.competition;
 
 import com.jeleniasty.betapp.features.competition.CreateCompetitonRequest;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +8,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Service
 @RequiredArgsConstructor
-public class MatchesHttpClient {
+public class CompetitionHttpClient {
 
   private final WebClient webClient;
 
