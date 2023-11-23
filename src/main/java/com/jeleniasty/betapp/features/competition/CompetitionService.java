@@ -3,8 +3,8 @@ package com.jeleniasty.betapp.features.competition;
 import com.jeleniasty.betapp.features.match.MatchService;
 import com.jeleniasty.betapp.features.match.dto.MatchDTO;
 import com.jeleniasty.betapp.features.match.model.Match;
-import com.jeleniasty.betapp.httpclient.competition.CompetitionHttpClient;
-import com.jeleniasty.betapp.httpclient.competition.CompetitionMatchesResponse;
+import com.jeleniasty.betapp.httpclient.footballdata.CompetitionMatchesResponse;
+import com.jeleniasty.betapp.httpclient.footballdata.competition.CompetitionHttpClient;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -25,7 +25,7 @@ public class CompetitionService {
     CreateCompetitonRequest createCompetitonRequest
   ) {
     var competitionDTO = mapToDTO(
-      competitionHttpClient.getCompetitionMatches(createCompetitonRequest)
+      competitionHttpClient.getCompetitionMatchesData(createCompetitonRequest)
     );
 
     saveOrUpdateCompetition(competitionDTO);
@@ -92,15 +92,15 @@ public class CompetitionService {
   ) {
     return new CompetitionDTO(
       null,
-      competitionMatchesResponse.getCompetition().getName(),
-      competitionMatchesResponse.getCompetition().getCode(),
-      competitionMatchesResponse.getCompetition().getType(),
-      competitionMatchesResponse.getFilters().getSeason(),
-      competitionMatchesResponse.getCompetition().getEmblem(),
-      competitionMatchesResponse.getResultSet().getFirst(),
-      competitionMatchesResponse.getResultSet().getLast(),
+      competitionMatchesResponse.competition().name(),
+      competitionMatchesResponse.competition().code(),
+      competitionMatchesResponse.competition().type(),
+      competitionMatchesResponse.filters().season(),
+      competitionMatchesResponse.competition().emblem(),
+      competitionMatchesResponse.resultSet().first(),
+      competitionMatchesResponse.resultSet().last(),
       competitionMatchesResponse
-        .getMatches()
+        .matches()
         .stream()
         .map(this.matchService::mapToDTO)
         .toList()

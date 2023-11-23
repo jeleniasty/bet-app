@@ -9,7 +9,7 @@ import com.jeleniasty.betapp.features.match.model.Match;
 import com.jeleniasty.betapp.features.result.ResultService;
 import com.jeleniasty.betapp.features.team.TeamDTO;
 import com.jeleniasty.betapp.features.team.TeamService;
-import com.jeleniasty.betapp.httpclient.competition.CompetitionMatchesResponse;
+import com.jeleniasty.betapp.httpclient.footballdata.MatchResponse;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -96,7 +96,7 @@ public class MatchService {
 
   @Transactional
   public void setMatchResult(SaveMatchResultDTO saveMatchResultDTO) {
-    var result = resultService.saveResult(saveMatchResultDTO.matchResultDTO());
+    var result = resultService.saveResult(saveMatchResultDTO.resultDTO());
     var matchToBeUpdated = fetchMatch(saveMatchResultDTO.matchId());
 
     matchToBeUpdated.setResult(result);
@@ -117,21 +117,19 @@ public class MatchService {
     return mapToDTO(match);
   }
 
-  public MatchDTO mapToDTO(
-    CompetitionMatchesResponse.MatchResponse matchResponse
-  ) {
+  public MatchDTO mapToDTO(MatchResponse matchResponse) {
     return new MatchDTO(
       null,
-      this.teamService.mapToDTO(matchResponse.getHomeTeam()),
-      this.teamService.mapToDTO(matchResponse.getAwayTeam()),
+      this.teamService.mapToDTO(matchResponse.homeTeam()),
+      this.teamService.mapToDTO(matchResponse.awayTeam()),
       1f,
       2f,
       3f,
-      matchResponse.getStatus(),
-      matchResponse.getStage(),
-      matchResponse.getGroup(),
-      matchResponse.getUtcDate(),
-      matchResponse.getId()
+      matchResponse.status(),
+      matchResponse.stage(),
+      matchResponse.group(),
+      matchResponse.utcDate(),
+      matchResponse.id()
     );
   }
 

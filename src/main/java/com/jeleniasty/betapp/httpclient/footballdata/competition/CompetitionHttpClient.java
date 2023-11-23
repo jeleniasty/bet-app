@@ -1,6 +1,7 @@
-package com.jeleniasty.betapp.httpclient.competition;
+package com.jeleniasty.betapp.httpclient.footballdata.competition;
 
 import com.jeleniasty.betapp.features.competition.CreateCompetitonRequest;
+import com.jeleniasty.betapp.httpclient.footballdata.CompetitionMatchesResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ public class CompetitionHttpClient {
   @Value("${betapp.apikey.footballdata}")
   private String apiKey;
 
-  public CompetitionMatchesResponse getCompetitionMatches(
+  public CompetitionMatchesResponse getCompetitionMatchesData(
     CreateCompetitonRequest createCompetitonRequest
   ) {
     return webClient

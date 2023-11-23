@@ -1,5 +1,5 @@
 package com.jeleniasty.betapp.features.bet;
 
-import com.jeleniasty.betapp.features.result.MatchResultDTO;
+import com.jeleniasty.betapp.features.result.ResultDTO;
 
-public record SaveMatchResultDTO(MatchResultDTO matchResultDTO, Long matchId) {}
+public record SaveMatchResultDTO(ResultDTO resultDTO, Long matchId) {}

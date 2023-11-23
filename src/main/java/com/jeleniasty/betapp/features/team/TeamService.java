@@ -1,6 +1,6 @@
 package com.jeleniasty.betapp.features.team;
 
-import com.jeleniasty.betapp.httpclient.competition.CompetitionMatchesResponse;
+import com.jeleniasty.betapp.httpclient.footballdata.TeamResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,14 +19,12 @@ public class TeamService {
     return teamEntity;
   }
 
-  public TeamDTO mapToDTO(
-    CompetitionMatchesResponse.TeamResponse teamResponse
-  ) {
+  public TeamDTO mapToDTO(TeamResponse teamResponse) {
     return new TeamDTO(
       null,
-      teamResponse.getName(),
-      teamResponse.getTla(),
-      teamResponse.getCrest()
+      teamResponse.name(),
+      teamResponse.tla(),
+      teamResponse.crest()
     );
   }
 

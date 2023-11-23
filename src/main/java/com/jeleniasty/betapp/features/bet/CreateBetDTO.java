@@ -1,10 +1,10 @@
 package com.jeleniasty.betapp.features.bet;
 
-import com.jeleniasty.betapp.features.result.MatchResultDTO;
+import com.jeleniasty.betapp.features.result.ResultDTO;
 import jakarta.validation.Valid;
 
 public record CreateBetDTO(
-  @Valid MatchResultDTO matchResultDTO,
+  @Valid ResultDTO resultDTO,
   BetType betType,
   Long matchId
 ) {}
