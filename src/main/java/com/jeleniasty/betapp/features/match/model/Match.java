@@ -77,6 +77,10 @@ public class Match {
   @Column(name = "date")
   private LocalDateTime date;
 
+  @NotNull
+  @Column(name = "external_id")
+  private Long externalId;
+
   @CreationTimestamp
   @Column(name = "created_at", updatable = false)
   private LocalDateTime createdAt;
@@ -116,7 +120,8 @@ public class Match {
     float homeOdds,
     float awayOdds,
     float drawOdds,
-    @NotNull LocalDateTime date
+    @NotNull LocalDateTime date,
+    @NotNull Long externalId
   ) {
     this.status = status;
     this.stage = stage;
@@ -125,6 +130,7 @@ public class Match {
     this.awayOdds = awayOdds;
     this.drawOdds = drawOdds;
     this.date = date;
+    this.externalId = externalId;
   }
 
   public void assignCompetition(Competition competition) {

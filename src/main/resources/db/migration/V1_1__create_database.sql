@@ -56,6 +56,7 @@ CREATE TABLE match (
                 away_odds float4 NULL,
                 draw_odds float4 NULL,
                 date timestamp  NOT NULL,
+                external_id bigint NOT NULL,
                 created_at timestamp NOT NULL,
                 updated_at timestamp  NULL,
                 competition bigint  NOT NULL,
