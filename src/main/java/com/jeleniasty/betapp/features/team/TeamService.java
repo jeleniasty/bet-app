@@ -1,6 +1,6 @@
 package com.jeleniasty.betapp.features.team;
 
-import com.jeleniasty.betapp.httpclient.match.CompetitionMatchesResponse;
+import com.jeleniasty.betapp.httpclient.competition.CompetitionMatchesResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
