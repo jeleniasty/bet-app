@@ -39,15 +39,15 @@ public class GlobalValidationHandler extends ResponseEntityExceptionHandler {
     return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
   }
 
-  //  @ExceptionHandler(RuntimeException.class)
-  //  protected ResponseEntity<CustomError> handleGenericError(
-  //    RuntimeException runtimeException
-  //  ) {
-  //    return createCustomError(
-  //      HttpStatus.INTERNAL_SERVER_ERROR,
-  //      runtimeException
-  //    );
-  //  }
+  @ExceptionHandler(RuntimeException.class)
+  protected ResponseEntity<CustomError> handleGenericError(
+    RuntimeException runtimeException
+  ) {
+    return createCustomError(
+      HttpStatus.INTERNAL_SERVER_ERROR,
+      runtimeException
+    );
+  }
 
   @ExceptionHandler(AuthenticationException.class)
   protected ResponseEntity<CustomError> handleAuthenticationExceptions(
