@@ -28,6 +28,43 @@ public class ResultService {
   }
 
   public ResultDTO mapToDTO(ScoreResponse scoreResponse) {
+    ScoreDTO regularTime = null;
+    ScoreDTO extraTime = null;
+    ScoreDTO penalties = null;
+
+    switch (scoreResponse.duration()) {
+      case REGULAR -> {}
+      case EXTRA -> {
+        regularTime =
+          new ScoreDTO(
+            scoreResponse.extraTime().home(),
+            scoreResponse.extraTime().away()
+          );
+        extraTime =
+          new ScoreDTO(
+            scoreResponse.extraTime().home(),
+            scoreResponse.extraTime().away()
+          );
+      }
+      case PENALTY_SHOOTOUT -> {
+        regularTime =
+          new ScoreDTO(
+            scoreResponse.extraTime().home(),
+            scoreResponse.extraTime().away()
+          );
+        extraTime =
+          new ScoreDTO(
+            scoreResponse.extraTime().home(),
+            scoreResponse.extraTime().away()
+          );
+
+        penalties =
+          new ScoreDTO(
+            scoreResponse.penalties().home(),
+            scoreResponse.penalties().away()
+          );
+      }
+    }
     return new ResultDTO(
       scoreResponse.winner(),
       scoreResponse.duration(),
@@ -35,18 +72,9 @@ public class ResultService {
         scoreResponse.halfTime().home(),
         scoreResponse.halfTime().away()
       ),
-      new ScoreDTO(
-        scoreResponse.regularTime().home(),
-        scoreResponse.regularTime().away()
-      ),
-      new ScoreDTO(
-        scoreResponse.extraTime().home(),
-        scoreResponse.extraTime().away()
-      ),
-      new ScoreDTO(
-        scoreResponse.penalties().home(),
-        scoreResponse.penalties().away()
-      ),
+      regularTime,
+      extraTime,
+      penalties,
       new ScoreDTO(
         scoreResponse.fullTime().home(),
         scoreResponse.fullTime().away()
