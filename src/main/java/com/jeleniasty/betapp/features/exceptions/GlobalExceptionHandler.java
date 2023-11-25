@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -17,7 +18,8 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
-public class GlobalValidationHandler extends ResponseEntityExceptionHandler {
+@Slf4j
+public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
   @Override
   protected ResponseEntity<Object> handleMethodArgumentNotValid(
@@ -39,21 +41,22 @@ public class GlobalValidationHandler extends ResponseEntityExceptionHandler {
     return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
   }
 
-  //  @ExceptionHandler(RuntimeException.class)
-  //  protected ResponseEntity<CustomError> handleGenericError(
-  //    RuntimeException runtimeException
-  //  ) {
-  //    return createCustomError(
-  //      HttpStatus.INTERNAL_SERVER_ERROR,
-  //      runtimeException
-  //    );
-  //    //TODO change this so message is also displayed on console
-  //  }
+  @ExceptionHandler(RuntimeException.class)
+  protected ResponseEntity<CustomError> handleGenericError(
+    RuntimeException runtimeException
+  ) {
+    log.error("An unexpected error occured: ", runtimeException);
+    return createCustomError(
+      HttpStatus.INTERNAL_SERVER_ERROR,
+      runtimeException
+    );
+  }
 
   @ExceptionHandler(AuthenticationException.class)
   protected ResponseEntity<CustomError> handleAuthenticationExceptions(
     AuthenticationException authenticationException
   ) {
+    log.error("Authentication error occured: ", authenticationException);
     return createCustomError(HttpStatus.UNAUTHORIZED, authenticationException);
   }
 
@@ -61,6 +64,7 @@ public class GlobalValidationHandler extends ResponseEntityExceptionHandler {
   protected ResponseEntity<CustomError> handlePastMatchBetException(
     PastMatchBetException pastMatchBetException
   ) {
+    log.error("An error occured: ", pastMatchBetException);
     return createCustomError(HttpStatus.BAD_REQUEST, pastMatchBetException);
   }
 
