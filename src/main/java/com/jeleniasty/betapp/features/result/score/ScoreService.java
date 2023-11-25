@@ -13,8 +13,14 @@ public class ScoreService {
   public Score saveScore(ScoreDTO scoreDTO) {
     return Optional
       .ofNullable(scoreDTO)
-      .map(score -> new Score(score.home(), score.away()))
-      .map(scoreRepository::save)
+      .map(score ->
+        this.scoreRepository.findByHomeAndAway(scoreDTO.home(), scoreDTO.away())
+          .orElseGet(() ->
+            this.scoreRepository.save(
+                new Score(scoreDTO.home(), scoreDTO.away())
+              )
+          )
+      )
       .orElse(null);
   }
 }
