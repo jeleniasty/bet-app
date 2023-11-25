@@ -3,6 +3,7 @@ package com.jeleniasty.betapp.features.match.dto;
 import com.jeleniasty.betapp.features.match.model.CompetitionStage;
 import com.jeleniasty.betapp.features.match.model.Group;
 import com.jeleniasty.betapp.features.match.model.MatchStatus;
+import com.jeleniasty.betapp.features.result.ResultDTO;
 import com.jeleniasty.betapp.features.team.TeamDTO;
 import java.time.LocalDateTime;
 
@@ -17,5 +18,6 @@ public record MatchDTO(
   CompetitionStage stage,
   Group group,
   LocalDateTime date,
+  ResultDTO resultDTO,
   Long externalId
 ) {}

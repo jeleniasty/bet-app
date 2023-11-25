@@ -53,4 +53,31 @@ public class ResultService {
       )
     );
   }
+
+  public ResultDTO mapToDTO(Result result) {
+    return new ResultDTO(
+      result.getWinner(),
+      result.getDuration(),
+      new ScoreDTO(
+        result.getHalfTimeScore().getHome(),
+        result.getExtraTimeScore().getAway()
+      ),
+      new ScoreDTO(
+        result.getRegularTimeScore().getHome(),
+        result.getRegularTimeScore().getAway()
+      ),
+      new ScoreDTO(
+        result.getExtraTimeScore().getHome(),
+        result.getExtraTimeScore().getAway()
+      ),
+      new ScoreDTO(
+        result.getPenaltiesScore().getHome(),
+        result.getPenaltiesScore().getAway()
+      ),
+      new ScoreDTO(
+        result.getFullTimeScore().getHome(),
+        result.getExtraTimeScore().getAway()
+      )
+    );
+  }
 }

@@ -66,6 +66,10 @@ public class MatchService {
           //TODO change mocked odds with real fetching odds from external API
         });
 
+    if (isMatchCompleted(matchDTO)) {
+      matchToSave.setResult(resultService.saveResult(matchDTO.resultDTO()));
+    }
+
     if (areTeamsAssigned(homeTeam, awayTeam)) {
       matchToSave.assignHomeTeam(
         this.teamService.fetchOrSaveTeam(
@@ -79,6 +83,10 @@ public class MatchService {
       );
     }
     return matchToSave;
+  }
+
+  private static boolean isMatchCompleted(MatchDTO matchDTO) {
+    return matchDTO.resultDTO().winner() != null;
   }
 
   public Match fetchMatch(Long matchId) {
@@ -129,6 +137,7 @@ public class MatchService {
       matchResponse.stage(),
       matchResponse.group(),
       matchResponse.utcDate(),
+      this.resultService.mapToDTO(matchResponse.score()),
       matchResponse.id()
     );
   }
@@ -165,6 +174,7 @@ public class MatchService {
           match.getStage(),
           match.getGroup(),
           match.getDate(),
+          this.resultService.mapToDTO(match.getResult()),
           match.getExternalId()
         )
       )
