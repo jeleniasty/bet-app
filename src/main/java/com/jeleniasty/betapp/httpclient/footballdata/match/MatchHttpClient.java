@@ -26,7 +26,6 @@ public class MatchHttpClient {
       .retrieve()
       .bodyToMono(MatchResponse.class)
       .block();
-    //TODO create async calls without blocking code
   }
 
   private String constructGetMatchURL(long matchExternalId) {

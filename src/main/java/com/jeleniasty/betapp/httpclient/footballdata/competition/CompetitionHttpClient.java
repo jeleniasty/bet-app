@@ -29,7 +29,6 @@ public class CompetitionHttpClient {
       .retrieve()
       .bodyToMono(CompetitionMatchesResponse.class)
       .block();
-    //TODO create async calls without blocking code
   }
 
   private String constructGetCompetitionMatchesURL(
