@@ -1,7 +1,6 @@
 package com.jeleniasty.betapp.httpclient.odds;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
@@ -12,10 +11,6 @@ import java.util.List;
 
 public class BookmakerDeserializer extends StdDeserializer<Bookmaker> {
 
-  protected BookmakerDeserializer() {
-    this(null);
-  }
-
   protected BookmakerDeserializer(Class vc) {
     super(vc);
   }
@@ -24,7 +19,7 @@ public class BookmakerDeserializer extends StdDeserializer<Bookmaker> {
   public Bookmaker deserialize(
     JsonParser jsonParser,
     DeserializationContext deserializationContext
-  ) throws IOException, JsonProcessingException {
+  ) throws IOException {
     JsonNode bookmaker = jsonParser.getCodec().readTree(jsonParser);
 
     String title = bookmaker.get("title").asText();
