@@ -25,6 +25,8 @@ scheduler:
 betapp:
   url:
     footballdata: "http://api.football-data.org"
+    theoddsapi: "https://api.the-odds-api.com"
 
   apikey:
     footballdata: "2012103e35f84b5eaf52686ee0ae34dc"
+    theoddsapi: "eb610dd26d7b371a91703917f6100d84"
