@@ -20,19 +20,18 @@ public class OddsHttpClient {
   public OddsResponse[] getMatchData(String bookmaker) {
     return webClient
       .get()
-      .uri(constructGetMatchURL(bookmaker))
+      .uri(constructGetMatchURL())
       .retrieve()
       .bodyToMono(OddsResponse[].class)
       .block();
   }
 
-  private String constructGetMatchURL(String bookmaker) {
+  private String constructGetMatchURL() {
     return (
       baseUrl +
       "/v4/sports/soccer_uefa_champs_league/odds/?apiKey=" +
       apiKey +
-      "&regions=eu&bookmakers=" +
-      bookmaker
+      "&regions=eu"
     );
   }
 }
