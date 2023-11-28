@@ -1,13 +1,15 @@
 package com.jeleniasty.betapp.httpclient.odds;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.time.Instant;
 import java.util.List;
 
+@JsonDeserialize(using = OddsResponseDeserializer.class)
 public record OddsResponse(
   String id,
-  @JsonAlias("commence_time") Instant commenceTime,
-  @JsonAlias("home_team") String homeTeam,
-  @JsonAlias("away_team") String awayTeam,
-  List<Bookmaker> bookmakers
+  String competition,
+  String homeTeam,
+  String awayTeam,
+  Instant commenceTime,
+  List<Outcome> outcomes
 ) {}
