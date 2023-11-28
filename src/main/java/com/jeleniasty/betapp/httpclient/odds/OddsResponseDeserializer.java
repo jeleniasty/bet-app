@@ -38,7 +38,6 @@ public class OddsResponseDeserializer extends StdDeserializer<OddsResponse> {
       oddsResponse.has("bookmakers") && oddsResponse.get("bookmakers").isArray()
     ) {
       JsonNode bookmakers = oddsResponse.get("bookmakers");
-      System.out.println("bookmakers: " + bookmakers);
       for (JsonNode bookmaker : bookmakers) {
         String title = bookmaker.get("title").asText();
         Instant lastUpdate = Instant.parse(
@@ -47,10 +46,8 @@ public class OddsResponseDeserializer extends StdDeserializer<OddsResponse> {
 
         if (bookmaker.has("markets") && bookmaker.get("markets").isArray()) {
           JsonNode market = bookmaker.get("markets").get(0);
-          System.out.println("markets: " + market);
           if (market.has("outcomes") && market.get("outcomes").isArray()) {
             JsonNode outcomesNode = market.get("outcomes");
-            System.out.println("outcomes: " + outcomesNode);
             double homeOdds = 1;
             double awayOdds = 1;
             double drawOdds = 1;
