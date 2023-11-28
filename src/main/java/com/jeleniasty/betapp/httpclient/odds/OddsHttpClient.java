@@ -17,19 +17,21 @@ public class OddsHttpClient {
   @Value("${betapp.apikey.theoddsapi}")
   private String apiKey;
 
-  public OddsResponse[] getMatchData() {
+  public OddsResponse[] getMatchData(String competition) {
     return webClient
       .get()
-      .uri(constructGetMatchURL())
+      .uri(constructGetMatchURL(competition))
       .retrieve()
       .bodyToMono(OddsResponse[].class)
       .block();
   }
 
-  private String constructGetMatchURL() {
+  private String constructGetMatchURL(String competition) {
     return (
       baseUrl +
-      "/v4/sports/soccer_uefa_champs_league/odds/?apiKey=" +
+      "/v4/sports/" +
+      competition +
+      "/odds/?apiKey=" +
       apiKey +
       "&regions=eu"
     );
