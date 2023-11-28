@@ -17,7 +17,7 @@ public class OddsHttpClient {
   @Value("${betapp.apikey.theoddsapi}")
   private String apiKey;
 
-  public OddsResponse[] getMatchData(String bookmaker) {
+  public OddsResponse[] getMatchData() {
     return webClient
       .get()
       .uri(constructGetMatchURL())
