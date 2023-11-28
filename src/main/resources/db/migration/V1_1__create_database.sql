@@ -75,6 +75,8 @@ CREATE TABLE betapp.result (
                 extra_time bigint  NULL,
                 penalties bigint  NULL,
                 full_time bigint NULL,
+                created_at timestamp NOT NULL,
+                updated_at timestamp NULL,
                 CONSTRAINT result_pk PRIMARY KEY (id)
 );
 

@@ -14,8 +14,11 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity(name = "result")
 @Table(schema = "betapp")
@@ -65,6 +68,14 @@ public class Result {
   @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "full_time")
   private Score fullTimeScore;
+
+  @CreationTimestamp
+  @Column(name = "created_at", updatable = false)
+  private LocalDateTime createdAt;
+
+  @UpdateTimestamp
+  @Column(name = "updated_at", insertable = false)
+  private LocalDateTime updatedAt;
 
   public Result(
     @NotNull Winner winner,
