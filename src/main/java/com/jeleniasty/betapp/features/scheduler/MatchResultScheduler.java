@@ -69,6 +69,7 @@ public class MatchResultScheduler {
       log.info(
         "Result added. Cancelling task with id '" + matchExternalId + "'"
       );
+      //TODO change method to cancel task only if match has status FINISHED
     }
   }
 
