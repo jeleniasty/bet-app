@@ -6,6 +6,7 @@ import com.jeleniasty.betapp.features.exceptions.MatchNotFoundException;
 import com.jeleniasty.betapp.features.match.dto.MatchDTO;
 import com.jeleniasty.betapp.features.match.dto.UpcomingMatchDTO;
 import com.jeleniasty.betapp.features.match.model.Match;
+import com.jeleniasty.betapp.features.match.model.MatchStatus;
 import com.jeleniasty.betapp.features.result.ResultService;
 import com.jeleniasty.betapp.features.team.TeamDTO;
 import com.jeleniasty.betapp.features.team.TeamService;
@@ -107,10 +108,13 @@ public class MatchService {
     var result = resultService.saveResult(saveMatchResultDTO.resultDTO());
     var matchToBeUpdated = fetchMatch(saveMatchResultDTO.matchId());
 
+    matchToBeUpdated.setStatus(saveMatchResultDTO.status());
     matchToBeUpdated.setResult(result);
-    eventPublisher.publishEvent(
-      new MatchResultSetEvent(matchToBeUpdated.getId())
-    );
+    if (saveMatchResultDTO.status() == MatchStatus.FINISHED) {
+      eventPublisher.publishEvent(
+        new MatchCompletionEvent(matchToBeUpdated.getId())
+      );
+    }
   }
 
   public List<UpcomingMatchDTO> getUpcomingMatches() {

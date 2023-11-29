@@ -3,6 +3,7 @@ package com.jeleniasty.betapp.features.scheduler;
 import com.jeleniasty.betapp.features.bet.SaveMatchResultDTO;
 import com.jeleniasty.betapp.features.match.MatchService;
 import com.jeleniasty.betapp.features.match.model.Match;
+import com.jeleniasty.betapp.features.match.model.MatchStatus;
 import com.jeleniasty.betapp.features.result.ResultService;
 import com.jeleniasty.betapp.httpclient.footballdata.MatchResponse;
 import com.jeleniasty.betapp.httpclient.footballdata.match.MatchHttpClient;
@@ -61,15 +62,17 @@ public class MatchResultScheduler {
       this.matchService.setMatchResult(
           new SaveMatchResultDTO(
             this.resultService.mapToDTO(matchExternalData.score()),
-            match.getId()
+            match.getId(),
+            match.getStatus()
           )
         );
 
-      this.schedulerService.cancelScheduledTask(matchExternalId);
-      log.info(
-        "Result added. Cancelling task with id '" + matchExternalId + "'"
-      );
-      //TODO change method to cancel task only if match has status FINISHED
+      if (matchExternalData.status() == MatchStatus.FINISHED) {
+        this.schedulerService.cancelScheduledTask(matchExternalId);
+        log.info(
+          "Result added. Cancelling task with id '" + matchExternalId + "'"
+        );
+      }
     }
   }
 
