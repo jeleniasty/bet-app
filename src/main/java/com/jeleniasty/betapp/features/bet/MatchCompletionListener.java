@@ -1,6 +1,6 @@
 package com.jeleniasty.betapp.features.bet;
 
-import com.jeleniasty.betapp.features.match.MatchResultSetEvent;
+import com.jeleniasty.betapp.features.match.MatchCompletionEvent;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationListener;
@@ -8,16 +8,16 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class MatchResultSetEventListener
-  implements ApplicationListener<MatchResultSetEvent> {
+public class MatchCompletionListener
+  implements ApplicationListener<MatchCompletionEvent> {
 
   private final BetService betService;
 
   @Override
   public void onApplicationEvent(
-    @NotNull MatchResultSetEvent matchResultSetEvent
+    @NotNull MatchCompletionEvent matchCompletionEvent
   ) {
-    var matchId = matchResultSetEvent.getSource();
+    var matchId = matchCompletionEvent.getSource();
     betService.assignPoints((Long) matchId);
   }
 }

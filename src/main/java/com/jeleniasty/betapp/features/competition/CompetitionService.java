@@ -46,9 +46,7 @@ public class CompetitionService {
         competition.setStartDate(competitionDTO.startDate());
         competition.setEndDate(competitionDTO.endDate());
 
-        competition.assignMatches(
-          saveCompetitionMatches(competitionDTO.matchDTOs())
-        );
+        competition.assignMatches(saveMatches(competitionDTO.matchDTOs()));
 
         return competition;
       })
@@ -63,9 +61,7 @@ public class CompetitionService {
           competitionDTO.endDate()
         );
 
-        competition.assignMatches(
-          saveCompetitionMatches(competitionDTO.matchDTOs())
-        );
+        competition.assignMatches(saveMatches(competitionDTO.matchDTOs()));
 
         return competition;
       });
@@ -73,7 +69,7 @@ public class CompetitionService {
     this.competitionRepository.save(competitionEntity);
   }
 
-  private Set<Match> saveCompetitionMatches(List<MatchDTO> matches) {
+  private Set<Match> saveMatches(List<MatchDTO> matches) {
     return matches
       .stream()
       .filter(this::areTeamsAssigned)
