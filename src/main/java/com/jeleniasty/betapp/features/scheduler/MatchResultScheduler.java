@@ -63,7 +63,7 @@ public class MatchResultScheduler {
           new SaveMatchResultDTO(
             this.resultService.mapToDTO(matchExternalData.score()),
             match.getId(),
-            match.getStatus()
+            matchExternalData.status()
           )
         );
 
