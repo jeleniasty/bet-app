@@ -9,8 +9,8 @@ import com.jeleniasty.betapp.httpclient.footballdata.MatchResponse;
 import com.jeleniasty.betapp.httpclient.footballdata.match.MatchHttpClient;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.function.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,11 +37,9 @@ public class MatchResultScheduler {
   public void setForTodayMatches() {
     var todaysMatches = this.matchService.fetchMatchesFromDate(Instant.now());
 
-    var currentUtcDate = LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC);
-
     todaysMatches
       .stream()
-      .filter(match -> match.getDate().isAfter(currentUtcDate))
+      .filter(isMatchCompleted())
       .map(match ->
         new Task(
           match.getExternalId(),
@@ -74,6 +72,12 @@ public class MatchResultScheduler {
         );
       }
     }
+  }
+
+  private Predicate<Match> isMatchCompleted() {
+    return match ->
+      match.getStatus() != MatchStatus.FINISHED &&
+      match.getStatus() != MatchStatus.AWARDED;
   }
 
   private boolean isResultAvailable(MatchResponse matchResponse) {
