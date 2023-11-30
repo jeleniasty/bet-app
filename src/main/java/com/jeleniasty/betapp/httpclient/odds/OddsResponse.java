@@ -1,7 +1,6 @@
 package com.jeleniasty.betapp.httpclient.odds;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 
