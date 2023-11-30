@@ -51,7 +51,7 @@ public class BetService {
 
   @Transactional
   public void createBet(CreateBetDTO createBetDTO) {
-    var matchToBet = matchService.fetchMatch(createBetDTO.matchId());
+    var matchToBet = matchService.findMatch(createBetDTO.matchId());
     if (
       matchToBet.getDate().isBefore(LocalDateTime.now())
     ) throw new PastMatchBetException(createBetDTO.matchId());
@@ -68,7 +68,7 @@ public class BetService {
 
   @Transactional
   public void assignPoints(Long matchId) {
-    var matchResult = matchService.fetchMatch(matchId).getResult();
+    var matchResult = matchService.findMatch(matchId).getResult();
 
     var bets = betRepository.findAllByMatchId(matchId);
 
