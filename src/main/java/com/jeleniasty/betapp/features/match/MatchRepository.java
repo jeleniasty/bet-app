@@ -18,10 +18,7 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
   )
   List<UpcomingMatchDTO> findTop10ByStatusOrderByDate();
 
-  @Query(
-    "select m from match m where m.homeTeam.name = :homeTeamName and m.awayTeam.name = :awayTeamName and m.date = :date"
-  )
-  Optional<Match> findByHomeTeamNameAndAwayTeamNameAndDate(
+  Optional<Match> findByHomeTeamNameContainingAndAwayTeamNameContainingAndDate(
     @Param("homeTeamName") String homeTeamName,
     @Param("awayTeamName") String awayTeamName,
     @Param("date") LocalDateTime date
