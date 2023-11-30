@@ -13,10 +13,10 @@ public class CompetitionHttpClient {
 
   private final WebClient webClient;
 
-  @Value("${betapp.url.footballdata}")
+  @Value("${betapp.footballdata.url}")
   private String baseUrl;
 
-  @Value("${betapp.apikey.footballdata}")
+  @Value("${betapp.footballdata.apikey}")
   private String apiKey;
 
   public CompetitionMatchesResponse getCompetitionMatchesData(

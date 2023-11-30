@@ -12,10 +12,10 @@ public class MatchHttpClient {
 
   private final WebClient webClient;
 
-  @Value("${betapp.url.footballdata}")
+  @Value("${betapp.footballdata.url}")
   private String baseUrl;
 
-  @Value("${betapp.apikey.footballdata}")
+  @Value("${betapp.footballdata.apikey}")
   private String apiKey;
 
   public MatchResponse getMatchData(long matchExternalId) {
@@ -28,6 +28,7 @@ public class MatchHttpClient {
       .block();
   }
 
+  //TODO fix bug with request throttling to 10 per minute
   private String constructGetMatchURL(long matchExternalId) {
     return (baseUrl + "/v4/matches/" + matchExternalId);
   }

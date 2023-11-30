@@ -30,7 +30,7 @@ public class MatchResultScheduler {
   private final MatchHttpClient matchHttpClient;
 
   @Value("${scheduler.duration.match-result-task}")
-  private int duration = 5;
+  private int duration;
 
   @Scheduled(cron = "0 0 * * * *")
   @EventListener(ApplicationReadyEvent.class)

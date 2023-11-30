@@ -1,5 +1,6 @@
 package com.jeleniasty.betapp.httpclient.odds;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -11,26 +12,27 @@ public class OddsHttpClient {
 
   private final WebClient webClient;
 
-  @Value("${betapp.url.theoddsapi}")
+  @Value("${betapp.theoddsapi.url}")
   private String baseUrl;
 
-  @Value("${betapp.apikey.theoddsapi}")
+  @Value("${betapp.theoddsapi.apikey}")
   private String apiKey;
 
-  public OddsResponse[] getMatchData(String competition) {
+  public List<OddsResponse> getMatchData(String competition) {
     return webClient
       .get()
       .uri(constructGetMatchURL(competition))
       .retrieve()
-      .bodyToMono(OddsResponse[].class)
+      .bodyToFlux(OddsResponse.class)
+      .collectList()
       .block();
   }
 
-  private String constructGetMatchURL(String competition) {
+  private String constructGetMatchURL(String competitionKey) {
     return (
       baseUrl +
       "/v4/sports/" +
-      competition +
+      competitionKey +
       "/odds/?apiKey=" +
       apiKey +
       "&regions=eu"

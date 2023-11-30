@@ -21,12 +21,19 @@ scheduler:
   enabled: true
   duration:
     match-result-task: 5
+    odds-task: 60
 
 betapp:
-  url:
-    footballdata: "http://api.football-data.org"
-    theoddsapi: "https://api.the-odds-api.com"
+  footballdata:
+    url: "http://api.football-data.org"
+    apiKey: "2012103e35f84b5eaf52686ee0ae34dc"
+  theoddsapi:
+    url: "https://api.the-odds-api.com"
+    apikey: "eb610dd26d7b371a91703917f6100d84"
+    competitionKey:
+      CL: "soccer_uefa_champs_league"
+      FL1: "soccer_france_ligue_one"
+      PD: "soccer_spain_la_liga"
+      BL1: "soccer_germany_bundesliga"
+      PL: "soccer_epl"
 
-  apikey:
-    footballdata: "2012103e35f84b5eaf52686ee0ae34dc"
-    theoddsapi: "eb610dd26d7b371a91703917f6100d84"
