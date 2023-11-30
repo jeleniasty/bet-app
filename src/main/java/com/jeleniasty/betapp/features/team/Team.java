@@ -1,17 +1,13 @@
 package com.jeleniasty.betapp.features.team;
 
-import com.jeleniasty.betapp.features.match.model.Match;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
-import java.util.HashSet;
-import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -44,12 +40,6 @@ public class Team {
   @NotNull
   @Column(name = "flag")
   private String flag;
-
-  @OneToMany(mappedBy = "homeTeam", orphanRemoval = true)
-  private Set<Match> homeMatches = new HashSet<>();
-
-  @OneToMany(mappedBy = "awayTeam", orphanRemoval = true)
-  private Set<Match> awayMatches = new HashSet<>();
 
   public Team(
     @NotNull String name,
