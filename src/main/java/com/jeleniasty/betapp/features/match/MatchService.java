@@ -1,7 +1,6 @@
 package com.jeleniasty.betapp.features.match;
 
 import com.jeleniasty.betapp.features.bet.SaveMatchResultDTO;
-import com.jeleniasty.betapp.features.competition.CompetitionDTO;
 import com.jeleniasty.betapp.features.exceptions.MatchNotFoundException;
 import com.jeleniasty.betapp.features.match.dto.MatchDTO;
 import com.jeleniasty.betapp.features.match.dto.UpcomingMatchDTO;
