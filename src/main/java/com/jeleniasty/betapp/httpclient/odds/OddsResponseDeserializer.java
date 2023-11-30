@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import java.io.IOException;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class OddsResponseDeserializer extends StdDeserializer<OddsResponse> {
     String competition = oddsResponse.get("sport_title").asText();
     String homeTeam = oddsResponse.get("home_team").asText();
     String awayTeam = oddsResponse.get("away_team").asText();
-    Instant commenceTime = Instant.parse(
+    LocalDateTime commenceTime = LocalDateTime.parse(
       oddsResponse.get("commence_time").asText()
     );
     List<Outcome> outcomes = new ArrayList<>();
