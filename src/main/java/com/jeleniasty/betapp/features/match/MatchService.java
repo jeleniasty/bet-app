@@ -35,7 +35,7 @@ public class MatchService {
     var awayTeam = matchDTO.awayTeam();
 
     var matchToSave =
-      this.matchRepository.findByHomeTeamNameAndAwayTeamNameAndDate(
+      this.matchRepository.findByHomeTeamNameContainingAndAwayTeamNameContainingAndDate(
           homeTeam.name(),
           awayTeam.name(),
           matchDTO.date()
