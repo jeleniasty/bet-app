@@ -71,12 +71,12 @@ public class MatchService {
     }
 
     if (areTeamsAssigned(homeTeam, awayTeam)) {
-      matchToSave.assignHomeTeam(
+      matchToSave.setHomeTeam(
         this.teamService.fetchOrSaveTeam(
             new TeamDTO(null, homeTeam.name(), homeTeam.code(), homeTeam.flag())
           )
       );
-      matchToSave.assignAwayTeam(
+      matchToSave.setAwayTeam(
         this.teamService.fetchOrSaveTeam(
             new TeamDTO(null, awayTeam.name(), awayTeam.code(), awayTeam.flag())
           )
@@ -89,13 +89,13 @@ public class MatchService {
     return matchDTO.resultDTO().winner() != null;
   }
 
-  public Match fetchMatch(Long matchId) {
+  public Match findMatch(Long matchId) {
     return matchRepository
       .findById(matchId)
       .orElseThrow(() -> new MatchNotFoundException(matchId));
   }
 
-  public List<Match> fetchMatchesFromDate(Instant utcDate) {
+  public List<Match> findMatches(Instant utcDate) {
     return this.matchRepository.findAllByDateBetween(
         getDateWithGivenTime(utcDate, LocalTime.MIN),
         getDateWithGivenTime(utcDate, LocalTime.MAX)
@@ -105,7 +105,7 @@ public class MatchService {
   @Transactional
   public void setMatchResult(SaveMatchResultDTO saveMatchResultDTO) {
     var result = resultService.saveResult(saveMatchResultDTO.resultDTO());
-    var matchToBeUpdated = fetchMatch(saveMatchResultDTO.matchId());
+    var matchToBeUpdated = findMatch(saveMatchResultDTO.matchId());
 
     matchToBeUpdated.setStatus(saveMatchResultDTO.status());
     matchToBeUpdated.setResult(result);

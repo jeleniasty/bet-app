@@ -1,5 +1,6 @@
 package com.jeleniasty.betapp.features.match.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.jeleniasty.betapp.features.bet.Bet;
 import com.jeleniasty.betapp.features.competition.Competition;
 import com.jeleniasty.betapp.features.result.Result;
@@ -34,6 +35,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @NoArgsConstructor
 @Getter
 @Setter
+@JsonIgnoreProperties({ "competition" })
 public class Match {
 
   @Id
@@ -98,11 +100,11 @@ public class Match {
   @JoinColumn(name = "result")
   private Result result;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne
   @JoinColumn(name = "home_team")
   private Team homeTeam;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne
   @JoinColumn(name = "away_team")
   private Team awayTeam;
 
@@ -136,15 +138,5 @@ public class Match {
   public void assignCompetition(Competition competition) {
     competition.getCompetitionMatches().add(this);
     this.setCompetition(competition);
-  }
-
-  public void assignHomeTeam(Team homeTeam) {
-    homeTeam.getHomeMatches().add(this);
-    this.setHomeTeam(homeTeam);
-  }
-
-  public void assignAwayTeam(Team awayTeam) {
-    awayTeam.getAwayMatches().add(this);
-    this.setAwayTeam(awayTeam);
   }
 }
