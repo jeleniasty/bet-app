@@ -121,7 +121,7 @@ public class MatchService {
     return matchRepository.findTop10ByStatusOrderByDate();
   }
 
-  public CompetitionDTO getUpcomingMatch(Long id) {
+  public MatchDTO getUpcomingMatch(Long id) {
     var match = matchRepository
       .findById(id)
       .orElseThrow(() -> new MatchNotFoundException(id));
@@ -146,42 +146,30 @@ public class MatchService {
     );
   }
 
-  public CompetitionDTO mapToDTO(Match match) {
-    return new CompetitionDTO(
-      match.getCompetition().getId(),
-      match.getCompetition().getName(),
-      match.getCompetition().getCode(),
-      match.getCompetition().getType(),
-      match.getCompetition().getSeason(),
-      match.getCompetition().getEmblem(),
-      match.getCompetition().getStartDate(),
-      match.getCompetition().getEndDate(),
-      List.of(
-        new MatchDTO(
-          match.getId(),
-          new TeamDTO(
-            match.getHomeTeam().getId(),
-            match.getHomeTeam().getName(),
-            match.getHomeTeam().getCode(),
-            match.getHomeTeam().getFlag()
-          ),
-          new TeamDTO(
-            match.getAwayTeam().getId(),
-            match.getAwayTeam().getName(),
-            match.getAwayTeam().getCode(),
-            match.getAwayTeam().getFlag()
-          ),
-          match.getHomeOdds(),
-          match.getAwayOdds(),
-          match.getDrawOdds(),
-          match.getStatus(),
-          match.getStage(),
-          match.getGroup(),
-          match.getDate(),
-          this.resultService.mapToDTO(match.getResult()),
-          match.getExternalId()
-        )
-      )
+  public MatchDTO mapToDTO(Match match) {
+    return new MatchDTO(
+      match.getId(),
+      new TeamDTO(
+        match.getHomeTeam().getId(),
+        match.getHomeTeam().getName(),
+        match.getHomeTeam().getCode(),
+        match.getHomeTeam().getFlag()
+      ),
+      new TeamDTO(
+        match.getAwayTeam().getId(),
+        match.getAwayTeam().getName(),
+        match.getAwayTeam().getCode(),
+        match.getAwayTeam().getFlag()
+      ),
+      match.getHomeOdds(),
+      match.getAwayOdds(),
+      match.getDrawOdds(),
+      match.getStatus(),
+      match.getStage(),
+      match.getGroup(),
+      match.getDate(),
+      this.resultService.mapToDTO(match.getResult()),
+      match.getExternalId()
     );
   }
 
