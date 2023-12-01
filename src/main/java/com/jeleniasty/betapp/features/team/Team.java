@@ -1,13 +1,17 @@
 package com.jeleniasty.betapp.features.team;
 
+import com.jeleniasty.betapp.features.team.namevariation.NameVariation;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -40,6 +44,9 @@ public class Team {
   @NotNull
   @Column(name = "flag")
   private String flag;
+
+  @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<NameVariation> nameVariations;
 
   public Team(
     @NotNull String name,

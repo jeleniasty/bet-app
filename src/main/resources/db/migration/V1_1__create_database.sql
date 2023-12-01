@@ -92,8 +92,23 @@ CREATE TABLE team (
                 name text  NOT NULL UNIQUE,
                 code varchar(3)  NOT NULL,
                 flag text NOT NULL,
+                name_variations text NULL,
                 CONSTRAINT team_pk PRIMARY KEY (id)
 );
+
+CREATE TABLE name_variation (
+    id serial NOT NULL,
+    variation text NOT NULL,
+    team bigint NOT NULL,
+    CONSTRAINT name_variation_pk PRIMARY KEY (id)
+);
+
+ALTER TABLE name_variation ADD CONSTRAINT name_variation_team
+    FOREIGN KEY (team)
+        REFERENCES team(id)
+        NOT DEFERRABLE
+            INITIALLY IMMEDIATE
+;
 
 ALTER TABLE match ADD CONSTRAINT home_team_match
     FOREIGN KEY (home_team)
