@@ -35,7 +35,7 @@ public class MatchResultScheduler {
   @Scheduled(cron = "0 0 * * * *")
   @EventListener(ApplicationReadyEvent.class)
   public void setForTodayMatches() {
-    var todaysMatches = this.matchService.fetchMatchesFromDate(Instant.now());
+    var todaysMatches = this.matchService.findMatches(Instant.now());
 
     todaysMatches
       .stream()
