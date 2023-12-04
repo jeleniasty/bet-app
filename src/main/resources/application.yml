@@ -36,4 +36,6 @@ betapp:
       PD: "soccer_spain_la_liga"
       BL1: "soccer_germany_bundesliga"
       PL: "soccer_epl"
+      SA: "soccer_italy_serie_a"
+
 
