@@ -45,7 +45,7 @@ public class Team {
   @Column(name = "flag")
   private String flag;
 
-  @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
   private Set<NameVariation> nameVariations;
 
   public Team(
