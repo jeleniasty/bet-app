@@ -41,14 +41,7 @@ public class MatchService {
           matchDTO.date()
         )
         .map(match -> {
-          match.setStatus(matchDTO.status());
-          match.setStage(matchDTO.stage());
-          match.setGroup(matchDTO.group());
-          match.setHomeOdds(matchDTO.homeOdds());
-          match.setAwayOdds(matchDTO.awayOdds());
-          match.setDrawOdds(matchDTO.drawOdds());
           match.setDate(matchDTO.date());
-          match.setExternalId(matchDTO.externalId());
 
           return match;
         })
@@ -57,9 +50,9 @@ public class MatchService {
             matchDTO.status(),
             matchDTO.stage(),
             matchDTO.group(),
-            2.11f,
-            1.23f,
-            1.45f,
+            1.00f,
+            1.00f,
+            1.00f,
             matchDTO.date(),
             matchDTO.externalId()
           );
@@ -70,7 +63,9 @@ public class MatchService {
       matchToSave.setResult(resultService.saveResult(matchDTO.resultDTO()));
     }
 
-    if (areTeamsAssigned(homeTeam, awayTeam)) {
+    if (
+      areTeamsAssigned(homeTeam, awayTeam) && areTeamsAlreadySaved(matchToSave)
+    ) {
       matchToSave.setHomeTeam(
         this.teamService.fetchOrSaveTeam(
             new TeamDTO(null, homeTeam.name(), homeTeam.code(), homeTeam.flag())
@@ -174,6 +169,12 @@ public class MatchService {
 
   private boolean areTeamsAssigned(TeamDTO homeTeam, TeamDTO awayTeam) {
     return homeTeam.name() != null && awayTeam.name() != null;
+  }
+
+  private boolean areTeamsAlreadySaved(Match matchToSave) {
+    return (
+      matchToSave.getHomeTeam() != null && matchToSave.getAwayTeam() != null
+    );
   }
 
   private LocalDateTime getDateWithGivenTime(Instant utcDate, LocalTime time) {
