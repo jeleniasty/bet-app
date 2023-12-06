@@ -38,4 +38,10 @@ betapp:
       PL: "soccer_epl"
       SA: "soccer_italy_serie_a"
 
+googlesheets:
+  name: "betapp"
+  spreadsheet-id: "1eP4nqxSTtPiAfWQVgxgJ3VaPowyz627cwlwcrhrgBS0"
+  credentials-filepath: "/credentials.json"
+  tokens-directorypath: tokens
+
 
