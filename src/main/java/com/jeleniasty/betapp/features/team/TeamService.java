@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 public class TeamService {
 
   private final TeamRepository teamRepository;
+  private final TeamNamesDictionary teamNamesDictionary;
 
   public Team fetchOrSaveTeam(TeamDTO teamDTO) {
     var teamEntity = teamRepository
@@ -26,6 +27,10 @@ public class TeamService {
       teamResponse.tla(),
       teamResponse.crest()
     );
+  }
+
+  public void synchroniseDictionary() {
+    this.teamNamesDictionary.updateDictionary();
   }
 
   private Team mapToEntity(TeamDTO teamDTO) {

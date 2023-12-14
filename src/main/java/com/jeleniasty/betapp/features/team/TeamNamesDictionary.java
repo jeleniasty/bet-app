@@ -7,32 +7,36 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class TeamNamesDictionary {
 
   private final GoogleSheetsService googleSheetsService;
 
   @Getter
-  private final Map<String, List<String>> teamNamesDictionary;
+  private Map<String, List<String>> teamNamesDictionary;
 
   public TeamNamesDictionary(GoogleSheetsService googleSheetsService) {
     this.googleSheetsService = googleSheetsService;
+    this.teamNamesDictionary = getTeamNameVariations();
+  }
+
+  public void updateDictionary() {
+    this.teamNamesDictionary = getTeamNameVariations();
+  }
+
+  private Map<String, List<String>> getTeamNameVariations() {
+    Map<String, List<String>> dictionary = new HashMap<>();
+    List<List<Object>> sheetRows;
     try {
-      this.teamNamesDictionary = createDictionary();
+      sheetRows = this.googleSheetsService.getSpreadsheetValues();
     } catch (GeneralSecurityException | IOException e) {
       throw new RuntimeException(e);
     }
-  }
-
-  //TODO add more specific exception handling
-
-  private Map<String, List<String>> createDictionary()
-    throws GeneralSecurityException, IOException {
-    Map<String, List<String>> dictionary = new HashMap<>();
-    var sheetRows = this.googleSheetsService.getSpreadsheetValues();
-
+    //TODO add more specific exception handling
     for (List<Object> row : sheetRows) {
       if (!row.isEmpty()) {
         var key = row.get(0).toString();
@@ -45,6 +49,8 @@ public class TeamNamesDictionary {
         dictionary.put(key, alternativeTeamNames);
       }
     }
+
+    log.info("Team names dictionary synchronised with Spreadsheet");
 
     return dictionary;
   }
