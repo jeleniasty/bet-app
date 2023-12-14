@@ -21,14 +21,14 @@ public class OddsHttpClient {
   public List<OddsResponse> getOddsData(String competition) {
     return webClient
       .get()
-      .uri(constructGetMatchURL(competition))
+      .uri(constructGetOddsURL(competition))
       .retrieve()
       .bodyToFlux(OddsResponse.class)
       .collectList()
       .block();
   }
 
-  private String constructGetMatchURL(String competitionKey) {
+  private String constructGetOddsURL(String competitionKey) {
     return (
       baseUrl +
       "/v4/sports/" +
