@@ -1,7 +1,7 @@
 package com.jeleniasty.betapp.features.match;
 
 import com.jeleniasty.betapp.features.bet.SaveMatchResultDTO;
-import com.jeleniasty.betapp.features.competition.CompetitionDTO;
+import com.jeleniasty.betapp.features.match.dto.MatchDTO;
 import com.jeleniasty.betapp.features.match.dto.UpcomingMatchDTO;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -27,13 +27,11 @@ public class MatchController {
   }
 
   @GetMapping("/match/{id}")
-  public ResponseEntity<CompetitionDTO> getUpcomingMatch(
-    @PathVariable Long id
-  ) {
+  public ResponseEntity<MatchDTO> getUpcomingMatch(@PathVariable Long id) {
     return ResponseEntity.ok(matchService.getUpcomingMatch(id));
   }
 
-  @GetMapping("matches/upcoming")
+  @GetMapping("/matches/upcoming")
   public ResponseEntity<List<UpcomingMatchDTO>> getUpcomingMatches() {
     return ResponseEntity.ok(matchService.getUpcomingMatches());
   }
