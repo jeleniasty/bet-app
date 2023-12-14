@@ -3,7 +3,10 @@ package com.jeleniasty.betapp.features.odds;
 import com.jeleniasty.betapp.httpclient.odds.OddsHttpClient;
 import com.jeleniasty.betapp.httpclient.odds.OddsResponse;
 import com.jeleniasty.betapp.httpclient.odds.Outcome;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
+import java.util.stream.DoubleStream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,38 +17,40 @@ public class OddsService {
   private final OddsHttpClient oddsHttpClient;
 
   public List<MatchOddsDTO> getCompetitionOdds(String competitionKey) {
-    var competitionOdds = this.oddsHttpClient.getMatchData(competitionKey);
+    var competitionOdds = this.oddsHttpClient.getOddsData(competitionKey);
 
     return competitionOdds.stream().map(this::getMatchOdds).toList();
   }
 
   private MatchOddsDTO getMatchOdds(OddsResponse oddsResponse) {
-    var homeOdds = oddsResponse
-      .outcomes()
-      .stream()
-      .mapToDouble(Outcome::homeOdds)
-      .average()
-      .orElse(1.00);
-    var awayOdds = oddsResponse
-      .outcomes()
-      .stream()
-      .mapToDouble(Outcome::awayOdds)
-      .average()
-      .orElse(1.00);
-    var drawOdds = oddsResponse
-      .outcomes()
-      .stream()
-      .mapToDouble(Outcome::drawOdds)
-      .average()
-      .orElse(1.00);
+    var homeOdds = getAverageOdds(
+      oddsResponse.outcomes().stream().mapToDouble(Outcome::homeOdds)
+    );
+    var awayOdds = getAverageOdds(
+      oddsResponse.outcomes().stream().mapToDouble(Outcome::awayOdds)
+    );
+    var drawOdds = getAverageOdds(
+      oddsResponse.outcomes().stream().mapToDouble(Outcome::drawOdds)
+    );
 
     return new MatchOddsDTO(
       oddsResponse.homeTeam(),
       oddsResponse.awayTeam(),
       oddsResponse.commenceTime(),
-      (float) homeOdds,
-      (float) awayOdds,
-      (float) drawOdds
+      homeOdds,
+      awayOdds,
+      drawOdds
     );
+  }
+
+  private double getAverageOdds(DoubleStream odds) {
+    return truncateToTwoDigitsPrecision(odds.average().orElse(1.00));
+  }
+
+  private double truncateToTwoDigitsPrecision(double value) {
+    return BigDecimal
+      .valueOf(value)
+      .setScale(2, RoundingMode.HALF_UP)
+      .doubleValue();
   }
 }
