@@ -1,4 +1,4 @@
-package com.jeleniasty.betapp;
+package com.jeleniasty.betapp.utils;
 
 import com.jeleniasty.betapp.config.GoogleAuthorizationConfig;
 import java.io.IOException;
