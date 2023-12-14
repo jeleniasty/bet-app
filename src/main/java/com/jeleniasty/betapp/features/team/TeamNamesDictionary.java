@@ -1,6 +1,6 @@
 package com.jeleniasty.betapp.features.team;
 
-import com.jeleniasty.betapp.GoogleSheetsService;
+import com.jeleniasty.betapp.utils.GoogleSheetsService;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.HashMap;
