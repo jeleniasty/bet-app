@@ -51,19 +51,19 @@ public class OddsResponseDeserializer extends StdDeserializer<OddsResponse> {
           JsonNode market = bookmaker.get("markets").get(0);
           if (market.has("outcomes") && market.get("outcomes").isArray()) {
             JsonNode outcomesNode = market.get("outcomes");
-            double homeOdds = 1;
-            double awayOdds = 1;
-            double drawOdds = 1;
+            float homeOdds = 1;
+            float awayOdds = 1;
+            float drawOdds = 1;
             for (JsonNode outcomeNode : outcomesNode) {
               String outcomeName = outcomeNode.get("name").asText();
               double outcomePrice = outcomeNode.get("price").asDouble();
 
               if (outcomeName.equals(homeTeam)) {
-                homeOdds = outcomePrice;
+                homeOdds = (float) outcomePrice;
               } else if (outcomeName.equals(awayTeam)) {
-                awayOdds = outcomePrice;
+                awayOdds = (float) outcomePrice;
               } else if (outcomeName.equals("Draw")) {
-                drawOdds = outcomePrice;
+                drawOdds = (float) outcomePrice;
               }
             }
             outcomes.add(
