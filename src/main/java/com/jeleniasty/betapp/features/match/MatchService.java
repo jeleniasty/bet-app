@@ -6,6 +6,7 @@ import com.jeleniasty.betapp.features.match.dto.MatchDTO;
 import com.jeleniasty.betapp.features.match.dto.UpcomingMatchDTO;
 import com.jeleniasty.betapp.features.match.model.Match;
 import com.jeleniasty.betapp.features.match.model.MatchStatus;
+import com.jeleniasty.betapp.features.odds.MatchOddsDTO;
 import com.jeleniasty.betapp.features.result.ResultService;
 import com.jeleniasty.betapp.features.team.TeamDTO;
 import com.jeleniasty.betapp.features.team.TeamService;
@@ -16,12 +17,14 @@ import java.time.LocalTime;
 import java.time.ZoneOffset;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MatchService {
 
   private final MatchRepository matchRepository;
@@ -64,7 +67,7 @@ public class MatchService {
     }
 
     if (
-      areTeamsAssigned(homeTeam, awayTeam) && areTeamsAlreadySaved(matchToSave)
+      areTeamsAssigned(homeTeam, awayTeam) && !areTeamsAlreadySaved(matchToSave)
     ) {
       matchToSave.setHomeTeam(
         this.teamService.fetchOrSaveTeam(
@@ -110,6 +113,35 @@ public class MatchService {
       );
     }
   }
+
+  public void setMatchOdds(MatchOddsDTO odd) {
+    var homeTeam = this.teamService.findTeam(odd.homeTeamName());
+    var awayTeam = this.teamService.findTeam(odd.awayTeamName());
+
+    var match =
+      this.matchRepository.findByHomeTeamNameContainingAndAwayTeamNameContainingAndDate(
+          homeTeam.getName(),
+          awayTeam.getName(),
+          odd.date()
+        );
+    if (match.isEmpty()) {
+      log.error(
+        "Match not found: " +
+        homeTeam.getName() +
+        " vs " +
+        awayTeam.getName() +
+        " timed for " +
+        odd.date()
+      );
+      return;
+    }
+    match.get().setHomeOdds(odd.homeOdds());
+    match.get().setAwayOdds(odd.awayOdds());
+    match.get().setDrawOdds(odd.drawOdds());
+    this.matchRepository.save(match.get());
+  }
+
+  //TODO add functionality to match date inconsistencies
 
   public List<UpcomingMatchDTO> getUpcomingMatches() {
     return matchRepository.findTop10ByStatusOrderByDate();
