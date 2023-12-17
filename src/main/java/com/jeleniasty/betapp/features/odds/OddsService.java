@@ -43,14 +43,14 @@ public class OddsService {
     );
   }
 
-  private double getAverageOdds(DoubleStream odds) {
+  private float getAverageOdds(DoubleStream odds) {
     return truncateToTwoDigitsPrecision(odds.average().orElse(1.00));
   }
 
-  private double truncateToTwoDigitsPrecision(double value) {
+  private float truncateToTwoDigitsPrecision(double value) {
     return BigDecimal
       .valueOf(value)
       .setScale(2, RoundingMode.HALF_UP)
-      .doubleValue();
+      .floatValue();
   }
 }
