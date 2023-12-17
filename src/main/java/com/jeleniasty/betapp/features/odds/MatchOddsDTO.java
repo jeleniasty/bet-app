@@ -6,7 +6,7 @@ public record MatchOddsDTO(
   String homeTeamName,
   String awayTeamName,
   LocalDateTime date,
-  double homeOdds,
-  double awayOdds,
-  double drawOdds
+  float homeOdds,
+  float awayOdds,
+  float drawOdds
 ) {}

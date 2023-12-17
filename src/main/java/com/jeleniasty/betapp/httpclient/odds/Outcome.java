@@ -5,7 +5,7 @@ import java.time.Instant;
 public record Outcome(
   String title,
   Instant lastUpdate,
-  double homeOdds,
-  double awayOdds,
-  double drawOdds
+  float homeOdds,
+  float awayOdds,
+  float drawOdds
 ) {}
