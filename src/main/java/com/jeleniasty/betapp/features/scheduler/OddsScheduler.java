@@ -21,13 +21,14 @@ public class OddsScheduler {
   private final BetAppProperties betAppProperties;
   private final MatchService matchService;
 
-  @Scheduled(cron = "*/30 * * * * *")
+  @Scheduled(cron = "0 */30 * * * *")
   public void setOdds() {
     var availableOdds = collectAvailableOdds(
       betAppProperties.getTheOddsApi().getCompetitionKey()
     );
 
     availableOdds.forEach(this.matchService::setMatchOdds);
+    log.info("Available odds updated");
   }
 
   //TODO more frequent scheduler added dynamically
