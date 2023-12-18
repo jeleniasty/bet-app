@@ -21,7 +21,7 @@ public class OddsScheduler {
   private final BetAppProperties betAppProperties;
   private final MatchService matchService;
 
-  @Scheduled(cron = "0 */30 * * * *")
+  @Scheduled(cron = "0 */15 * * * *")
   public void setOdds() {
     var availableOdds = collectAvailableOdds(
       betAppProperties.getTheOddsApi().getCompetitionKey()
@@ -31,9 +31,7 @@ public class OddsScheduler {
     log.info("Available odds updated");
   }
 
-  //TODO more frequent scheduler added dynamically
-
-  public List<MatchOddsDTO> collectAvailableOdds(
+  private List<MatchOddsDTO> collectAvailableOdds(
     Map<String, String> competitionKeys
   ) {
     return competitionKeys
