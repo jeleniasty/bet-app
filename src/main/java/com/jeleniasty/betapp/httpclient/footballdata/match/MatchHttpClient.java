@@ -41,7 +41,6 @@ public class MatchHttpClient {
       .block();
   }
 
-  //TODO fix bug with request throttling to 10 per minute
   private String constructGetMatchURL(long matchExternalId) {
     return (baseUrl + "/v4/matches/" + matchExternalId);
   }
