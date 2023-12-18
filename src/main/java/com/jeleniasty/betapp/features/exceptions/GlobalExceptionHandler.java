@@ -68,6 +68,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     return createCustomError(HttpStatus.BAD_REQUEST, pastMatchBetException);
   }
 
+  @ExceptionHandler(RequestLimitExceededException.class)
+  protected void handleRequestLimitExceededException(
+    RequestLimitExceededException requestLimitExceededException
+  ) {
+    log.warn(requestLimitExceededException.getMessage());
+  }
+
   private ResponseEntity<CustomError> createCustomError(
     HttpStatus httpStatus,
     Exception exception
