@@ -28,4 +28,6 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
     LocalDateTime startDate,
     LocalDateTime endDate
   );
+
+  Optional<Match> findByExternalId(Long externalId);
 }
