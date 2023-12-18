@@ -92,6 +92,12 @@ public class MatchService {
       .orElseThrow(() -> new MatchNotFoundException(matchId));
   }
 
+  public Match findMatchByExternalId(Long externalId) {
+    return matchRepository
+      .findByExternalId(externalId)
+      .orElseThrow(() -> new MatchNotFoundException(externalId));
+  }
+
   public List<Match> findMatches(Instant utcDate) {
     return this.matchRepository.findAllByDateBetween(
         getDateWithGivenTime(utcDate, LocalTime.MIN),
@@ -101,11 +107,12 @@ public class MatchService {
 
   @Transactional
   public void setMatchResult(SaveMatchResultDTO saveMatchResultDTO) {
-    var result = resultService.saveResult(saveMatchResultDTO.resultDTO());
-    var matchToBeUpdated = findMatch(saveMatchResultDTO.matchId());
+    var matchToBeUpdated = findMatchByExternalId(saveMatchResultDTO.matchId());
 
     matchToBeUpdated.setStatus(saveMatchResultDTO.status());
-    matchToBeUpdated.setResult(result);
+    matchToBeUpdated.setResult(
+      resultService.saveResult(saveMatchResultDTO.resultDTO())
+    );
     if (saveMatchResultDTO.status() == MatchStatus.FINISHED) {
       eventPublisher.publishEvent(
         new MatchCompletionEvent(matchToBeUpdated.getId())

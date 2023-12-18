@@ -20,8 +20,9 @@ spring:
 scheduler:
   enabled: true
   duration:
-    match-result-task: 5
-    odds-task: 60
+    match-result-task-cron: 2 2 * * * *
+    match-result-update-millis: 60000
+    odds-task-cron: 0 */15 * * * *
 
 betapp:
   footballdata:
