@@ -59,7 +59,7 @@ public class BetappUser {
 
   @NotNull
   @Column(name = "points")
-  private Integer points;
+  private Double points;
 
   @CreationTimestamp
   @Column(name = "created_at", updatable = false)
@@ -107,7 +107,7 @@ public class BetappUser {
     @NotNull String username,
     @NotNull String email,
     @NotNull String password,
-    @NotNull Integer points,
+    @NotNull Double points,
     Set<Role> roles
   ) {
     this.username = username;

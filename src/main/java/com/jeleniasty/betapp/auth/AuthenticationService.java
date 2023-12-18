@@ -25,7 +25,7 @@ public class AuthenticationService {
       request.username(),
       request.email(),
       passwordEncoder.encode(request.password()),
-      0,
+      0.00d,
       request
         .roleNames()
         .stream()
