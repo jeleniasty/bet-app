@@ -21,7 +21,7 @@ public class OddsScheduler {
   private final BetAppProperties betAppProperties;
   private final MatchService matchService;
 
-  @Scheduled(cron = "0 */15 * * * *")
+  @Scheduled(cron = "${scheduler.duration.odds-task-cron}")
   public void setOdds() {
     var availableOdds = collectAvailableOdds(
       betAppProperties.getTheOddsApi().getCompetitionKey()
