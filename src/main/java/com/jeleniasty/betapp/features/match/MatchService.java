@@ -48,8 +48,8 @@ public class MatchService {
 
           return match;
         })
-        .orElseGet(() -> {
-          return new Match(
+        .orElseGet(() ->
+          new Match(
             matchDTO.status(),
             matchDTO.stage(),
             matchDTO.group(),
@@ -58,9 +58,8 @@ public class MatchService {
             1.00f,
             matchDTO.date(),
             matchDTO.externalId()
-          );
-          //TODO change mocked odds with real fetching odds from external API
-        });
+          )
+        );
 
     if (isMatchCompleted(matchDTO)) {
       matchToSave.setResult(resultService.saveResult(matchDTO.resultDTO()));
@@ -141,7 +140,7 @@ public class MatchService {
     this.matchRepository.save(match.get());
   }
 
-  //TODO add functionality to match date inconsistencies
+  //TODO add functionality to handle match date inconsistencies
 
   public List<UpcomingMatchDTO> getUpcomingMatches() {
     return matchRepository.findTop10ByStatusOrderByDate();
@@ -161,8 +160,8 @@ public class MatchService {
       this.teamService.mapToDTO(matchResponse.homeTeam()),
       this.teamService.mapToDTO(matchResponse.awayTeam()),
       1f,
-      2f,
-      3f,
+      1f,
+      1f,
       matchResponse.status(),
       matchResponse.stage(),
       matchResponse.group(),
