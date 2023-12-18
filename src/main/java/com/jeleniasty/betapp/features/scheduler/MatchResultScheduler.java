@@ -32,7 +32,7 @@ public class MatchResultScheduler {
   @Value("${scheduler.duration.match-result-task}")
   private int duration;
 
-  @Scheduled(cron = "0 0 * * * *")
+  @Scheduled(cron = "2 2 * * * *")
   @EventListener(ApplicationReadyEvent.class)
   public void setForTodayMatches() {
     var todaysMatches = this.matchService.findMatches(Instant.now());
