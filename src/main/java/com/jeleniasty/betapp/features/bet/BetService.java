@@ -2,11 +2,14 @@ package com.jeleniasty.betapp.features.bet;
 
 import com.jeleniasty.betapp.features.exceptions.PastMatchBetException;
 import com.jeleniasty.betapp.features.match.MatchService;
+import com.jeleniasty.betapp.features.match.model.Match;
 import com.jeleniasty.betapp.features.result.Result;
 import com.jeleniasty.betapp.features.result.ResultService;
 import com.jeleniasty.betapp.features.result.Winner;
 import com.jeleniasty.betapp.features.result.score.Score;
 import com.jeleniasty.betapp.features.user.BetappUserService;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -46,7 +49,7 @@ public class BetService {
         )
       )
       .toList();
-    //TODO analyse need of usign Hibernate.unproxy here and why double getter did not initialize related entity
+    //TODO analyse need of using Hibernate.unproxy here and why double getter did not initialize related entity
   }
 
   @Transactional
@@ -68,45 +71,75 @@ public class BetService {
 
   @Transactional
   public void assignPoints(Long matchId) {
-    var matchResult = matchService.findMatch(matchId).getResult();
+    var match = matchService.findMatch(matchId);
 
     var bets = betRepository.findAllByMatchId(matchId);
 
-    assignPointsForFullTimeResultBets(
-      findWinningFullTimeResultBets(bets, matchResult.getWinner())
-    );
+    assignPointsForFullTimeResultBets(bets, match);
 
-    assignPointsForCorrectScoreBets(
-      findWinningCorrectScoreBets(bets, matchResult)
-    );
+    assignPointsForCorrectScoreBets(bets, match);
   }
 
-  private void assignPointsForFullTimeResultBets(List<Bet> fullTimeResultBets) {
-    var playersWithAssignedPoints = fullTimeResultBets
+  private void assignPointsForFullTimeResultBets(
+    List<Bet> fullTimeResultBets,
+    Match match
+  ) {
+    var playersWithAssignedPoints = findWinningFullTimeResultBets(
+      fullTimeResultBets,
+      match.getResult().getWinner()
+    )
       .stream()
       .map(Bet::getPlayer)
       .map(betappUser -> {
-        betappUser.setPoints(betappUser.getPoints() + FULL_TIME_RESULT_POINTS);
+        betappUser.setPoints(
+          betappUser.getPoints() +
+          calculatePoints(getWinnerOdds(match), FULL_TIME_RESULT_POINTS)
+        );
         return betappUser;
       })
       .toList();
 
-    //todo calculation of points based on odds
     betappUserService.savePlayers(playersWithAssignedPoints);
   }
 
-  private void assignPointsForCorrectScoreBets(List<Bet> correctScoreBets) {
-    var playersWithAssignedPoints = correctScoreBets
+  private void assignPointsForCorrectScoreBets(
+    List<Bet> correctScoreBets,
+    Match match
+  ) {
+    var playersWithAssignedPoints = findWinningCorrectScoreBets(
+      correctScoreBets,
+      match.getResult()
+    )
       .stream()
       .map(Bet::getPlayer)
       .map(betappUser -> {
-        betappUser.setPoints(betappUser.getPoints() + CORRECT_SCORE_POINTS);
+        betappUser.setPoints(
+          betappUser.getPoints() +
+          calculatePoints(getWinnerOdds(match), CORRECT_SCORE_POINTS)
+        );
         return betappUser;
       })
       .toList();
 
-    //todo calculation of points based on odds
     betappUserService.savePlayers(playersWithAssignedPoints);
+  }
+
+  private double calculatePoints(float odds, int scoreMultiplier) {
+    return new BigDecimal(Float.toString(odds))
+      .multiply(BigDecimal.valueOf(scoreMultiplier))
+      .setScale(2, RoundingMode.HALF_UP)
+      .doubleValue();
+  }
+
+  private float getWinnerOdds(Match match) {
+    var matchWinner = match.getResult().getWinner();
+    if (matchWinner == Winner.HOME_TEAM) {
+      return match.getHomeOdds();
+    } else if (matchWinner == Winner.AWAY_TEAM) {
+      return match.getAwayOdds();
+    } else {
+      return match.getDrawOdds();
+    }
   }
 
   private List<Bet> findWinningFullTimeResultBets(
