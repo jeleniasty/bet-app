@@ -7,13 +7,13 @@ import com.jeleniasty.betapp.features.match.model.MatchStatus;
 import com.jeleniasty.betapp.features.result.ResultService;
 import com.jeleniasty.betapp.httpclient.footballdata.MatchResponse;
 import com.jeleniasty.betapp.httpclient.footballdata.match.MatchHttpClient;
-import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.function.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -29,10 +29,9 @@ public class MatchResultScheduler {
   private final ResultService resultService;
   private final MatchHttpClient matchHttpClient;
 
-  @Value("${scheduler.duration.match-result-task}")
-  private int duration;
+  private final Queue<Long> taskQueue = new LinkedList<>();
 
-  @Scheduled(cron = "2 2 * * * *")
+  @Scheduled(cron = "${scheduler.duration.match-result-task-cron}")
   @EventListener(ApplicationReadyEvent.class)
   public void setTasksForTodayMatches() {
     var todaysMatches = this.matchService.findMatches(Instant.now());
@@ -41,35 +40,39 @@ public class MatchResultScheduler {
       .stream()
       .filter(isMatchCompleted())
       .map(match ->
-        new Task(
+        new DelayedTask(
           match.getExternalId(),
           match.getDate().toInstant(ZoneOffset.UTC),
-          Duration.ofMinutes(duration),
-          () -> tryToSaveResult(match)
+          () -> this.taskQueue.add(match.getExternalId())
         )
       )
-      .forEach(this.schedulerService::scheduleTask);
+      .forEach(this.schedulerService::scheduleTaskExecution);
   }
 
-  private void tryToSaveResult(Match match) {
-    var matchExternalId = match.getExternalId();
+  @Scheduled(
+    fixedDelayString = "${scheduler.duration.match-result-update-millis}"
+  )
+  public void updateMatchResults() {
+    if (!this.taskQueue.isEmpty()) {
+      this.taskQueue.forEach(this::tryToSaveResult);
+    }
+  }
 
+  private void tryToSaveResult(Long matchExternalId) {
     var matchExternalData = matchHttpClient.getMatchData(matchExternalId);
-
     if (isResultAvailable(matchExternalData)) {
       this.matchService.setMatchResult(
           new SaveMatchResultDTO(
             this.resultService.mapToDTO(matchExternalData.score()),
-            match.getId(),
+            null,
             matchExternalData.status()
           )
         );
 
       if (matchExternalData.status() == MatchStatus.FINISHED) {
-        this.schedulerService.cancelScheduledTask(matchExternalId);
-        log.info(
-          "Result added. Cancelling task with id '" + matchExternalId + "'"
-        );
+        this.taskQueue.remove();
+      } else {
+        this.taskQueue.add(this.taskQueue.remove());
       }
     }
   }
