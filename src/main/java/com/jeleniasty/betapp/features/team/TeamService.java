@@ -51,6 +51,8 @@ public class TeamService {
       .orElseThrow(() -> new TeamNotFoundException(teamName));
   }
 
+  //TODO update spreadsheet with new team name variation if none is found in existing dictionary
+
   private List<String> getTeamNamesFromDictionary(String teamName) {
     return this.teamNamesDictionary.getTeamNamesDictionary().get(teamName);
   }
