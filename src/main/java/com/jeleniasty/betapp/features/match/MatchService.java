@@ -48,18 +48,19 @@ public class MatchService {
 
           return match;
         })
-        .orElseGet(() ->
-          new Match(
+        .orElseGet(() -> {
+          var newMatch = new Match(
             matchDTO.status(),
             matchDTO.stage(),
             matchDTO.group(),
-            1.00f,
-            1.00f,
-            1.00f,
+            matchDTO.homeOdds(),
+            matchDTO.awayOdds(),
+            matchDTO.drawOdds(),
             matchDTO.date(),
             matchDTO.externalId()
-          )
-        );
+          );
+          return this.matchRepository.save(newMatch);
+        });
 
     if (isMatchCompleted(matchDTO)) {
       matchToSave.setResult(resultService.saveResult(matchDTO.resultDTO()));
