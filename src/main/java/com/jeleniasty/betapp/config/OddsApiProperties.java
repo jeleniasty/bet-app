@@ -8,18 +8,10 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties(prefix = "betapp")
+@ConfigurationProperties(prefix = "betapp.theoddsapi")
 @Getter
 @Setter
-public class BetAppProperties {
+public class OddsApiProperties {
 
-  @NestedConfigurationProperty
-  private TheOddsApiProperties theOddsApi;
-
-  @Getter
-  @Setter
-  public static class TheOddsApiProperties {
-
-    private Map<String, String> competitionKey;
-  }
+  private Map<String, String> competitionKey;
 }
