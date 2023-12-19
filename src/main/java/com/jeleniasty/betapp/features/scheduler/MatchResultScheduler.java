@@ -29,7 +29,7 @@ public class MatchResultScheduler {
   private final ResultService resultService;
   private final MatchHttpClient matchHttpClient;
 
-  private final Queue<Long> taskQueue = new LinkedList<>();
+  private final Queue<Long> ongoingMatches = new LinkedList<>();
 
   @Scheduled(cron = "${scheduler.duration.match-result-task-cron}")
   @EventListener(ApplicationReadyEvent.class)
@@ -38,12 +38,12 @@ public class MatchResultScheduler {
 
     todaysMatches
       .stream()
-      .filter(isMatchCompleted())
+      .filter(isMatchNotCompleted())
       .map(match ->
         new DelayedTask(
           match.getExternalId(),
           match.getDate().toInstant(ZoneOffset.UTC),
-          () -> this.taskQueue.add(match.getExternalId())
+          () -> this.ongoingMatches.add(match.getExternalId())
         )
       )
       .forEach(this.schedulerService::scheduleTaskExecution);
@@ -53,8 +53,8 @@ public class MatchResultScheduler {
     fixedDelayString = "${scheduler.duration.match-result-update-millis}"
   )
   public void updateMatchResults() {
-    if (!this.taskQueue.isEmpty()) {
-      this.taskQueue.forEach(this::tryToSaveResult);
+    if (!this.ongoingMatches.isEmpty()) {
+      this.ongoingMatches.forEach(this::tryToSaveResult);
     }
   }
 
@@ -70,14 +70,14 @@ public class MatchResultScheduler {
         );
 
       if (matchExternalData.status() == MatchStatus.FINISHED) {
-        this.taskQueue.remove();
+        this.ongoingMatches.remove();
       } else {
-        this.taskQueue.add(this.taskQueue.remove());
+        this.ongoingMatches.add(this.ongoingMatches.remove());
       }
     }
   }
 
-  private Predicate<Match> isMatchCompleted() {
+  private Predicate<Match> isMatchNotCompleted() {
     return match ->
       match.getStatus() != MatchStatus.FINISHED &&
       match.getStatus() != MatchStatus.AWARDED;
