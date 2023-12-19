@@ -20,7 +20,7 @@ spring:
 scheduler:
   enabled: true
   duration:
-    match-result-task-cron: 2 2 * * * *
+    match-result-task-cron: 0 2 * * * *
     match-result-update-millis: 60000
     odds-task-cron: 0 */15 * * * *
 
