@@ -108,7 +108,9 @@ public class MatchService {
 
   @Transactional
   public void setMatchResult(SaveMatchResultDTO saveMatchResultDTO) {
-    var matchToBeUpdated = findMatchByExternalId(saveMatchResultDTO.matchId());
+    var matchToBeUpdated = findMatchByExternalId(
+      saveMatchResultDTO.externalId()
+    );
 
     matchToBeUpdated.setStatus(saveMatchResultDTO.status());
     matchToBeUpdated.setResult(

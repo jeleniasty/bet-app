@@ -6,5 +6,6 @@ import com.jeleniasty.betapp.features.result.ResultDTO;
 public record SaveMatchResultDTO(
   ResultDTO resultDTO,
   Long matchId,
+  Long externalId,
   MatchStatus status
 ) {}
