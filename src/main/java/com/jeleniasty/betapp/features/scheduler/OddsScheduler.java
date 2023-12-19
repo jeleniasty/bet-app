@@ -1,6 +1,6 @@
 package com.jeleniasty.betapp.features.scheduler;
 
-import com.jeleniasty.betapp.config.BetAppProperties;
+import com.jeleniasty.betapp.config.OddsApiProperties;
 import com.jeleniasty.betapp.features.match.MatchService;
 import com.jeleniasty.betapp.features.odds.MatchOddsDTO;
 import com.jeleniasty.betapp.features.odds.OddsService;
@@ -18,16 +18,15 @@ import org.springframework.stereotype.Service;
 public class OddsScheduler {
 
   private final OddsService oddsService;
-  private final BetAppProperties betAppProperties;
+  private final OddsApiProperties oddsApiProperties;
   private final MatchService matchService;
 
   @Scheduled(cron = "${scheduler.duration.odds-task-cron}")
   public void setOdds() {
-    var availableOdds = collectAvailableOdds(
-      betAppProperties.getTheOddsApi().getCompetitionKey()
-    );
+    var competitionKeys = oddsApiProperties.getCompetitionKey();
 
-    availableOdds.forEach(this.matchService::setMatchOdds);
+    collectAvailableOdds(competitionKeys)
+      .forEach(this.matchService::setMatchOdds);
     log.info("Available odds updated");
   }
 
