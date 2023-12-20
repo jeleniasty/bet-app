@@ -14,10 +14,14 @@ public class CompetitionController {
   private final CompetitionService competitionService;
 
   @PostMapping("/competition")
-  public ResponseEntity<Void> createNewCompetition(
+  public ResponseEntity<CompetitionDTO> createNewCompetition(
     @RequestBody CreateCompetitonRequest createCompetitonRequest
   ) {
-    this.competitionService.createNewCompetition(createCompetitonRequest);
-    return ResponseEntity.status(HttpStatus.CREATED).build();
+    return ResponseEntity
+      .status(HttpStatus.CREATED)
+      .body(
+        this.competitionService.createNewCompetition(createCompetitonRequest)
+      );
   }
+  //TODO add authorization only for admin
 }

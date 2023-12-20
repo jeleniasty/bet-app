@@ -21,17 +21,19 @@ public class CompetitionService {
   private final MatchService matchService;
 
   @Transactional
-  public void createNewCompetition(
+  public CompetitionDTO createNewCompetition(
     CreateCompetitonRequest createCompetitonRequest
   ) {
     var competitionDTO = mapToDTO(
       competitionHttpClient.getCompetitionMatchesData(createCompetitonRequest)
     );
 
-    saveOrUpdateCompetition(competitionDTO);
+    return saveOrUpdateCompetition(competitionDTO);
   }
 
-  private void saveOrUpdateCompetition(CompetitionDTO competitionDTO) {
+  private CompetitionDTO saveOrUpdateCompetition(
+    CompetitionDTO competitionDTO
+  ) {
     var competitionEntity = competitionRepository
       .findCompetitionByCodeAndSeason(
         competitionDTO.code(),
@@ -41,7 +43,7 @@ public class CompetitionService {
         competition.setStartDate(competitionDTO.startDate());
         competition.setEndDate(competitionDTO.endDate());
 
-        competition.assignMatches(saveMatches(competitionDTO.matchDTOs()));
+        competition.assignMatches(saveMatches(competitionDTO.matches()));
 
         return competition;
       })
@@ -56,12 +58,12 @@ public class CompetitionService {
           competitionDTO.endDate()
         );
 
-        competition.assignMatches(saveMatches(competitionDTO.matchDTOs()));
+        competition.assignMatches(saveMatches(competitionDTO.matches()));
 
         return competition;
       });
 
-    this.competitionRepository.save(competitionEntity);
+    return mapToDTO(this.competitionRepository.save(competitionEntity));
   }
 
   private Set<Match> saveMatches(List<MatchDTO> matches) {
@@ -92,6 +94,24 @@ public class CompetitionService {
       competitionMatchesResponse.resultSet().last(),
       competitionMatchesResponse
         .matches()
+        .stream()
+        .map(this.matchService::mapToDTO)
+        .toList()
+    );
+  }
+
+  private CompetitionDTO mapToDTO(Competition competition) {
+    return new CompetitionDTO(
+      competition.getId(),
+      competition.getName(),
+      competition.getCode(),
+      competition.getType(),
+      competition.getSeason(),
+      competition.getEmblem(),
+      competition.getStartDate(),
+      competition.getEndDate(),
+      competition
+        .getCompetitionMatches()
         .stream()
         .map(this.matchService::mapToDTO)
         .toList()

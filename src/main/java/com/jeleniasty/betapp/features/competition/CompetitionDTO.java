@@ -13,5 +13,5 @@ public record CompetitionDTO(
   String emblem,
   LocalDate startDate,
   LocalDate endDate,
-  List<MatchDTO> matchDTOs
+  List<MatchDTO> matches
 ) {}

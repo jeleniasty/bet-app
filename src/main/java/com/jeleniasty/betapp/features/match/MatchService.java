@@ -48,8 +48,8 @@ public class MatchService {
 
           return match;
         })
-        .orElseGet(() -> {
-          var newMatch = new Match(
+        .orElseGet(() ->
+          new Match(
             matchDTO.status(),
             matchDTO.stage(),
             matchDTO.group(),
@@ -58,12 +58,11 @@ public class MatchService {
             matchDTO.drawOdds(),
             matchDTO.date(),
             matchDTO.externalId()
-          );
-          return this.matchRepository.save(newMatch);
-        });
+          )
+        );
 
     if (isMatchCompleted(matchDTO)) {
-      matchToSave.setResult(resultService.saveResult(matchDTO.resultDTO()));
+      matchToSave.setResult(resultService.saveResult(matchDTO.result()));
     }
 
     if (
@@ -84,7 +83,7 @@ public class MatchService {
   }
 
   private static boolean isMatchCompleted(MatchDTO matchDTO) {
-    return matchDTO.resultDTO().winner() != null;
+    return matchDTO.result().winner() != null;
   }
 
   public Match findMatch(Long matchId) {
@@ -203,7 +202,7 @@ public class MatchService {
       match.getStage(),
       match.getGroup(),
       match.getDate(),
-      this.resultService.mapToDTO(match.getResult()),
+      this.resultService.mapToDTO(match.getResult()).orElse(null),
       match.getExternalId()
     );
   }

@@ -18,6 +18,6 @@ public record MatchDTO(
   CompetitionStage stage,
   Group group,
   LocalDateTime date,
-  ResultDTO resultDTO,
+  ResultDTO result,
   Long externalId
 ) {}
