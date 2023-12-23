@@ -21,17 +21,19 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-@SpringBootTest
+@WebMvcTest
 @ExtendWith(MockitoExtension.class)
+@ContextConfiguration(classes = CompetitionController.class)
 class CompetitionControllerTest {
 
   @MockBean
@@ -155,7 +157,9 @@ class CompetitionControllerTest {
       .when(competitionService.createNewCompetition(competitonRequest))
       .thenReturn(competitionDTO);
 
-    String actualResponseBody = objectMapper.writeValueAsString(competitionDTO);
+    String expectedResponseBody = objectMapper.writeValueAsString(
+      competitionDTO
+    );
 
     //act
     MvcResult result = mockMvc
@@ -164,7 +168,6 @@ class CompetitionControllerTest {
           .post("/competition")
           .content(objectMapper.writeValueAsString(competitonRequest))
           .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
       )
       .andReturn();
 
@@ -172,6 +175,6 @@ class CompetitionControllerTest {
     assertThat(result.getResponse().getStatus())
       .isEqualTo(HttpStatus.CREATED.value());
     assertThat(result.getResponse().getContentAsString())
-      .isEqualTo(actualResponseBody);
+      .isEqualTo(expectedResponseBody);
   }
 }
