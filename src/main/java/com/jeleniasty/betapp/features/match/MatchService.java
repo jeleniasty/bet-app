@@ -155,7 +155,7 @@ public class MatchService {
     return matchRepository.findTop10ByStatusOrderByDate();
   }
 
-  public MatchDTO getUpcomingMatch(Long id) {
+  public MatchDTO getMatch(Long id) {
     var match = matchRepository
       .findById(id)
       .orElseThrow(() -> new MatchNotFoundException(id));
