@@ -6,7 +6,6 @@ import com.jeleniasty.betapp.features.match.model.Match;
 import com.jeleniasty.betapp.features.result.Result;
 import com.jeleniasty.betapp.features.result.ResultService;
 import com.jeleniasty.betapp.features.result.Winner;
-import com.jeleniasty.betapp.features.result.score.Score;
 import com.jeleniasty.betapp.features.user.BetappUserService;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -38,18 +37,11 @@ public class BetService {
         new BetDTO(
           bet.getId(),
           bet.getBetType(),
-          bet.getResult().getWinner(),
-          bet.getResult().getDuration(),
-          (Score) Hibernate.unproxy(bet.getResult().getHalfTimeScore()),
-          (Score) Hibernate.unproxy(bet.getResult().getRegularTimeScore()),
-          (Score) Hibernate.unproxy(bet.getResult().getExtraTimeScore()),
-          (Score) Hibernate.unproxy(bet.getResult().getPenaltiesScore()),
-          (Score) Hibernate.unproxy(bet.getResult().getFullTimeScore()),
+          resultService.mapToDTO(bet.getResult()).orElse(null),
           bet.getCreatedAt()
         )
       )
       .toList();
-    //TODO analyse need of using Hibernate.unproxy here and why double getter did not initialize related entity
   }
 
   @Transactional
