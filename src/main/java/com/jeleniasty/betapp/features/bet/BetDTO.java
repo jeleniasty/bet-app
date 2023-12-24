@@ -1,20 +1,11 @@
 package com.jeleniasty.betapp.features.bet;
 
-import com.jeleniasty.betapp.features.result.Duration;
-import com.jeleniasty.betapp.features.result.Winner;
-import com.jeleniasty.betapp.features.result.score.Score;
+import com.jeleniasty.betapp.features.result.ResultDTO;
 import java.time.LocalDateTime;
 
 public record BetDTO(
   long id,
   BetType type,
-  Winner winner,
-  Duration matchDuration,
-
-  Score halfTimeScore,
-  Score regularTimeScore,
-  Score extraTimeScore,
-  Score penaltiesScore,
-  Score fullTimeScore,
+  ResultDTO result,
   LocalDateTime creationDate
 ) {}
