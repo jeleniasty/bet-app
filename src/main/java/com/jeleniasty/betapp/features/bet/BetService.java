@@ -36,6 +36,7 @@ public class BetService {
       .map(bet ->
         new BetDTO(
           bet.getId(),
+          bet.getMatch().getId(),
           bet.getBetType(),
           resultService.mapToDTO(bet.getResult()).orElse(null),
           bet.getCreatedAt()

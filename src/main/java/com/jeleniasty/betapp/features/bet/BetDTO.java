@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 public record BetDTO(
   long id,
+  long matchId,
   BetType type,
   ResultDTO result,
   LocalDateTime creationDate
