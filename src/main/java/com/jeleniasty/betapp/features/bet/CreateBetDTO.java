@@ -6,5 +6,5 @@ import jakarta.validation.Valid;
 public record CreateBetDTO(
   @Valid ResultDTO resultDTO,
   BetType betType,
-  Long matchId
+  long matchId
 ) {}
