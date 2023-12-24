@@ -4,8 +4,8 @@ import com.jeleniasty.betapp.features.result.ResultDTO;
 import java.time.LocalDateTime;
 
 public record BetDTO(
-  long id,
-  long matchId,
+  Long id,
+  Long matchId,
   BetType type,
   ResultDTO result,
   LocalDateTime creationDate

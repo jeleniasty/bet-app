@@ -46,7 +46,7 @@ public class BetService {
   }
 
   @Transactional
-  public void createBet(CreateBetDTO createBetDTO) {
+  public BetDTO createBet(CreateBetDTO createBetDTO) {
     var matchToBet = matchService.findMatch(createBetDTO.matchId());
     if (
       matchToBet.getDate().isBefore(LocalDateTime.now())
@@ -60,6 +60,14 @@ public class BetService {
     var newBet = new Bet(betResult, createBetDTO.betType());
     newBet.assignMatch(matchToBet);
     newBet.assignPlayer(currentUser);
+    var bet = betRepository.saveAndFlush(newBet);
+    return new BetDTO(
+      bet.getId(),
+      bet.getMatch().getId(),
+      bet.getBetType(),
+      resultService.mapToDTO(bet.getResult()).orElse(null),
+      bet.getCreatedAt()
+    );
   }
 
   @Transactional

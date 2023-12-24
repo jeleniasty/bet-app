@@ -17,11 +17,10 @@ public class BetController {
   private final BetService betService;
 
   @PostMapping("/bet")
-  public ResponseEntity<Void> createBet(
+  public ResponseEntity<BetDTO> createBet(
     @Valid @RequestBody CreateBetDTO createBetDTO
   ) {
-    betService.createBet(createBetDTO);
-    return ResponseEntity.status(201).build();
+    return ResponseEntity.status(201).body(betService.createBet(createBetDTO));
   }
 
   @GetMapping("/bets/user/{matchId}")
