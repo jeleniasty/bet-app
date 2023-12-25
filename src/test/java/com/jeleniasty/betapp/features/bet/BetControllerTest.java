@@ -7,7 +7,9 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.jeleniasty.betapp.features.result.Duration;
 import com.jeleniasty.betapp.features.result.ResultDTO;
 import com.jeleniasty.betapp.features.result.Winner;
+import com.jeleniasty.betapp.features.result.score.ScoreDTO;
 import java.time.LocalDateTime;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -87,5 +89,74 @@ class BetControllerTest {
   }
 
   @Test
-  void getCurrentUserBets() {}
+  void getCurrentUserBets_should_return_200code_and_listOfBets()
+    throws Exception {
+    //arrange
+    var matchId = 1L;
+    var betDTO1 = new BetDTO(
+      2L,
+      324L,
+      BetType.CORRECT_SCORE,
+      new ResultDTO(
+        Winner.AWAY_TEAM,
+        Duration.REGULAR,
+        new ScoreDTO(1, 1),
+        null,
+        null,
+        null,
+        new ScoreDTO(1, 2)
+      ),
+      LocalDateTime.now()
+    );
+    var betDTO2 = new BetDTO(
+      2L,
+      324L,
+      BetType.FULL_TIME_RESULT,
+      new ResultDTO(
+        Winner.DRAW,
+        Duration.REGULAR,
+        null,
+        null,
+        null,
+        null,
+        null
+      ),
+      LocalDateTime.now()
+    );
+    var betDTO3 = new BetDTO(
+      3L,
+      2344L,
+      BetType.CORRECT_SCORE,
+      new ResultDTO(
+        Winner.DRAW,
+        Duration.REGULAR,
+        new ScoreDTO(1, 1),
+        null,
+        null,
+        null,
+        new ScoreDTO(1, 1)
+      ),
+      LocalDateTime.now()
+    );
+
+    var expectedResponse = List.of(betDTO1, betDTO2, betDTO3);
+    Mockito
+      .when(betService.getCurrentUserBets(matchId))
+      .thenReturn(expectedResponse);
+
+    //act
+    var result = mockMvc
+      .perform(
+        MockMvcRequestBuilders
+          .get("/bets/user/" + matchId)
+          .contentType(MediaType.APPLICATION_JSON)
+      )
+      .andReturn();
+
+    //assert
+    assertThat(result.getResponse().getStatus())
+      .isEqualTo(HttpStatus.OK.value());
+    assertThat(result.getResponse().getContentAsString())
+      .isEqualTo(objectMapper.writeValueAsString(expectedResponse));
+  }
 }
