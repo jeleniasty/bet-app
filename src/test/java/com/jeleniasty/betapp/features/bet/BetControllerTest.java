@@ -159,4 +159,5 @@ class BetControllerTest {
     assertThat(result.getResponse().getContentAsString())
       .isEqualTo(objectMapper.writeValueAsString(expectedResponse));
   }
+  //TODO refactor arrange section to be more readable
 }
