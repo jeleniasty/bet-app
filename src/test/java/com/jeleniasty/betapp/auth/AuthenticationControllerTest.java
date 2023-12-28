@@ -4,7 +4,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.jayway.jsonpath.JsonPath;
+import com.jeleniasty.betapp.features.exceptions.CustomError;
+import com.jeleniasty.betapp.features.exceptions.GlobalExceptionHandler;
 import com.jeleniasty.betapp.features.user.role.RoleName;
+import java.time.LocalDateTime;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,13 +18,16 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 @WebMvcTest
-@ContextConfiguration(classes = AuthenticationController.class)
+@ContextConfiguration(
+  classes = { AuthenticationController.class, GlobalExceptionHandler.class }
+)
 class AuthenticationControllerTest {
 
   @MockBean
@@ -35,11 +42,16 @@ class AuthenticationControllerTest {
 
   @BeforeEach
   void setUp() {
-    mockMvc = MockMvcBuilders.standaloneSetup(authenticationController).build();
+    mockMvc =
+      MockMvcBuilders
+        .standaloneSetup(authenticationController)
+        .setControllerAdvice(GlobalExceptionHandler.class)
+        .build();
   }
 
   @Test
-  void register() throws Exception {
+  void register_with_valid_request_body_should_return_201_status_and_authentication_token()
+    throws Exception {
     //arrange
     var request = new RegisterRequest(
       "testuser",
@@ -74,7 +86,8 @@ class AuthenticationControllerTest {
   }
 
   @Test
-  void login() throws Exception {
+  void login_with_valid_credentials_should_return_200_status_and_authentication_token()
+    throws Exception {
     //arrange
     var request = new AuthRequest("testemail@gmail.com", "password");
 
@@ -101,5 +114,48 @@ class AuthenticationControllerTest {
       .isEqualTo(HttpStatus.OK.value());
     assertThat(result.getResponse().getContentAsString())
       .isEqualTo(objectMapper.writeValueAsString(expectedResponse));
+  }
+
+  @Test
+  void login_with_bad_credentials_should_return_401_status_with_message()
+    throws Exception {
+    //arrange
+    var request = new AuthRequest("testemail@gmail.com", "password");
+
+    var expectedTime = LocalDateTime.now();
+    var expectedResponse = new CustomError(
+      HttpStatus.UNAUTHORIZED.value(),
+      "Bad credentials",
+      expectedTime
+    );
+
+    Mockito
+      .when(authenticationService.authenticate(request))
+      .thenThrow(new BadCredentialsException("Bad credentials"));
+
+    //act
+    var result = mockMvc
+      .perform(
+        MockMvcRequestBuilders
+          .post("/api/login")
+          .contentType(MediaType.APPLICATION_JSON)
+          .content(objectMapper.writeValueAsString(request))
+      )
+      .andReturn();
+
+    //assert
+    var actualStatus = JsonPath.read(
+      result.getResponse().getContentAsString(),
+      "$.status"
+    );
+    var actualMessage = JsonPath.read(
+      result.getResponse().getContentAsString(),
+      "$.message"
+    );
+
+    assertThat(result.getResponse().getStatus())
+      .isEqualTo(HttpStatus.UNAUTHORIZED.value());
+    assertThat(actualStatus).isEqualTo(expectedResponse.getStatus());
+    assertThat(actualMessage).isEqualTo(expectedResponse.getMessage());
   }
 }
