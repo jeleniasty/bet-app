@@ -17,4 +17,5 @@ public class BetappUserController {
   public ResponseEntity<List<UserScoreDTO>> getUserScores() {
     return ResponseEntity.ok(betappUserService.getPlayerScores());
   }
+  //TODO add pagination
 }
