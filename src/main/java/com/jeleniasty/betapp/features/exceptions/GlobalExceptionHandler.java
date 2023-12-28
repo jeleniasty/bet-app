@@ -45,7 +45,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   protected ResponseEntity<CustomError> handleGenericError(
     RuntimeException runtimeException
   ) {
-    log.error("An unexpected error occured: ", runtimeException);
+    log.error("An unexpected error occurred: ", runtimeException);
     return createCustomError(
       HttpStatus.INTERNAL_SERVER_ERROR,
       runtimeException
@@ -56,7 +56,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   protected ResponseEntity<CustomError> handleAuthenticationExceptions(
     AuthenticationException authenticationException
   ) {
-    log.error("Authentication error occured: ", authenticationException);
+    log.error("Authentication error occurred: ", authenticationException);
     return createCustomError(HttpStatus.UNAUTHORIZED, authenticationException);
   }
 
@@ -64,7 +64,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   protected ResponseEntity<CustomError> handlePastMatchBetException(
     PastMatchBetException pastMatchBetException
   ) {
-    log.error("An error occured: ", pastMatchBetException);
+    log.error("An error occurred: ", pastMatchBetException);
     return createCustomError(HttpStatus.BAD_REQUEST, pastMatchBetException);
   }
 
