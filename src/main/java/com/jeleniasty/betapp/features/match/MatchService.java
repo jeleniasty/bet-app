@@ -62,7 +62,7 @@ public class MatchService {
         );
 
     if (isMatchCompleted(matchDTO)) {
-      matchToSave.setResult(resultService.saveResult(matchDTO.result()));
+      matchToSave.setResult(resultService.addResult(matchDTO.result()));
     }
 
     if (
@@ -113,7 +113,7 @@ public class MatchService {
 
     matchToBeUpdated.setStatus(saveMatchResultDTO.status());
     matchToBeUpdated.setResult(
-      resultService.saveResult(saveMatchResultDTO.resultDTO())
+      resultService.addResult(saveMatchResultDTO.resultDTO())
     );
     if (saveMatchResultDTO.status() == MatchStatus.FINISHED) {
       eventPublisher.publishEvent(

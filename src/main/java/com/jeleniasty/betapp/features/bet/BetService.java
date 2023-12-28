@@ -52,7 +52,7 @@ public class BetService {
       matchToBet.getDate().isBefore(LocalDateTime.now())
     ) throw new PastMatchBetException(createBetDTO.matchId());
 
-    var betResult = resultService.saveResult(createBetDTO.resultDTO());
+    var betResult = resultService.addResult(createBetDTO.resultDTO());
     var currentUser = betappUserService.fetchUser(
       betappUserService.getCurrentUser().getId()
     );

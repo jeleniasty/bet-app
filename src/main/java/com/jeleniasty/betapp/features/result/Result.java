@@ -15,6 +15,7 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -93,5 +94,36 @@ public class Result {
     this.extraTimeScore = extraTimeScore;
     this.penaltiesScore = penaltiesScore;
     this.fullTimeScore = fullTimeScore;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Result result = (Result) o;
+    return (
+      id == result.id &&
+      winner == result.winner &&
+      duration == result.duration &&
+      Objects.equals(halfTimeScore, result.halfTimeScore) &&
+      Objects.equals(regularTimeScore, result.regularTimeScore) &&
+      Objects.equals(extraTimeScore, result.extraTimeScore) &&
+      Objects.equals(penaltiesScore, result.penaltiesScore) &&
+      Objects.equals(fullTimeScore, result.fullTimeScore)
+    );
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(
+      id,
+      winner,
+      duration,
+      halfTimeScore,
+      regularTimeScore,
+      extraTimeScore,
+      penaltiesScore,
+      fullTimeScore
+    );
   }
 }

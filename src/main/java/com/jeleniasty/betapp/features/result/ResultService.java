@@ -14,7 +14,7 @@ public class ResultService {
   private final ResultRepository resultRepository;
   private final ScoreService scoreService;
 
-  public Result saveResult(ResultDTO resultDTO) {
+  public Result addResult(ResultDTO resultDTO) {
     return resultRepository.save(
       new Result(
         resultDTO.winner(),
@@ -27,6 +27,8 @@ public class ResultService {
       )
     );
   }
+
+  //TODO add result scores validation based on duration
 
   public ResultDTO mapToDTO(ScoreResponse scoreResponse) {
     ScoreDTO regularTime = null;
