@@ -10,7 +10,7 @@ public class ScoreService {
 
   private final ScoreRepository scoreRepository;
 
-  public Score fetchOrSave(ScoreDTO scoreDTO) {
+  public Score getScore(ScoreDTO scoreDTO) {
     return Optional
       .ofNullable(scoreDTO)
       .map(score ->

@@ -19,11 +19,11 @@ public class ResultService {
       new Result(
         resultDTO.winner(),
         resultDTO.duration(),
-        scoreService.fetchOrSave(resultDTO.halfTimeScore()),
-        scoreService.fetchOrSave(resultDTO.regularTimeScore()),
-        scoreService.fetchOrSave(resultDTO.extraTimeScore()),
-        scoreService.fetchOrSave(resultDTO.penaltiesScore()),
-        scoreService.fetchOrSave(resultDTO.fullTimeScore())
+        scoreService.getScore(resultDTO.halfTimeScore()),
+        scoreService.getScore(resultDTO.regularTimeScore()),
+        scoreService.getScore(resultDTO.extraTimeScore()),
+        scoreService.getScore(resultDTO.penaltiesScore()),
+        scoreService.getScore(resultDTO.fullTimeScore())
       )
     );
   }
