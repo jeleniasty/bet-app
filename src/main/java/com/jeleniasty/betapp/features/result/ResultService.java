@@ -86,15 +86,35 @@ public class ResultService {
   }
 
   public Optional<ResultDTO> mapToDTO(Result result) {
+    ScoreDTO halfTime = null;
     ScoreDTO regularTime = null;
     ScoreDTO extraTime = null;
     ScoreDTO penalties = null;
+    ScoreDTO fullTime = null;
 
     if (result == null) {
       return Optional.empty();
     }
+
+    if (result.getDuration() == null) {
+      return Optional.of(
+        new ResultDTO(result.getWinner(), null, null, null, null, null, null)
+      );
+    }
+
     switch (result.getDuration()) {
-      case REGULAR -> {}
+      case REGULAR -> {
+        halfTime =
+          new ScoreDTO(
+            result.getHalfTimeScore().getHome(),
+            result.getHalfTimeScore().getAway()
+          );
+        fullTime =
+          new ScoreDTO(
+            result.getFullTimeScore().getHome(),
+            result.getFullTimeScore().getAway()
+          );
+      }
       case EXTRA -> {
         regularTime =
           new ScoreDTO(
@@ -130,17 +150,11 @@ public class ResultService {
       new ResultDTO(
         result.getWinner(),
         result.getDuration(),
-        new ScoreDTO(
-          result.getHalfTimeScore().getHome(),
-          result.getHalfTimeScore().getAway()
-        ),
+        halfTime,
         regularTime,
         extraTime,
         penalties,
-        new ScoreDTO(
-          result.getFullTimeScore().getHome(),
-          result.getFullTimeScore().getAway()
-        )
+        fullTime
       )
     );
   }
