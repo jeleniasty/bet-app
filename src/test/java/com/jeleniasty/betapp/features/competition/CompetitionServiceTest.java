@@ -51,7 +51,7 @@ class CompetitionServiceTest {
 
   @Test
   @Transactional
-  void createNewCompetition() {
+  void createNewCompetition_should_save_competition_and_its_matches_with_assigned_teams_to_database() {
     //arrange
     var competitionRequest = new CreateCompetitonRequest("TST", 2023);
 
