@@ -104,11 +104,14 @@ public class ResultService {
 
     switch (result.getDuration()) {
       case REGULAR -> {
-        halfTime =
-          new ScoreDTO(
-            result.getHalfTimeScore().getHome(),
-            result.getHalfTimeScore().getAway()
-          );
+        if (result.getHalfTimeScore() != null) {
+          halfTime =
+            new ScoreDTO(
+              result.getHalfTimeScore().getHome(),
+              result.getHalfTimeScore().getAway()
+            );
+        }
+
         fullTime =
           new ScoreDTO(
             result.getFullTimeScore().getHome(),
