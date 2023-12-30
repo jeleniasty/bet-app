@@ -74,6 +74,8 @@ public class CompetitionService {
       .collect(Collectors.toSet());
   }
 
+  //TODO add daily competition matches updates (i.a. for matches that had no teams assigned)
+
   private boolean areTeamsAssigned(MatchDTO matchDTO) {
     return (
       matchDTO.homeTeam().name() != null && matchDTO.awayTeam().name() != null
