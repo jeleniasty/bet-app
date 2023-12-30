@@ -4,6 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.jayway.jsonpath.JsonPath;
+import com.jeleniasty.betapp.features.exceptions.CompetitionNotFoundException;
+import com.jeleniasty.betapp.features.exceptions.GlobalExceptionHandler;
 import com.jeleniasty.betapp.features.match.dto.MatchDTO;
 import com.jeleniasty.betapp.features.match.model.CompetitionStage;
 import com.jeleniasty.betapp.features.match.model.MatchStatus;
@@ -49,11 +52,16 @@ class CompetitionControllerTest {
 
   @BeforeEach
   void setUp() {
-    mockMvc = MockMvcBuilders.standaloneSetup(competitionController).build();
+    mockMvc =
+      MockMvcBuilders
+        .standaloneSetup(competitionController)
+        .setControllerAdvice(GlobalExceptionHandler.class)
+        .build();
   }
 
   @Test
-  void createNewCompetition() throws Exception {
+  void createNewCompetition_for_available_competition_should_return_response_with_201_status_and_CompetitionDTO_body()
+    throws Exception {
     //arrange
     var match1 = new MatchDTO(
       493L,
@@ -176,5 +184,41 @@ class CompetitionControllerTest {
       .isEqualTo(HttpStatus.CREATED.value());
     assertThat(result.getResponse().getContentAsString())
       .isEqualTo(expectedResponseBody);
+  }
+
+  @Test
+  void createNewCompetition_for_not_available_competition_should_return_response_with_404_status_and_error_message()
+    throws Exception {
+    //arrange
+    var competitonRequest = new CreateCompetitonRequest("SA", 2023);
+    var competitionNotFoundException = new CompetitionNotFoundException(
+      competitonRequest.code(),
+      competitonRequest.season()
+    );
+
+    Mockito
+      .when(competitionService.createNewCompetition(competitonRequest))
+      .thenThrow(competitionNotFoundException);
+
+    //act
+    var actualResponse = mockMvc
+      .perform(
+        MockMvcRequestBuilders
+          .post("/competition")
+          .content(objectMapper.writeValueAsString(competitonRequest))
+          .contentType(MediaType.APPLICATION_JSON)
+      )
+      .andReturn();
+
+    //assert
+
+    var actualResponseMessage = JsonPath.read(
+      actualResponse.getResponse().getContentAsString(),
+      "$.message"
+    );
+    assertThat(actualResponse.getResponse().getStatus())
+      .isEqualTo(HttpStatus.NOT_FOUND.value());
+    assertThat(actualResponseMessage)
+      .isEqualTo(competitionNotFoundException.getMessage());
   }
 }
