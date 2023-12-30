@@ -36,7 +36,8 @@ public class BetappUser {
   @SequenceGenerator(
     schema = "betapp",
     name = "betapp_user_id_seq",
-    sequenceName = "betapp_user_id_seq"
+    sequenceName = "betapp_user_id_seq",
+    allocationSize = 1
   )
   @GeneratedValue(
     strategy = GenerationType.SEQUENCE,
