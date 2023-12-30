@@ -12,5 +12,5 @@ public record ScoreResponse(
   BasicScoreResponse extraTime,
   BasicScoreResponse penalties
 ) {
-  public record BasicScoreResponse(int home, int away) {}
+  public record BasicScoreResponse(Integer home, Integer away) {}
 }
