@@ -31,13 +31,33 @@ public class ResultService {
   //TODO add result scores validation based on duration
 
   public ResultDTO mapToDTO(ScoreResponse scoreResponse) {
+    ScoreDTO halfTime = null;
     ScoreDTO regularTime = null;
     ScoreDTO extraTime = null;
     ScoreDTO penalties = null;
+    ScoreDTO fullTime = null;
 
     switch (scoreResponse.duration()) {
-      case REGULAR -> {}
+      case REGULAR -> {
+        if (scoreResponse.halfTime() != null) {
+          halfTime =
+            new ScoreDTO(
+              scoreResponse.halfTime().home(),
+              scoreResponse.halfTime().away()
+            );
+        }
+        fullTime =
+          new ScoreDTO(
+            scoreResponse.fullTime().home(),
+            scoreResponse.fullTime().away()
+          );
+      }
       case EXTRA -> {
+        halfTime =
+          new ScoreDTO(
+            scoreResponse.halfTime().home(),
+            scoreResponse.halfTime().away()
+          );
         regularTime =
           new ScoreDTO(
             scoreResponse.regularTime().home(),
@@ -47,9 +67,19 @@ public class ResultService {
           new ScoreDTO(
             scoreResponse.extraTime().home(),
             scoreResponse.extraTime().away()
+          );
+        fullTime =
+          new ScoreDTO(
+            scoreResponse.fullTime().home(),
+            scoreResponse.fullTime().away()
           );
       }
       case PENALTY_SHOOTOUT -> {
+        halfTime =
+          new ScoreDTO(
+            scoreResponse.halfTime().home(),
+            scoreResponse.halfTime().away()
+          );
         regularTime =
           new ScoreDTO(
             scoreResponse.regularTime().home(),
@@ -60,28 +90,26 @@ public class ResultService {
             scoreResponse.extraTime().home(),
             scoreResponse.extraTime().away()
           );
-
         penalties =
           new ScoreDTO(
             scoreResponse.penalties().home(),
             scoreResponse.penalties().away()
+          );
+        fullTime =
+          new ScoreDTO(
+            scoreResponse.fullTime().home(),
+            scoreResponse.fullTime().away()
           );
       }
     }
     return new ResultDTO(
       scoreResponse.winner(),
       scoreResponse.duration(),
-      new ScoreDTO(
-        scoreResponse.halfTime().home(),
-        scoreResponse.halfTime().away()
-      ),
+      halfTime,
       regularTime,
       extraTime,
       penalties,
-      new ScoreDTO(
-        scoreResponse.fullTime().home(),
-        scoreResponse.fullTime().away()
-      )
+      fullTime
     );
   }
 
@@ -111,7 +139,6 @@ public class ResultService {
               result.getHalfTimeScore().getAway()
             );
         }
-
         fullTime =
           new ScoreDTO(
             result.getFullTimeScore().getHome(),
@@ -119,6 +146,13 @@ public class ResultService {
           );
       }
       case EXTRA -> {
+        if (result.getHalfTimeScore() != null) {
+          halfTime =
+            new ScoreDTO(
+              result.getHalfTimeScore().getHome(),
+              result.getHalfTimeScore().getAway()
+            );
+        }
         regularTime =
           new ScoreDTO(
             result.getRegularTimeScore().getHome(),
@@ -128,9 +162,21 @@ public class ResultService {
           new ScoreDTO(
             result.getExtraTimeScore().getHome(),
             result.getExtraTimeScore().getAway()
+          );
+        fullTime =
+          new ScoreDTO(
+            result.getFullTimeScore().getHome(),
+            result.getFullTimeScore().getAway()
           );
       }
       case PENALTY_SHOOTOUT -> {
+        if (result.getHalfTimeScore() != null) {
+          halfTime =
+            new ScoreDTO(
+              result.getHalfTimeScore().getHome(),
+              result.getHalfTimeScore().getAway()
+            );
+        }
         regularTime =
           new ScoreDTO(
             result.getRegularTimeScore().getHome(),
@@ -141,11 +187,15 @@ public class ResultService {
             result.getExtraTimeScore().getHome(),
             result.getExtraTimeScore().getAway()
           );
-
         penalties =
           new ScoreDTO(
             result.getPenaltiesScore().getHome(),
             result.getPenaltiesScore().getAway()
+          );
+        fullTime =
+          new ScoreDTO(
+            result.getFullTimeScore().getHome(),
+            result.getFullTimeScore().getAway()
           );
       }
     }
