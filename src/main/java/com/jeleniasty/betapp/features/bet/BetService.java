@@ -52,22 +52,15 @@ public class BetService {
       matchToBet.getDate().isBefore(LocalDateTime.now())
     ) throw new PastMatchBetException(createBetDTO.matchId());
 
-    var betResult = resultService.addResult(createBetDTO.resultDTO());
-    var currentUser = betappUserService.fetchUser(
-      betappUserService.getCurrentUser().getId()
+    var newBet = new Bet(
+      resultService.addResult(createBetDTO.resultDTO()),
+      createBetDTO.betType()
     );
-
-    var newBet = new Bet(betResult, createBetDTO.betType());
     newBet.assignMatch(matchToBet);
-    newBet.assignPlayer(currentUser);
-    var bet = betRepository.saveAndFlush(newBet);
-    return new BetDTO(
-      bet.getId(),
-      bet.getMatch().getId(),
-      bet.getBetType(),
-      resultService.mapToDTO(bet.getResult()).orElse(null),
-      bet.getCreatedAt()
+    newBet.assignPlayer(
+      betappUserService.fetchUser(betappUserService.getCurrentUser().getId())
     );
+    return mapToDTO(betRepository.saveAndFlush(newBet));
   }
 
   @Transactional
@@ -168,8 +161,8 @@ public class BetService {
   private boolean checkExactScore(Result betResult, Result matchResult) {
     return switch (matchResult.getDuration()) {
       case REGULAR -> matchResult
-        .getRegularTimeScore()
-        .equals(Hibernate.unproxy(betResult.getRegularTimeScore()));
+        .getFullTimeScore()
+        .equals(Hibernate.unproxy(betResult.getFullTimeScore()));
       case EXTRA -> matchResult
         .getExtraTimeScore()
         .equals(Hibernate.unproxy(betResult.getExtraTimeScore()));
@@ -185,5 +178,15 @@ public class BetService {
 
   private boolean isBetCorrectScore(Bet bet) {
     return bet.getBetType() == BetType.CORRECT_SCORE;
+  }
+
+  private BetDTO mapToDTO(Bet bet) {
+    return new BetDTO(
+      bet.getId(),
+      bet.getMatch().getId(),
+      bet.getBetType(),
+      resultService.mapToDTO(bet.getResult()).orElse(null),
+      bet.getCreatedAt()
+    );
   }
 }
