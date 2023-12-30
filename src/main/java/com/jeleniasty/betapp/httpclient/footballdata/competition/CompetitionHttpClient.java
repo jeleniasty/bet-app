@@ -1,9 +1,11 @@
 package com.jeleniasty.betapp.httpclient.footballdata.competition;
 
 import com.jeleniasty.betapp.features.competition.CreateCompetitonRequest;
+import com.jeleniasty.betapp.features.exceptions.CompetitionNotFoundException;
 import com.jeleniasty.betapp.httpclient.footballdata.CompetitionMatchesResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -27,6 +29,18 @@ public class CompetitionHttpClient {
       .uri(constructGetCompetitionMatchesURL(createCompetitonRequest))
       .header("X-Auth-Token", apiKey)
       .retrieve()
+      .onStatus(
+        HttpStatus.NOT_FOUND::equals,
+        response ->
+          response
+            .bodyToMono(String.class)
+            .map(err ->
+              new CompetitionNotFoundException(
+                createCompetitonRequest.code(),
+                createCompetitonRequest.season()
+              )
+            )
+      )
       .bodyToMono(CompetitionMatchesResponse.class)
       .block();
   }

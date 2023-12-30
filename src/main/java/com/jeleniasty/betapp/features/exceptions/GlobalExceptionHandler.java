@@ -75,6 +75,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     log.warn(requestLimitExceededException.getMessage());
   }
 
+  @ExceptionHandler(CompetitionNotFoundException.class)
+  protected ResponseEntity<CustomError> handleCompetitionNotFoundException(
+    CompetitionNotFoundException competitionNotFoundException
+  ) {
+    return createCustomError(
+      HttpStatus.NOT_FOUND,
+      competitionNotFoundException
+    );
+  }
+
   private ResponseEntity<CustomError> createCustomError(
     HttpStatus httpStatus,
     Exception exception
