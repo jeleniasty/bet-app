@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BetappUserRepository extends JpaRepository<BetappUser, Long> {
-  Optional<BetappUser> findByUsernameOrEmail(String username, String email);
+  Optional<BetappUser> findByEmail(String email);
 
   List<BetappUser> findByRolesName(RoleName roleName);
 }

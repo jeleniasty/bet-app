@@ -2,6 +2,7 @@ package com.jeleniasty.betapp.auth;
 
 import com.jeleniasty.betapp.features.user.BetappUser;
 import com.jeleniasty.betapp.features.user.BetappUserRepository;
+import com.jeleniasty.betapp.features.user.BetappUserService;
 import com.jeleniasty.betapp.features.user.role.RoleService;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -16,26 +17,12 @@ public class AuthenticationService {
 
   private final JwtService jwtService;
   private final AuthenticationManager authManager;
-  private final PasswordEncoder passwordEncoder;
-  private final RoleService roleService;
-  private final BetappUserRepository betappUserRepository;
+  private final BetappUserService betappUserService;
 
   public AuthResponse register(RegisterRequest request) {
-    var user = new BetappUser(
-      request.username(),
-      request.email(),
-      passwordEncoder.encode(request.password()),
-      0.00d,
-      request
-        .roleNames()
-        .stream()
-        .map(roleService::findRoleByName)
-        .collect(Collectors.toSet())
+    var jwtToken = jwtService.generateToken(
+      betappUserService.registerPlayer(request)
     );
-
-    betappUserRepository.save(user);
-
-    var jwtToken = jwtService.generateToken(user);
     return AuthResponse.builder().token(jwtToken).build();
   }
 
@@ -46,12 +33,9 @@ public class AuthenticationService {
         request.password()
       )
     );
-
-    var user = betappUserRepository
-      .findByUsernameOrEmail(request.email(), request.email())
-      .orElseThrow();
-
-    var jwtToken = jwtService.generateToken(user);
+    var jwtToken = jwtService.generateToken(
+      betappUserService.fetchUser(request.email())
+    );
     return AuthResponse.builder().token(jwtToken).build();
   }
 }

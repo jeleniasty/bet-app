@@ -37,12 +37,7 @@ public class TestHelpers {
       Set.of(RoleName.PLAYER)
     );
     authenticationController.register(registerRequest);
-    return betappUserRepository
-      .findByUsernameOrEmail(
-        registerRequest.username(),
-        registerRequest.email()
-      )
-      .get();
+    return betappUserRepository.findByEmail(registerRequest.username()).get();
   }
 
   public List<BetappUser> createTestPlayers(int numberOfPlayers) {
@@ -56,12 +51,7 @@ public class TestHelpers {
       );
       authenticationController.register(registerRequest);
       users.add(
-        betappUserRepository
-          .findByUsernameOrEmail(
-            registerRequest.username(),
-            registerRequest.email()
-          )
-          .get()
+        betappUserRepository.findByEmail(registerRequest.email()).get()
       );
     }
     return users;

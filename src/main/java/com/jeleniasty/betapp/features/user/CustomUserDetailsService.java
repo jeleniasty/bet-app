@@ -14,13 +14,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 
   @Transactional
   @Override
-  public UserPrincipal loadUserByUsername(String username)
+  public UserPrincipal loadUserByUsername(String email)
     throws UsernameNotFoundException {
     return UserPrincipal.create(
       betappUserRepository
-        .findByUsernameOrEmail(username, username)
+        .findByEmail(email)
         .orElseThrow(() ->
-          new UsernameNotFoundException("User " + username + " not found.")
+          new UsernameNotFoundException("User " + email + " not found.")
         )
     );
   }
