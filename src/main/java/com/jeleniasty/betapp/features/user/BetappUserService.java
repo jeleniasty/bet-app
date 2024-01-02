@@ -1,6 +1,7 @@
 package com.jeleniasty.betapp.features.user;
 
 import com.jeleniasty.betapp.auth.RegisterRequest;
+import com.jeleniasty.betapp.features.exceptions.UserAlreadyExistsException;
 import com.jeleniasty.betapp.features.user.dto.UserScoreDTO;
 import com.jeleniasty.betapp.features.user.role.RoleName;
 import com.jeleniasty.betapp.features.user.role.RoleService;
@@ -26,6 +27,8 @@ public class BetappUserService {
   }
 
   public BetappUser registerPlayer(RegisterRequest request) {
+    validateUserEmailAndUsername(request.username(), request.email());
+
     var user = new BetappUser(
       request.username(),
       request.email(),
@@ -72,5 +75,15 @@ public class BetappUserService {
         )
       )
       .toList();
+  }
+
+  private void validateUserEmailAndUsername(String username, String email) {
+    if (betappUserRepository.existsByUsername(username)) {
+      UserAlreadyExistsException.usernameAlreadyExists(username);
+    }
+
+    if (betappUserRepository.existsByEmail(email)) {
+      UserAlreadyExistsException.emailAlreadyExists(email);
+    }
   }
 }

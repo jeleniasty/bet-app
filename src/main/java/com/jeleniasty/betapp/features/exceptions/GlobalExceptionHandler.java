@@ -85,6 +85,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     );
   }
 
+  @ExceptionHandler(UserAlreadyExistsException.class)
+  protected ResponseEntity<CustomError> handleUserAlreadyExistsException(
+    UserAlreadyExistsException userAlreadyExistsException
+  ) {
+    return createCustomError(HttpStatus.CONFLICT, userAlreadyExistsException);
+  }
+
   private ResponseEntity<CustomError> createCustomError(
     HttpStatus httpStatus,
     Exception exception
