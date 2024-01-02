@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.PostgreSQLContainer;
@@ -142,5 +143,50 @@ class AuthenticationServiceTest {
 
     //assert
     assertThat(token.token()).isNotEmpty();
+  }
+
+  @Test
+  @Transactional
+  void authenticate_method_using_wrong_email_should_throw_bad_credentials_exception() {
+    //arrange
+    var registerRequest = new RegisterRequest(
+      "test_user",
+      "test@email.com",
+      "password",
+      Set.of(RoleName.PLAYER)
+    );
+    authenticationService.register(registerRequest);
+
+    var authRequest = new AuthRequest(
+      "wrong@email.com",
+      registerRequest.password()
+    );
+
+    //act & assert
+    assertThrows(
+      BadCredentialsException.class,
+      () -> authenticationService.authenticate(authRequest)
+    );
+  }
+
+  @Test
+  @Transactional
+  void authenticate_method_using_wrong_password_should_throw_bad_credentials_exception() {
+    //arrange
+    var registerRequest = new RegisterRequest(
+      "test_user",
+      "test@email.com",
+      "password",
+      Set.of(RoleName.PLAYER)
+    );
+    authenticationService.register(registerRequest);
+
+    var authRequest = new AuthRequest(registerRequest.email(), "wrongpassword");
+
+    //act & assert
+    assertThrows(
+      BadCredentialsException.class,
+      () -> authenticationService.authenticate(authRequest)
+    );
   }
 }
