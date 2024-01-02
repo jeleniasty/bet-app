@@ -14,9 +14,9 @@ CREATE TABLE bet (
 
 CREATE TABLE betapp_user (
                 id serial  NOT NULL,
-                username text  NOT NULL,
+                username text UNIQUE NOT NULL,
                 password text  NOT NULL,
-                email text  NOT NULL,
+                email text UNIQUE NOT NULL,
                 points real  NOT NULL,
                 updated_at timestamp NULL,
                 created_at timestamp NOT NULL,
