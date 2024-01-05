@@ -162,7 +162,7 @@ class CompetitionControllerTest {
     );
 
     Mockito
-      .when(competitionService.createNewCompetition(competitonRequest))
+      .when(competitionService.createOrUpdateCompetition(competitonRequest))
       .thenReturn(competitionDTO);
 
     String expectedResponseBody = objectMapper.writeValueAsString(
@@ -197,7 +197,7 @@ class CompetitionControllerTest {
     );
 
     Mockito
-      .when(competitionService.createNewCompetition(competitonRequest))
+      .when(competitionService.createOrUpdateCompetition(competitonRequest))
       .thenThrow(competitionNotFoundException);
 
     //act

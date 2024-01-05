@@ -62,7 +62,7 @@ class CompetitionServiceTest {
       .thenReturn(competitionMatchesResponse);
 
     //act
-    competitionService.createNewCompetition(competitionRequest);
+    competitionService.createOrUpdateCompetition(competitionRequest);
 
     //assert
     var competition = competitionRepository

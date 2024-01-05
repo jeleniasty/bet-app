@@ -1,10 +1,12 @@
 package com.jeleniasty.betapp.features.competition;
 
+import com.jeleniasty.betapp.config.OddsApiProperties;
 import com.jeleniasty.betapp.features.match.MatchService;
 import com.jeleniasty.betapp.features.match.dto.MatchDTO;
 import com.jeleniasty.betapp.features.match.model.Match;
 import com.jeleniasty.betapp.httpclient.footballdata.CompetitionMatchesResponse;
 import com.jeleniasty.betapp.httpclient.footballdata.competition.CompetitionHttpClient;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -19,9 +21,26 @@ public class CompetitionService {
   private final CompetitionRepository competitionRepository;
   private final CompetitionHttpClient competitionHttpClient;
   private final MatchService matchService;
+  private final OddsApiProperties oddsApiProperties;
 
   @Transactional
-  public CompetitionDTO createNewCompetition(
+  public List<CompetitionDTO> createOrUpdateSupportedCompetitions(int season) {
+    List<CompetitionDTO> competitions = new ArrayList<>();
+    var competitionKeyKeyset = oddsApiProperties.getCompetitionKey().keySet();
+    competitionKeyKeyset.forEach(competitionKey -> {
+      var competitionDTO = mapToDTO(
+        competitionHttpClient.getCompetitionMatchesData(
+          new CreateCompetitonRequest(competitionKey, season)
+        )
+      );
+      competitions.add(saveOrUpdateCompetition(competitionDTO));
+    });
+
+    return competitions;
+  }
+
+  @Transactional
+  public CompetitionDTO createOrUpdateCompetition(
     CreateCompetitonRequest createCompetitonRequest
   ) {
     var competitionDTO = mapToDTO(
