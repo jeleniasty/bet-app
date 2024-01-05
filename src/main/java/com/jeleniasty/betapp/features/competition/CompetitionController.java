@@ -1,11 +1,9 @@
 package com.jeleniasty.betapp.features.competition;
 
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,18 +25,6 @@ public class CompetitionController {
         this.competitionService.createOrUpdateCompetition(
             createCompetitonRequest
           )
-      );
-  }
-
-  @PostMapping("/competitions/{season}")
-  @PreAuthorize(value = "hasAuthority('ADMIN')")
-  public ResponseEntity<List<CompetitionDTO>> createOrUpdateSupportedCompetitions(
-    @PathVariable int season
-  ) {
-    return ResponseEntity
-      .status(HttpStatus.CREATED)
-      .body(
-        this.competitionService.createOrUpdateSupportedCompetitions(season)
       );
   }
 }
