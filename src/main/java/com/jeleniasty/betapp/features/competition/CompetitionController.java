@@ -22,9 +22,7 @@ public class CompetitionController {
     return ResponseEntity
       .status(HttpStatus.CREATED)
       .body(
-        this.competitionService.createOrUpdateCompetition(
-            createCompetitonRequest
-          )
+        this.competitionService.createNewCompetition(createCompetitonRequest)
       );
   }
 }
