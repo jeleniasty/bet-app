@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -26,6 +27,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Table(schema = "betapp")
 @NoArgsConstructor
 @Getter
+@Setter
 public class Result {
 
   @Id
