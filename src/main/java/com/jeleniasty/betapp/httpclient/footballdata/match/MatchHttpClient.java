@@ -1,6 +1,7 @@
 package com.jeleniasty.betapp.httpclient.footballdata.match;
 
 import com.jeleniasty.betapp.features.exceptions.RequestLimitExceededException;
+import com.jeleniasty.betapp.features.match.dto.MatchDTO;
 import com.jeleniasty.betapp.httpclient.footballdata.MatchResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +21,7 @@ public class MatchHttpClient {
   @Value("${betapp.footballdata.apikey}")
   private String apiKey;
 
-  public MatchResponse getMatchData(long matchExternalId) {
+  public MatchDTO getMatchData(long matchExternalId) {
     return webClient
       .get()
       .uri(constructGetMatchURL(matchExternalId))
@@ -37,7 +38,7 @@ public class MatchHttpClient {
               )
             )
       )
-      .bodyToMono(MatchResponse.class)
+      .bodyToMono(MatchDTO.class)
       .block();
   }
 
