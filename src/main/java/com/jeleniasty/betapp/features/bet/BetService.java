@@ -53,7 +53,7 @@ public class BetService {
     ) throw new PastMatchBetException(createBetDTO.matchId());
 
     var newBet = new Bet(
-      resultService.addResult(createBetDTO.resultDTO()),
+      resultService.saveResult(createBetDTO.resultDTO()),
       createBetDTO.betType()
     );
     newBet.assignMatch(matchToBet);
