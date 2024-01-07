@@ -1,7 +1,6 @@
 package com.jeleniasty.betapp.features.team;
 
 import com.jeleniasty.betapp.features.exceptions.TeamNotFoundException;
-import com.jeleniasty.betapp.httpclient.footballdata.TeamResponse;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -14,13 +13,12 @@ public class TeamService {
   private final TeamRepository teamRepository;
   private final TeamNamesDictionary teamNamesDictionary;
 
-  public Team fetchOrSaveTeam(TeamDTO teamDTO) {
+  public Team getTeam(TeamDTO teamDTO) {
     var teamEntity = teamRepository
       .findByNameContains(teamDTO.name())
       .orElseGet(() -> mapToEntity(teamDTO));
 
-    this.teamRepository.save(teamEntity);
-    return teamEntity;
+    return this.teamRepository.save(teamEntity);
   }
 
   public Team findTeam(String teamName) {
@@ -28,12 +26,12 @@ public class TeamService {
       .orElseGet(() -> findTeamInDictionary(teamName));
   }
 
-  public TeamDTO mapToDTO(TeamResponse teamResponse) {
-    return new TeamDTO(
-      null,
-      teamResponse.name(),
-      teamResponse.tla(),
-      teamResponse.crest()
+  public Optional<TeamDTO> mapToDTO(Team team) {
+    if (team == null) {
+      return Optional.empty();
+    }
+    return Optional.of(
+      new TeamDTO(team.getId(), team.getName(), team.getCode(), team.getFlag())
     );
   }
 
