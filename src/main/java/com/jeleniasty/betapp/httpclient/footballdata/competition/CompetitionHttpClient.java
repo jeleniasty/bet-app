@@ -1,8 +1,8 @@
 package com.jeleniasty.betapp.httpclient.footballdata.competition;
 
+import com.jeleniasty.betapp.features.competition.CompetitionDTO;
 import com.jeleniasty.betapp.features.competition.CreateCompetitonRequest;
 import com.jeleniasty.betapp.features.exceptions.CompetitionNotFoundException;
-import com.jeleniasty.betapp.httpclient.footballdata.CompetitionMatchesResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -21,7 +21,7 @@ public class CompetitionHttpClient {
   @Value("${betapp.footballdata.apikey}")
   private String apiKey;
 
-  public CompetitionMatchesResponse getCompetitionMatchesData(
+  public CompetitionDTO getCompetitionMatchesData(
     CreateCompetitonRequest createCompetitonRequest
   ) {
     return webClient
@@ -41,7 +41,7 @@ public class CompetitionHttpClient {
               )
             )
       )
-      .bodyToMono(CompetitionMatchesResponse.class)
+      .bodyToMono(CompetitionDTO.class)
       .block();
   }
 
