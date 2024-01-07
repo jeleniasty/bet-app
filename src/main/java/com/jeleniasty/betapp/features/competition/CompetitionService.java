@@ -1,9 +1,9 @@
 package com.jeleniasty.betapp.features.competition;
 
+import com.jeleniasty.betapp.features.exceptions.CompetitionAlreadyExiststException;
 import com.jeleniasty.betapp.features.match.MatchService;
 import com.jeleniasty.betapp.features.match.dto.MatchDTO;
 import com.jeleniasty.betapp.features.match.model.Match;
-import com.jeleniasty.betapp.httpclient.footballdata.CompetitionMatchesResponse;
 import com.jeleniasty.betapp.httpclient.footballdata.competition.CompetitionHttpClient;
 import java.util.List;
 import java.util.Set;
@@ -21,86 +21,55 @@ public class CompetitionService {
   private final MatchService matchService;
 
   @Transactional
-  public CompetitionDTO createOrUpdateCompetition(
+  public CompetitionDTO createNewCompetition(
     CreateCompetitonRequest createCompetitonRequest
   ) {
-    var competitionDTO = mapToDTO(
+    return saveCompetition(
       competitionHttpClient.getCompetitionMatchesData(createCompetitonRequest)
     );
-
-    return saveOrUpdateCompetition(competitionDTO);
   }
 
-  private CompetitionDTO saveOrUpdateCompetition(
-    CompetitionDTO competitionDTO
-  ) {
-    var competitionEntity = competitionRepository
-      .findCompetitionByCodeAndSeason(
+  private CompetitionDTO saveCompetition(CompetitionDTO competitionDTO) {
+    if (
+      competitionRepository.existsByCodeAndSeason(
         competitionDTO.code(),
         competitionDTO.season()
       )
-      .map(competition -> {
-        competition.setStartDate(competitionDTO.startDate());
-        competition.setEndDate(competitionDTO.endDate());
+    ) {
+      CompetitionAlreadyExiststException.of(
+        competitionDTO.code(),
+        competitionDTO.season()
+      );
+    }
 
-        competition.assignMatches(saveMatches(competitionDTO.matches()));
+    var competition = new Competition(
+      competitionDTO.name(),
+      competitionDTO.code(),
+      competitionDTO.type(),
+      competitionDTO.season(),
+      competitionDTO.emblem(),
+      competitionDTO.startDate(),
+      competitionDTO.endDate()
+    );
 
-        return competition;
-      })
-      .orElseGet(() -> {
-        var competition = new Competition(
-          competitionDTO.name(),
-          competitionDTO.code(),
-          competitionDTO.type(),
-          competitionDTO.season(),
-          competitionDTO.emblem(),
-          competitionDTO.startDate(),
-          competitionDTO.endDate()
-        );
+    competition.assignMatches(saveMatches(competitionDTO.matches()));
 
-        competition.assignMatches(saveMatches(competitionDTO.matches()));
-
-        return competition;
-      });
-
-    return mapToDTO(this.competitionRepository.save(competitionEntity));
+    return mapToDTO(this.competitionRepository.save(competition));
   }
 
-  private Set<Match> saveMatches(List<MatchDTO> matches) {
-    return matches
+  private Set<Match> saveMatches(List<MatchDTO> matchDTOs) {
+    return matchDTOs
       .stream()
-      .filter(this::areTeamsAssigned)
-      .map(this.matchService::saveOrUpdateMatch)
+      .map(this.matchService::saveMatch)
       .collect(Collectors.toSet());
   }
 
+  //TODO refactor this method to save all matches and then update:
+  //skip finished matches
+  //skip matches in play
+  //try to update match date and status when saved match has status scheduled (it means match date time is not specified)
+  //try to update teams and status when saved match has no teams
   //TODO add daily competition matches updates (i.a. for matches that had no teams assigned)
-
-  private boolean areTeamsAssigned(MatchDTO matchDTO) {
-    return (
-      matchDTO.homeTeam().name() != null && matchDTO.awayTeam().name() != null
-    );
-  }
-
-  private CompetitionDTO mapToDTO(
-    CompetitionMatchesResponse competitionMatchesResponse
-  ) {
-    return new CompetitionDTO(
-      null,
-      competitionMatchesResponse.competition().name(),
-      competitionMatchesResponse.competition().code(),
-      competitionMatchesResponse.competition().type(),
-      competitionMatchesResponse.filters().season(),
-      competitionMatchesResponse.competition().emblem(),
-      competitionMatchesResponse.resultSet().first(),
-      competitionMatchesResponse.resultSet().last(),
-      competitionMatchesResponse
-        .matches()
-        .stream()
-        .map(this.matchService::mapToDTO)
-        .toList()
-    );
-  }
 
   private CompetitionDTO mapToDTO(Competition competition) {
     return new CompetitionDTO(

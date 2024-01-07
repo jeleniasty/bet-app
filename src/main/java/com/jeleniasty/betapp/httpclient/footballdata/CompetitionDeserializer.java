@@ -23,14 +23,13 @@ import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CompetitionMatchesDeserializer
-  extends StdDeserializer<CompetitionDTO> {
+public class CompetitionDeserializer extends StdDeserializer<CompetitionDTO> {
 
-  protected CompetitionMatchesDeserializer() {
+  protected CompetitionDeserializer() {
     this(null);
   }
 
-  protected CompetitionMatchesDeserializer(Class<?> vc) {
+  protected CompetitionDeserializer(Class<?> vc) {
     super(vc);
   }
 
