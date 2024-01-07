@@ -3,7 +3,6 @@ package com.jeleniasty.betapp.features.competition;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.jeleniasty.betapp.features.match.dto.MatchDTO;
 import com.jeleniasty.betapp.httpclient.footballdata.CompetitionMatchesDeserializer;
-import com.jeleniasty.betapp.httpclient.odds.OddsResponseDeserializer;
 import java.time.LocalDate;
 import java.util.List;
 
