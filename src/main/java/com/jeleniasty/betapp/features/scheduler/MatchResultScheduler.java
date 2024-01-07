@@ -2,10 +2,10 @@ package com.jeleniasty.betapp.features.scheduler;
 
 import com.jeleniasty.betapp.features.bet.SaveMatchResultDTO;
 import com.jeleniasty.betapp.features.match.MatchService;
+import com.jeleniasty.betapp.features.match.dto.MatchDTO;
 import com.jeleniasty.betapp.features.match.model.Match;
 import com.jeleniasty.betapp.features.match.model.MatchStatus;
 import com.jeleniasty.betapp.features.result.ResultService;
-import com.jeleniasty.betapp.httpclient.footballdata.MatchResponse;
 import com.jeleniasty.betapp.httpclient.footballdata.match.MatchHttpClient;
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -63,7 +63,7 @@ public class MatchResultScheduler {
     if (isResultAvailable(matchExternalData)) {
       this.matchService.setMatchResult(
           new SaveMatchResultDTO(
-            this.resultService.mapToDTO(matchExternalData.score()),
+            matchExternalData.result(),
             null,
             matchExternalId,
             matchExternalData.status()
@@ -84,7 +84,11 @@ public class MatchResultScheduler {
       match.getStatus() != MatchStatus.AWARDED;
   }
 
-  private boolean isResultAvailable(MatchResponse matchResponse) {
-    return matchResponse.score().winner() != null;
+  private boolean isResultAvailable(MatchDTO matchDTO) {
+    if (matchDTO.result() == null) {
+      return false;
+    }
+
+    return matchDTO.result().winner() != null;
   }
 }
