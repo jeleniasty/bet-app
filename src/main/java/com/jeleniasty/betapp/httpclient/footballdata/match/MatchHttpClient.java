@@ -2,7 +2,6 @@ package com.jeleniasty.betapp.httpclient.footballdata.match;
 
 import com.jeleniasty.betapp.features.exceptions.RequestLimitExceededException;
 import com.jeleniasty.betapp.features.match.dto.MatchDTO;
-import com.jeleniasty.betapp.httpclient.footballdata.MatchResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;

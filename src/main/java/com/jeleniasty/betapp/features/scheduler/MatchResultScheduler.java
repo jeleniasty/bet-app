@@ -5,7 +5,6 @@ import com.jeleniasty.betapp.features.match.MatchService;
 import com.jeleniasty.betapp.features.match.dto.MatchDTO;
 import com.jeleniasty.betapp.features.match.model.Match;
 import com.jeleniasty.betapp.features.match.model.MatchStatus;
-import com.jeleniasty.betapp.features.result.ResultService;
 import com.jeleniasty.betapp.httpclient.footballdata.match.MatchHttpClient;
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -26,7 +25,6 @@ public class MatchResultScheduler {
 
   private final SchedulerService schedulerService;
   private final MatchService matchService;
-  private final ResultService resultService;
   private final MatchHttpClient matchHttpClient;
 
   private final Queue<Long> ongoingMatches = new LinkedList<>();
