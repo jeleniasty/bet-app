@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.jeleniasty.betapp.features.result.score.Score;
 import com.jeleniasty.betapp.features.result.score.ScoreDTO;
-import com.jeleniasty.betapp.httpclient.footballdata.ScoreResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -45,7 +44,7 @@ class ResultServiceTest {
     );
 
     //act
-    var expectedResult = resultService.addResult(resultDTO);
+    var expectedResult = resultService.saveResult(resultDTO);
 
     //assert
     var actualResult = resultRepository.findById(expectedResult.getId());
@@ -93,47 +92,10 @@ class ResultServiceTest {
 
   @Test
   void mapToDTO_given_null_Result_entity_should_return_empty_Optional() {
-    //arrange
-    Result resultEntity = null;
-
     //act
-    var actualResultDTO = resultService.mapToDTO(resultEntity);
+    var actualResultDTO = resultService.mapToDTO(null);
 
     //assert
     assertThat(actualResultDTO.isPresent()).isFalse();
-  }
-
-  @Test
-  void mapToDTO_given_ScoreResponse_should_return_ResultDTO() {
-    //arrange
-    var scoreResponse = new ScoreResponse(
-      Winner.HOME_TEAM,
-      Duration.REGULAR,
-      new ScoreResponse.BasicScoreResponse(0, 0),
-      new ScoreResponse.BasicScoreResponse(1, 0),
-      null,
-      null,
-      null
-    );
-
-    //act
-    var actualResultDTO = resultService.mapToDTO(scoreResponse);
-
-    assertThat(scoreResponse.winner()).isEqualTo(actualResultDTO.winner());
-    assertThat(scoreResponse.duration()).isEqualTo(actualResultDTO.duration());
-
-    assertThat(scoreResponse.halfTime().home())
-      .isEqualTo(actualResultDTO.halfTimeScore().home());
-    assertThat(scoreResponse.halfTime().away())
-      .isEqualTo(actualResultDTO.halfTimeScore().away());
-
-    assertThat(scoreResponse.regularTime()).isNull();
-    assertThat(scoreResponse.extraTime()).isNull();
-    assertThat(scoreResponse.penalties()).isNull();
-
-    assertThat(scoreResponse.fullTime().home())
-      .isEqualTo(actualResultDTO.fullTimeScore().home());
-    assertThat(scoreResponse.fullTime().away())
-      .isEqualTo(actualResultDTO.fullTimeScore().away());
   }
 }
