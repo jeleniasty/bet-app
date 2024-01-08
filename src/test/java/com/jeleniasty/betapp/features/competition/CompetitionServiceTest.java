@@ -2,15 +2,17 @@ package com.jeleniasty.betapp.features.competition;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.jeleniasty.betapp.features.match.dto.MatchDTO;
 import com.jeleniasty.betapp.features.match.model.CompetitionStage;
 import com.jeleniasty.betapp.features.match.model.Match;
 import com.jeleniasty.betapp.features.match.model.MatchStatus;
 import com.jeleniasty.betapp.features.result.Duration;
+import com.jeleniasty.betapp.features.result.Result;
+import com.jeleniasty.betapp.features.result.ResultDTO;
 import com.jeleniasty.betapp.features.result.Winner;
-import com.jeleniasty.betapp.httpclient.footballdata.CompetitionMatchesResponse;
-import com.jeleniasty.betapp.httpclient.footballdata.MatchResponse;
-import com.jeleniasty.betapp.httpclient.footballdata.ScoreResponse;
-import com.jeleniasty.betapp.httpclient.footballdata.TeamResponse;
+import com.jeleniasty.betapp.features.result.score.ScoreDTO;
+import com.jeleniasty.betapp.features.team.TeamDTO;
+import com.jeleniasty.betapp.httpclient.footballdata.CompetitionDeserializer;
 import com.jeleniasty.betapp.httpclient.footballdata.competition.CompetitionHttpClient;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -55,11 +57,11 @@ class CompetitionServiceTest {
     //arrange
     var competitionRequest = new CreateCompetitonRequest("TST", 2023);
 
-    var competitionMatchesResponse = constructTestCompetitionMatchesResponse();
+    var competitionDTO = constructTestCompetitionMatchesResponse();
 
     Mockito
       .when(competitionHttpClient.getCompetitionMatchesData(competitionRequest))
-      .thenReturn(competitionMatchesResponse);
+      .thenReturn(competitionDTO);
 
     //act
     competitionService.createNewCompetition(competitionRequest);
@@ -73,9 +75,7 @@ class CompetitionServiceTest {
       .get();
 
     assertThat(competition.getCompetitionMatches().size())
-      .isEqualTo(
-        getMatchesWithTeamsAssigned(competitionMatchesResponse).size()
-      );
+      .isEqualTo(competitionDTO.matches().size());
 
     assertThat(
       getMatchesWithStatus(
@@ -84,10 +84,7 @@ class CompetitionServiceTest {
       )
     )
       .isEqualTo(
-        getMatchesWithStatus(
-          competitionMatchesResponse.matches(),
-          MatchStatus.FINISHED
-        )
+        getMatchesWithStatus(competitionDTO.matches(), MatchStatus.FINISHED)
       );
 
     assertThat(
@@ -97,10 +94,7 @@ class CompetitionServiceTest {
       )
     )
       .isEqualTo(
-        getMatchesWithStatus(
-          getMatchesWithTeamsAssigned(competitionMatchesResponse),
-          MatchStatus.SCHEDULED
-        )
+        getMatchesWithStatus(competitionDTO.matches(), MatchStatus.SCHEDULED)
       );
 
     assertThat(
@@ -110,34 +104,12 @@ class CompetitionServiceTest {
       )
     )
       .isEqualTo(
-        getMatchesWithStatus(
-          competitionMatchesResponse.matches(),
-          MatchStatus.TIMED
-        )
+        getMatchesWithStatus(competitionDTO.matches(), MatchStatus.TIMED)
       );
   }
 
-  private List<MatchResponse> getMatchesWithTeamsAssigned(
-    CompetitionMatchesResponse competitionMatchesResponse
-  ) {
-    return competitionMatchesResponse
-      .matches()
-      .stream()
-      .filter(areTeamsAssigned())
-      .toList();
-  }
-
-  private Predicate<MatchResponse> areTeamsAssigned() {
-    return matchResponse ->
-      matchResponse.homeTeam().name() != null &&
-      matchResponse.awayTeam().name() != null;
-  }
-
-  private int getMatchesWithStatus(
-    List<MatchResponse> matchResponses,
-    MatchStatus status
-  ) {
-    return matchResponses
+  private int getMatchesWithStatus(List<MatchDTO> matches, MatchStatus status) {
+    return matches
       .stream()
       .filter(matchResponse -> matchResponse.status() == status)
       .toList()
@@ -152,96 +124,102 @@ class CompetitionServiceTest {
       .size();
   }
 
-  private CompetitionMatchesResponse constructTestCompetitionMatchesResponse() {
-    var nullScoreResponse = new ScoreResponse(
+  private CompetitionDTO constructTestCompetitionMatchesResponse() {
+    return new CompetitionDTO(
       null,
-      Duration.REGULAR,
-      new ScoreResponse.BasicScoreResponse(null, null),
-      new ScoreResponse.BasicScoreResponse(null, null),
-      null,
-      null,
-      null
-    );
-    return new CompetitionMatchesResponse(
-      new CompetitionMatchesResponse.Filters(2023),
-      new CompetitionMatchesResponse.ResultSet(
-        5,
-        LocalDate.now().minusMonths(5),
-        LocalDate.now().plusMonths(5),
-        2
-      ),
-      new CompetitionMatchesResponse.CompetitionResponse(
-        "Test competition",
-        "TST",
-        CompetitionType.LEAGUE,
-        "test competition emblem url"
-      ),
+      "Test competition",
+      "TST",
+      CompetitionType.LEAGUE,
+      2023,
+      "test competition emblem url",
+      LocalDate.now().minusMonths(5),
+      LocalDate.now().plusMonths(5),
       List.of(
-        new MatchResponse(
+        new MatchDTO(
           10001L,
+          new TeamDTO(null, "Test team 1", "TS1", "test crest url1"),
+          new TeamDTO(null, "Test team 2", "TS2", "test emblem url2"),
+          1f,
+          1f,
+          1f,
           MatchStatus.FINISHED,
           CompetitionStage.REGULAR_SEASON,
           null,
           LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC).minusMonths(2),
-          new TeamResponse("Test team 1", "TS1", "test crest url1"),
-          new TeamResponse("Test team 2", "TS2", "test emblem url2"),
-          new ScoreResponse(
+          new ResultDTO(
             Winner.HOME_TEAM,
             Duration.REGULAR,
-            new ScoreResponse.BasicScoreResponse(0, 1),
-            new ScoreResponse.BasicScoreResponse(0, 0),
+            new ScoreDTO(0, 1),
             null,
             null,
-            null
-          )
+            null,
+            new ScoreDTO(0, 0)
+          ),
+          10001L
         ),
-        new MatchResponse(
+        new MatchDTO(
           10002L,
+          new TeamDTO(null, "Test team 3", "TS3", "test crest url3"),
+          new TeamDTO(null, "Test team 4", "TS4", "test emblem url4"),
+          1f,
+          1f,
+          1f,
           MatchStatus.FINISHED,
           CompetitionStage.REGULAR_SEASON,
           null,
           LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC).minusDays(10),
-          new TeamResponse("Test team 3", "TS3", "test crest url3"),
-          new TeamResponse("Test team 4", "TS4", "test emblem url4"),
-          new ScoreResponse(
+          new ResultDTO(
             Winner.DRAW,
             Duration.REGULAR,
-            new ScoreResponse.BasicScoreResponse(1, 0),
-            new ScoreResponse.BasicScoreResponse(1, 1),
+            new ScoreDTO(1, 0),
+            new ScoreDTO(1, 1),
             null,
             null,
             null
-          )
+          ),
+          10002L
         ),
-        new MatchResponse(
+        new MatchDTO(
           10003L,
+          new TeamDTO(null, "Test team 5", "TS5", "test crest url5"),
+          new TeamDTO(null, "Test team 6", "TS6", "test emblem url6"),
+          1f,
+          1f,
+          1f,
           MatchStatus.TIMED,
           CompetitionStage.REGULAR_SEASON,
           null,
           LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC).plusDays(14),
-          new TeamResponse("Test team 5", "TS5", "test crest url5"),
-          new TeamResponse("Test team 6", "TS6", "test emblem url6"),
-          nullScoreResponse
+          null,
+          10003L
         ),
-        new MatchResponse(
+        new MatchDTO(
           10004L,
+          new TeamDTO(null, "Test team 7", "TS7", "test crest url7"),
+          new TeamDTO(null, "Test team 8", "TS8", "test emblem url8"),
+          1f,
+          1f,
+          1f,
           MatchStatus.SCHEDULED,
           CompetitionStage.REGULAR_SEASON,
           null,
           LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC).plusDays(14),
-          new TeamResponse("Test team 7", "TS7", "test crest url7"),
-          new TeamResponse("Test team 8", "TS8", "test emblem url8"),
-          nullScoreResponse
+          null,
+          10004L
         ),
-        new MatchResponse(
+        new MatchDTO(
           10005L,
+          null,
+          null,
+          1f,
+          1f,
+          1f,
           MatchStatus.SCHEDULED,
           CompetitionStage.REGULAR_SEASON,
           null,
           LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC).plusMonths(2),
-          new TeamResponse(null, null, null),
-          new TeamResponse(null, null, null),
-          nullScoreResponse
+          null,
+          10005L
         )
       )
     );
