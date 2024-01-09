@@ -17,12 +17,10 @@ public class CompetitionController {
   @PostMapping("/competition")
   @PreAuthorize(value = "hasAuthority('ADMIN')")
   public ResponseEntity<CompetitionDTO> createNewCompetition(
-    @RequestBody CreateCompetitonRequest createCompetitonRequest
+    @RequestBody CompetitionRequest competitionRequest
   ) {
     return ResponseEntity
       .status(HttpStatus.CREATED)
-      .body(
-        this.competitionService.createNewCompetition(createCompetitonRequest)
-      );
+      .body(this.competitionService.createNewCompetition(competitionRequest));
   }
 }

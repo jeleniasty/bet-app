@@ -1,12 +1,21 @@
 package com.jeleniasty.betapp.features.competition;
 
 import com.jeleniasty.betapp.features.exceptions.CompetitionAlreadyExiststException;
+import com.jeleniasty.betapp.features.exceptions.CompetitionNotFoundException;
+import com.jeleniasty.betapp.features.exceptions.MatchNotFoundException;
 import com.jeleniasty.betapp.features.match.MatchService;
 import com.jeleniasty.betapp.features.match.dto.MatchDTO;
 import com.jeleniasty.betapp.features.match.model.Match;
+import com.jeleniasty.betapp.features.match.model.MatchStatus;
 import com.jeleniasty.betapp.httpclient.footballdata.competition.CompetitionHttpClient;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,11 +31,32 @@ public class CompetitionService {
 
   @Transactional
   public CompetitionDTO createNewCompetition(
-    CreateCompetitonRequest createCompetitonRequest
+    CompetitionRequest competitionRequest
   ) {
     return saveCompetition(
-      competitionHttpClient.getCompetitionMatchesData(createCompetitonRequest)
+      competitionHttpClient.getCompetitionMatchesData(competitionRequest)
     );
+  }
+
+  @Transactional
+  public List<CompetitionDTO> updateOngoingCompetitions() {
+    var ongoingCompetitions =
+      competitionRepository.findCompetitionByEndDateAfter(
+        LocalDate.ofInstant(Instant.now(), ZoneOffset.UTC)
+      );
+
+    var competitionDTOs = getCompetitionsData(ongoingCompetitions);
+    return ongoingCompetitions
+      .stream()
+      .map(ongoingCompetition ->
+        updateCompetition(
+          ongoingCompetition,
+          findCorrespondingDTO(ongoingCompetition, competitionDTOs)
+        )
+      )
+      .filter(Optional::isPresent)
+      .map(Optional::get)
+      .toList();
   }
 
   private CompetitionDTO saveCompetition(CompetitionDTO competitionDTO) {
@@ -64,12 +94,116 @@ public class CompetitionService {
       .collect(Collectors.toSet());
   }
 
-  //TODO refactor this method to save all matches and then update:
-  //skip finished matches
-  //skip matches in play
-  //try to update match date and status when saved match has status scheduled (it means match date time is not specified)
-  //try to update teams and status when saved match has no teams
-  //TODO add daily competition matches updates (i.a. for matches that had no teams assigned)
+  private CompetitionDTO findCorrespondingDTO(
+    Competition ongoingCompetition,
+    List<CompetitionDTO> competitionDTOs
+  ) {
+    return competitionDTOs
+      .stream()
+      .filter(isCodeAndSeasonEqual(ongoingCompetition))
+      .findFirst()
+      .orElseThrow(() ->
+        new CompetitionNotFoundException(
+          ongoingCompetition.getCode(),
+          ongoingCompetition.getSeason()
+        )
+      );
+  }
+
+  private Predicate<CompetitionDTO> isCodeAndSeasonEqual(
+    Competition ongoingCompetition
+  ) {
+    return competitionDTO ->
+      competitionDTO.code().equals(ongoingCompetition.getCode()) &&
+      Objects.equals(competitionDTO.season(), ongoingCompetition.getSeason());
+  }
+
+  private Optional<CompetitionDTO> updateCompetition(
+    Competition ongoingCompetition,
+    CompetitionDTO competitionData
+  ) {
+    var competitionUpdated = false;
+    if (!ongoingCompetition.getEndDate().equals(competitionData.endDate())) {
+      ongoingCompetition.setEndDate(competitionData.endDate());
+      competitionRepository.save(ongoingCompetition);
+      competitionUpdated = true;
+    }
+
+    var updatedMatches = ongoingCompetition
+      .getCompetitionMatches()
+      .stream()
+      .filter(isMatchFinishedOrInPlay().negate())
+      .filter(areTeamsNotAssigned().or(isMatchScheduled()))
+      .map(match ->
+        matchService.attemptToUpdate(
+          match,
+          findCorrespondingMatchDTO(match, competitionData.matches())
+        )
+      )
+      .filter(Optional::isPresent)
+      .map(Optional::get)
+      .toList();
+
+    if (competitionUpdated || !updatedMatches.isEmpty()) {
+      return Optional.of(
+        new CompetitionDTO(
+          ongoingCompetition.getId(),
+          ongoingCompetition.getName(),
+          ongoingCompetition.getCode(),
+          ongoingCompetition.getType(),
+          ongoingCompetition.getSeason(),
+          ongoingCompetition.getEmblem(),
+          ongoingCompetition.getStartDate(),
+          ongoingCompetition.getEndDate(),
+          updatedMatches
+        )
+      );
+    }
+
+    return Optional.empty();
+  }
+
+  private Predicate<Match> isMatchFinishedOrInPlay() {
+    return match ->
+      match.getStatus() == MatchStatus.FINISHED ||
+      match.getStatus() == MatchStatus.IN_PLAY ||
+      match.getStatus() == MatchStatus.PAUSED;
+  }
+
+  private Predicate<Match> areTeamsNotAssigned() {
+    return match -> match.getHomeTeam() == null || match.getAwayTeam() == null;
+  }
+
+  private Predicate<Match> isMatchScheduled() {
+    return match -> match.getStatus() == MatchStatus.SCHEDULED;
+  }
+
+  private MatchDTO findCorrespondingMatchDTO(
+    Match match,
+    List<MatchDTO> matchDTOs
+  ) {
+    return matchDTOs
+      .stream()
+      .filter(matchDTO ->
+        Objects.equals(matchDTO.externalId(), match.getExternalId())
+      )
+      .findFirst()
+      .orElseThrow(() ->
+        MatchNotFoundException.withExternalId(match.getExternalId())
+      );
+  }
+
+  private List<CompetitionDTO> getCompetitionsData(
+    List<Competition> ongoingCompetitions
+  ) {
+    return ongoingCompetitions
+      .stream()
+      .map(competition ->
+        new CompetitionRequest(competition.getCode(), competition.getSeason())
+      )
+      .map(competitionHttpClient::getCompetitionMatchesData)
+      .toList();
+  }
 
   private CompetitionDTO mapToDTO(Competition competition) {
     return new CompetitionDTO(

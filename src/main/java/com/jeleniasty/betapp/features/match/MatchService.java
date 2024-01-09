@@ -8,14 +8,13 @@ import com.jeleniasty.betapp.features.match.model.Match;
 import com.jeleniasty.betapp.features.match.model.MatchStatus;
 import com.jeleniasty.betapp.features.odds.MatchOddsDTO;
 import com.jeleniasty.betapp.features.result.ResultService;
-import com.jeleniasty.betapp.features.team.TeamDTO;
 import com.jeleniasty.betapp.features.team.TeamService;
-import com.jeleniasty.betapp.httpclient.footballdata.MatchResponse;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneOffset;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
@@ -32,70 +31,68 @@ public class MatchService {
   private final ResultService resultService;
   private final ApplicationEventPublisher eventPublisher;
 
-  @Transactional
-  public Match saveOrUpdateMatch(MatchDTO matchDTO) {
-    var homeTeam = matchDTO.homeTeam();
-    var awayTeam = matchDTO.awayTeam();
-
-    var matchToSave =
-      this.matchRepository.findByHomeTeamNameContainingAndAwayTeamNameContainingAndDate(
-          homeTeam.name(),
-          awayTeam.name(),
-          matchDTO.date()
-        )
-        .map(match -> {
-          match.setDate(matchDTO.date());
-
-          return match;
-        })
-        .orElseGet(() ->
-          new Match(
-            matchDTO.status(),
-            matchDTO.stage(),
-            matchDTO.group(),
-            matchDTO.homeOdds(),
-            matchDTO.awayOdds(),
-            matchDTO.drawOdds(),
-            matchDTO.date(),
-            matchDTO.externalId()
-          )
+  public Match saveMatch(MatchDTO matchDTO) {
+    return matchRepository
+      .findByExternalId(matchDTO.externalId())
+      .orElseGet(() -> {
+        var newMatch = new Match(
+          matchDTO.status(),
+          matchDTO.stage(),
+          matchDTO.group(),
+          matchDTO.homeOdds(),
+          matchDTO.awayOdds(),
+          matchDTO.drawOdds(),
+          matchDTO.date(),
+          matchDTO.externalId()
         );
+        if (matchDTO.homeTeam() != null) {
+          newMatch.setHomeTeam(teamService.getTeam(matchDTO.homeTeam()));
+        }
 
-    if (isMatchCompleted(matchDTO)) {
-      matchToSave.setResult(resultService.addResult(matchDTO.result()));
-    }
+        if (matchDTO.awayTeam() != null) {
+          newMatch.setAwayTeam(teamService.getTeam(matchDTO.awayTeam()));
+        }
 
-    if (
-      areTeamsAssigned(homeTeam, awayTeam) && !areTeamsAlreadySaved(matchToSave)
-    ) {
-      matchToSave.setHomeTeam(
-        this.teamService.fetchOrSaveTeam(
-            new TeamDTO(null, homeTeam.name(), homeTeam.code(), homeTeam.flag())
-          )
-      );
-      matchToSave.setAwayTeam(
-        this.teamService.fetchOrSaveTeam(
-            new TeamDTO(null, awayTeam.name(), awayTeam.code(), awayTeam.flag())
-          )
-      );
-    }
-    return matchToSave;
+        if (matchDTO.result() != null) {
+          newMatch.setResult(resultService.saveResult(matchDTO.result()));
+        }
+        return newMatch;
+      });
   }
 
-  private static boolean isMatchCompleted(MatchDTO matchDTO) {
-    return matchDTO.result().winner() != null;
+  public Optional<MatchDTO> attemptToUpdate(
+    Match matchEntity,
+    MatchDTO matchData
+  ) {
+    var statusUpdated = false;
+    var teamsUpdated = false;
+
+    if (matchEntity.getStatus() != matchData.status()) {
+      matchEntity.setStatus(matchData.status());
+      matchEntity.setDate(matchData.date());
+      statusUpdated = true;
+    }
+    if (!areTeamsAssigned(matchEntity) && areTeamsAssigned(matchData)) {
+      matchEntity.setHomeTeam(this.teamService.getTeam(matchData.homeTeam()));
+      matchEntity.setAwayTeam(this.teamService.getTeam(matchData.awayTeam()));
+      teamsUpdated = true;
+    }
+    if (statusUpdated || teamsUpdated) {
+      return Optional.of(mapToDTO(matchRepository.save(matchEntity)));
+    }
+    return Optional.empty();
   }
 
   public Match findMatch(Long matchId) {
     return matchRepository
       .findById(matchId)
-      .orElseThrow(() -> new MatchNotFoundException(matchId));
+      .orElseThrow(() -> MatchNotFoundException.withId(matchId));
   }
 
   public Match findMatchByExternalId(Long externalId) {
     return matchRepository
       .findByExternalId(externalId)
-      .orElseThrow(() -> new MatchNotFoundException(externalId));
+      .orElseThrow(() -> MatchNotFoundException.withExternalId(externalId));
   }
 
   public List<Match> findMatches(Instant utcDate) {
@@ -113,7 +110,7 @@ public class MatchService {
 
     matchToBeUpdated.setStatus(saveMatchResultDTO.status());
     matchToBeUpdated.setResult(
-      resultService.addResult(saveMatchResultDTO.resultDTO())
+      resultService.saveResult(saveMatchResultDTO.resultDTO())
     );
     if (saveMatchResultDTO.status() == MatchStatus.FINISHED) {
       eventPublisher.publishEvent(
@@ -158,43 +155,16 @@ public class MatchService {
   public MatchDTO getMatch(Long id) {
     var match = matchRepository
       .findById(id)
-      .orElseThrow(() -> new MatchNotFoundException(id));
+      .orElseThrow(() -> MatchNotFoundException.withId(id));
 
     return mapToDTO(match);
-  }
-
-  public MatchDTO mapToDTO(MatchResponse matchResponse) {
-    return new MatchDTO(
-      null,
-      this.teamService.mapToDTO(matchResponse.homeTeam()),
-      this.teamService.mapToDTO(matchResponse.awayTeam()),
-      1f,
-      1f,
-      1f,
-      matchResponse.status(),
-      matchResponse.stage(),
-      matchResponse.group(),
-      matchResponse.utcDate(),
-      this.resultService.mapToDTO(matchResponse.score()),
-      matchResponse.id()
-    );
   }
 
   public MatchDTO mapToDTO(Match match) {
     return new MatchDTO(
       match.getId(),
-      new TeamDTO(
-        match.getHomeTeam().getId(),
-        match.getHomeTeam().getName(),
-        match.getHomeTeam().getCode(),
-        match.getHomeTeam().getFlag()
-      ),
-      new TeamDTO(
-        match.getAwayTeam().getId(),
-        match.getAwayTeam().getName(),
-        match.getAwayTeam().getCode(),
-        match.getAwayTeam().getFlag()
-      ),
+      this.teamService.mapToDTO(match.getHomeTeam()).orElse(null),
+      this.teamService.mapToDTO(match.getAwayTeam()).orElse(null),
       match.getHomeOdds(),
       match.getAwayOdds(),
       match.getDrawOdds(),
@@ -207,14 +177,12 @@ public class MatchService {
     );
   }
 
-  private boolean areTeamsAssigned(TeamDTO homeTeam, TeamDTO awayTeam) {
-    return homeTeam.name() != null && awayTeam.name() != null;
+  private boolean areTeamsAssigned(MatchDTO matchDTO) {
+    return matchDTO.homeTeam() != null || matchDTO.awayTeam() != null;
   }
 
-  private boolean areTeamsAlreadySaved(Match matchToSave) {
-    return (
-      matchToSave.getHomeTeam() != null && matchToSave.getAwayTeam() != null
-    );
+  private boolean areTeamsAssigned(Match match) {
+    return match.getHomeTeam() != null || match.getAwayTeam() != null;
   }
 
   private LocalDateTime getDateWithGivenTime(Instant utcDate, LocalTime time) {

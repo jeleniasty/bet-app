@@ -156,10 +156,7 @@ class CompetitionControllerTest {
       List.of(match1, match2, match3)
     );
 
-    CreateCompetitonRequest competitonRequest = new CreateCompetitonRequest(
-      "SA",
-      2023
-    );
+    CompetitionRequest competitonRequest = new CompetitionRequest("SA", 2023);
 
     Mockito
       .when(competitionService.createNewCompetition(competitonRequest))
@@ -190,7 +187,7 @@ class CompetitionControllerTest {
   void createNewCompetition_for_not_available_competition_should_return_response_with_404_status_and_error_message()
     throws Exception {
     //arrange
-    var competitonRequest = new CreateCompetitonRequest("SA", 2023);
+    var competitonRequest = new CompetitionRequest("SA", 2023);
     var competitionNotFoundException = new CompetitionNotFoundException(
       competitonRequest.code(),
       competitonRequest.season()

@@ -1,7 +1,7 @@
 package com.jeleniasty.betapp.httpclient.footballdata.competition;
 
 import com.jeleniasty.betapp.features.competition.CompetitionDTO;
-import com.jeleniasty.betapp.features.competition.CreateCompetitonRequest;
+import com.jeleniasty.betapp.features.competition.CompetitionRequest;
 import com.jeleniasty.betapp.features.exceptions.CompetitionNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,11 +22,11 @@ public class CompetitionHttpClient {
   private String apiKey;
 
   public CompetitionDTO getCompetitionMatchesData(
-    CreateCompetitonRequest createCompetitonRequest
+    CompetitionRequest competitionRequest
   ) {
     return webClient
       .get()
-      .uri(constructGetCompetitionMatchesURL(createCompetitonRequest))
+      .uri(constructGetCompetitionMatchesURL(competitionRequest))
       .header("X-Auth-Token", apiKey)
       .retrieve()
       .onStatus(
@@ -36,8 +36,8 @@ public class CompetitionHttpClient {
             .bodyToMono(String.class)
             .map(err ->
               new CompetitionNotFoundException(
-                createCompetitonRequest.code(),
-                createCompetitonRequest.season()
+                competitionRequest.code(),
+                competitionRequest.season()
               )
             )
       )
@@ -46,15 +46,15 @@ public class CompetitionHttpClient {
   }
 
   private String constructGetCompetitionMatchesURL(
-    CreateCompetitonRequest createCompetitonRequest
+    CompetitionRequest competitionRequest
   ) {
     return (
       baseUrl +
       "/v4/competitions/" +
-      createCompetitonRequest.code() +
+      competitionRequest.code() +
       "/matches" +
       "?season=" +
-      createCompetitonRequest.season()
+      competitionRequest.season()
     );
   }
 }
