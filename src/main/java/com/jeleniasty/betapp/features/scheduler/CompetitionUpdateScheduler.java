@@ -13,7 +13,7 @@ public class CompetitionUpdateScheduler {
 
   private final CompetitionService competitionService;
 
-  @Scheduled(cron = "0 * * * * *")
+  @Scheduled(cron = "0 0 0 * * *")
   public void updateCompetitions() {
     var updatedCompetitions = competitionService.updateOngoingCompetitions();
     String message;
