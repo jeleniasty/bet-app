@@ -38,8 +38,8 @@ CREATE TABLE betapp.user_role (
 CREATE TABLE betapp.competition (
                 id serial  NOT NULL,
                 name text  NOT NULL,
-                code char(5)  NULL,
-                type char(10)  NOT NULL,
+                code varchar(5)  NULL,
+                type varchar(10)  NOT NULL,
                 season int  NOT NULL,
                 emblem text NOT NULL,
                 start_date date NOT NULL,
