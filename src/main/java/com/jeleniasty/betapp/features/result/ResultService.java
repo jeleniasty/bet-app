@@ -65,10 +65,6 @@ public class ResultService {
       return Optional.empty();
     }
 
-    if (result.getDuration() == null) {
-      return Optional.empty();
-    }
-
     if (result.getHalfTimeScore() != null) {
       halfTime =
         new ScoreDTO(
