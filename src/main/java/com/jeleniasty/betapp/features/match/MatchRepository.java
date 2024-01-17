@@ -2,12 +2,12 @@ package com.jeleniasty.betapp.features.match;
 
 import com.jeleniasty.betapp.features.match.dto.UpcomingMatchDTO;
 import com.jeleniasty.betapp.features.match.model.Match;
+import com.jeleniasty.betapp.features.match.model.MatchStatus;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -18,10 +18,11 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
   )
   List<UpcomingMatchDTO> findTop10ByStatusOrderByDate();
 
-  Optional<Match> findByHomeTeamNameContainingAndAwayTeamNameContainingAndDate(
-    @Param("homeTeamName") String homeTeamName,
-    @Param("awayTeamName") String awayTeamName,
-    @Param("date") LocalDateTime date
+  Optional<Match> findByHomeTeamNameContainingAndAwayTeamNameContainingAndDateAndStatusEquals(
+    String homeTeamName,
+    String awayTeamName,
+    LocalDateTime date,
+    MatchStatus matchStatus
   );
 
   List<Match> findAllByDateBetween(

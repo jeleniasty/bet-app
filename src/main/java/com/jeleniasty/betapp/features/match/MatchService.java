@@ -124,11 +124,13 @@ public class MatchService {
     var awayTeam = this.teamService.findTeam(odd.awayTeamName());
 
     var match =
-      this.matchRepository.findByHomeTeamNameContainingAndAwayTeamNameContainingAndDate(
+      this.matchRepository.findByHomeTeamNameContainingAndAwayTeamNameContainingAndDateAndStatusEquals(
           homeTeam.getName(),
           awayTeam.getName(),
-          odd.date()
+          odd.date(),
+          MatchStatus.TIMED
         );
+
     if (match.isEmpty()) {
       log.error(
         "Match not found: " +
@@ -145,8 +147,6 @@ public class MatchService {
     match.get().setDrawOdds(odd.drawOdds());
     this.matchRepository.save(match.get());
   }
-
-  //TODO add functionality to handle match date inconsistencies
 
   public List<UpcomingMatchDTO> getUpcomingMatches() {
     return matchRepository.findTop10ByStatusOrderByDate();
