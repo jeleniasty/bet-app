@@ -21,6 +21,7 @@ import { DatePipe, NgOptimizedImage } from '@angular/common';
 import { MatchComponent } from './match/match.component';
 import { UserBetsComponent } from './bet/user-bets/user-bets.component';
 import { ScoreboardComponent } from './scoreboard/scoreboard.component';
+import { ErrorComponent } from './general/error/error.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { ScoreboardComponent } from './scoreboard/scoreboard.component';
     MatchComponent,
     UserBetsComponent,
     ScoreboardComponent,
+    ErrorComponent,
   ],
   imports: [
     BrowserModule,

@@ -43,6 +43,10 @@
           </ng-container>
         </span>
       </div>
+      <betapp-error
+        *ngIf="showAuthenticationError"
+        errorMessage="Invalid email or password"
+      ></betapp-error>
       <button
         class="login-button"
         (click)="login()"

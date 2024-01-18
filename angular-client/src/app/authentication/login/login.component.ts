@@ -15,6 +15,7 @@ import { AuthService } from '../auth.service';
 })
 export class LoginComponent {
   loginForm: FormGroup;
+  showAuthenticationError: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -41,9 +42,16 @@ export class LoginComponent {
     if (loginFormValues.email && loginFormValues.password) {
       this.authService
         .login(loginFormValues.email, loginFormValues.password)
-        .subscribe((response: any): void => {
-          this.authService.storeAuthToken(response.token);
-          this.router.navigateByUrl('/');
+        .subscribe({
+          next: (response: any): void => {
+            this.authService.storeAuthToken(response.token);
+            this.router.navigateByUrl('/');
+          },
+          error: (error: any): void => {
+            if (error.status === 401) {
+              this.showAuthenticationError = true;
+            }
+          },
         });
     }
   }
