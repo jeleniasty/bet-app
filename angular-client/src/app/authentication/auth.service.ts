@@ -20,7 +20,6 @@ export class AuthService {
 
     return this.http.post('http://localhost:8080/api/login', authRequest);
   }
-  //TODO add 401 response status code handling
 
   register(username: string, email: string, password: string) {
     const registrationRequest: RegistrationRequest = new RegistrationRequest(
