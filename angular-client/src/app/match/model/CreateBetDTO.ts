@@ -1,17 +1,13 @@
 import { BetType } from './BetType';
-import { MatchResultDTO } from './MatchResultDTO';
+import { ResultDTO } from './ResultDTO';
 
 export class CreateBetDTO {
-  private matchResultDTO: MatchResultDTO;
+  private resultDTO: ResultDTO;
   private betType: BetType;
   private matchId: number;
 
-  constructor(
-    matchResultDTO: MatchResultDTO,
-    betType: BetType,
-    matchId: number
-  ) {
-    this.matchResultDTO = matchResultDTO;
+  constructor(resultDTO: ResultDTO, betType: BetType, matchId: number) {
+    this.resultDTO = resultDTO;
     this.betType = betType;
     this.matchId = matchId;
   }

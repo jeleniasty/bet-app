@@ -6,7 +6,7 @@ import { Match } from './model/Match';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Winner } from './model/Winner';
 import { CreateBetDTO } from './model/CreateBetDTO';
-import { MatchResultDTO, ScoreDTO } from './model/MatchResultDTO';
+import { ResultDTO, ScoreDTO } from './model/ResultDTO';
 import { BetType } from './model/BetType';
 import { BetService } from '../bet/bet.service';
 
@@ -72,7 +72,7 @@ export class MatchComponent implements OnInit {
     }
 
     const createBetDTO: CreateBetDTO = new CreateBetDTO(
-      new MatchResultDTO(this.fullTimeResultWinner),
+      new ResultDTO(this.fullTimeResultWinner),
       BetType.FULL_TIME_RESULT,
       +this.matchId
     );
@@ -94,7 +94,7 @@ export class MatchComponent implements OnInit {
 
     const formValues = this.correctScoreBetForm.value;
     const createBetDTO: CreateBetDTO = new CreateBetDTO(
-      new MatchResultDTO(
+      new ResultDTO(
         this.determineCorrectScoreWinner(),
         new ScoreDTO(formValues.homeScore, formValues.awayScore)
       ),

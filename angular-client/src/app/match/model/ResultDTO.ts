@@ -1,5 +1,6 @@
 import { Winner } from './Winner';
 import { Duration } from './Duration';
+
 export class ScoreDTO {
   home: number;
   away: number;
@@ -10,7 +11,7 @@ export class ScoreDTO {
   }
 }
 
-export class MatchResultDTO {
+export class ResultDTO {
   private winner: Winner;
   private fullTimeScore: ScoreDTO | null = null;
   private duration: Duration | null = null;
