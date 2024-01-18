@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
+import { AuthenticationRequest } from './authentication-request';
+import { RegistrationRequest } from './registration-request';
 
 @Injectable({
   providedIn: 'root',
@@ -11,36 +13,25 @@ export class AuthService {
   constructor(private http: HttpClient, private cookieService: CookieService) {}
 
   login(email: string, password: string) {
-    const headers: HttpHeaders = new HttpHeaders().set(
-      'Content-Type',
-      'application/x-www-form-urlencoded'
+    const authRequest: AuthenticationRequest = new AuthenticationRequest(
+      email,
+      password
     );
-    const body: URLSearchParams = new URLSearchParams();
-    body.set('email', email);
-    body.set('password', password);
 
-    return this.http.post('http://localhost:8080/api/login', body.toString(), {
-      headers,
-    });
+    return this.http.post('http://localhost:8080/api/login', authRequest);
   }
+  //TODO add 401 response status code handling
 
   register(username: string, email: string, password: string) {
-    const headers: HttpHeaders = new HttpHeaders().set(
-      'Content-Type',
-      'application/x-www-form-urlencoded'
+    const registrationRequest: RegistrationRequest = new RegistrationRequest(
+      username,
+      email,
+      password,
+      ['PLAYER']
     );
-    const body: URLSearchParams = new URLSearchParams();
-    body.set('username', username);
-    body.set('email', email);
-    body.set('password', password);
-    body.set('roleNames', 'PLAYER');
-
     return this.http.post(
       'http://localhost:8080/api/register',
-      body.toString(),
-      {
-        headers,
-      }
+      registrationRequest
     );
   }
 
