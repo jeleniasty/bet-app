@@ -12,29 +12,29 @@ export class ScoreDTO {
 }
 
 export class ResultDTO {
-  private winner: Winner;
-  private fullTimeScore: ScoreDTO | null = null;
-  private duration: Duration | null = null;
-  private halfTimeScore: ScoreDTO | null = null;
-  private regularTimeScore: ScoreDTO | null = null;
-  private extraTimeScore: ScoreDTO | null = null;
-  private penaltiesScore: ScoreDTO | null = null;
+  public winner: Winner | null = null;
+  public duration: Duration | null = null;
+  public halfTimeScore: ScoreDTO | null = null;
+  public regularTimeScore: ScoreDTO | null = null;
+  public extraTimeScore: ScoreDTO | null = null;
+  public penaltiesScore: ScoreDTO | null = null;
+  public fullTimeScore: ScoreDTO | null = null;
 
   constructor(
     winner: Winner,
-    fullTimeScore?: ScoreDTO,
     duration?: Duration,
     halfTimeScore?: ScoreDTO,
     regularTimeScore?: ScoreDTO,
     extraTimeScore?: ScoreDTO,
-    penaltiesScore?: ScoreDTO
+    penaltiesScore?: ScoreDTO,
+    fullTimeScore?: ScoreDTO
   ) {
-    this.winner = winner;
-    this.fullTimeScore = fullTimeScore || null;
+    this.winner = winner || null;
     this.duration = duration || null;
     this.halfTimeScore = halfTimeScore || null;
     this.regularTimeScore = regularTimeScore || null;
     this.extraTimeScore = extraTimeScore || null;
     this.penaltiesScore = penaltiesScore || null;
+    this.fullTimeScore = fullTimeScore || null;
   }
 }

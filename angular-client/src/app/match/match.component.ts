@@ -96,6 +96,11 @@ export class MatchComponent implements OnInit {
     const createBetDTO: CreateBetDTO = new CreateBetDTO(
       new ResultDTO(
         this.determineCorrectScoreWinner(),
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
         new ScoreDTO(formValues.homeScore, formValues.awayScore)
       ),
       BetType.CORRECT_SCORE,
