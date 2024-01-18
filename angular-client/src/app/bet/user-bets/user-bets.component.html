@@ -11,11 +11,11 @@
       </tr>
       <tr *ngFor="let bet of getFullTimeResultBets(); let i = index">
         <td>{{ i + 1 }}.</td>
-        <td>{{ bet?.winner }}</td>
+        <td>{{ bet?.result?.winner?.toString() | underscoreToWhitespace }}</td>
 
         <td>
-          {{ bet?.creationDate | date }},
-          {{ bet?.creationDate | date : "shortTime" }}
+          {{ bet?.creationDate | date : "shortTime" }},
+          {{ bet?.creationDate | date }}
         </td>
       </tr>
     </table>
@@ -38,12 +38,12 @@
       </tr>
       <tr *ngFor="let bet of getCorrectScoreBets(); let i = index">
         <td>{{ i + 1 }}.</td>
-        <td>{{ bet?.winner }}</td>
-        <td>{{ bet?.fullTimeScore?.home }}</td>
-        <td>{{ bet?.fullTimeScore?.away }}</td>
+        <td>{{ bet?.result?.winner?.toString() | underscoreToWhitespace }}</td>
+        <td>{{ bet?.result?.fullTimeScore?.home }}</td>
+        <td>{{ bet?.result?.fullTimeScore?.away }}</td>
         <td>
-          {{ bet?.creationDate | date }},
-          {{ bet?.creationDate | date : "shortTime" }}
+          {{ bet?.creationDate | date : "shortTime" }},
+          {{ bet?.creationDate | date }}
         </td>
       </tr>
     </table>

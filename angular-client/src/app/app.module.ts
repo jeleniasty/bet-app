@@ -22,6 +22,7 @@ import { MatchComponent } from './match/match.component';
 import { UserBetsComponent } from './bet/user-bets/user-bets.component';
 import { ScoreboardComponent } from './scoreboard/scoreboard.component';
 import { ErrorComponent } from './general/error/error.component';
+import { UnderscoreToWhitespacePipe } from './general/underscore-to-whitespace.pipe';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { ErrorComponent } from './general/error/error.component';
     DashboardHeaderComponent,
     UpcomingMatchComponent,
     UpcomingMatchesComponent,
+    UnderscoreToWhitespacePipe,
     DashboardComponent,
     BestPlayersComponent,
     UserScoreComponent,
