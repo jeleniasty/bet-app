@@ -149,7 +149,7 @@ public class MatchService {
   }
 
   public List<UpcomingMatchDTO> getUpcomingMatches() {
-    return matchRepository.findTop10ByStatusOrderByDate();
+    return matchRepository.find10UpcomingMatches();
   }
 
   public MatchDTO getMatch(Long id) {
