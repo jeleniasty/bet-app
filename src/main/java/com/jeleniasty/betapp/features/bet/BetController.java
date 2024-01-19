@@ -21,6 +21,7 @@ public class BetController {
     @Valid @RequestBody CreateBetDTO createBetDTO
   ) {
     return ResponseEntity.status(201).body(betService.createBet(createBetDTO));
+    //TODO add saving current bet odds
   }
 
   @GetMapping("/bets/user/{matchId}")
