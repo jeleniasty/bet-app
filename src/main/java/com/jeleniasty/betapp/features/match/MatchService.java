@@ -18,6 +18,7 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -148,8 +149,11 @@ public class MatchService {
     this.matchRepository.save(match.get());
   }
 
-  public List<UpcomingMatchDTO> getUpcomingMatches() {
-    return matchRepository.find10UpcomingMatches();
+  public List<UpcomingMatchDTO> getUpcomingMatches(int page, int size) {
+    return matchRepository.findUpcomingMatches(
+      Instant.now(),
+      PageRequest.of(page, size)
+    );
   }
 
   public MatchDTO getMatch(Long id) {
