@@ -6,6 +6,7 @@ import { RegisterComponent } from './authentication/register/register.component'
 import { AuthGuardService } from './authentication/auth-guard.service';
 import { MatchComponent } from './match/match.component';
 import { ScoreboardComponent } from './scoreboard/scoreboard.component';
+import { ScheduleComponent } from './schedule/schedule.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent, canActivate: [AuthGuardService] },
@@ -19,6 +20,11 @@ const routes: Routes = [
   {
     path: 'scoreboard',
     component: ScoreboardComponent,
+    canActivate: [AuthGuardService],
+  },
+  {
+    path: 'schedule',
+    component: ScheduleComponent,
     canActivate: [AuthGuardService],
   },
 ];

@@ -13,7 +13,15 @@ export class DashboardHeaderComponent {
     this.router.navigateByUrl('');
   }
 
-  navigateToScoreboard() {
+  navigateToScoreboard(): void {
     this.router.navigateByUrl('scoreboard');
+  }
+
+  navigateToUpcomingMatches(): void {
+    this.router.navigateByUrl('schedule');
+  }
+
+  navigateToOngoingCompetitions() {
+    this.router.navigateByUrl('ongoing-competitions');
   }
 }

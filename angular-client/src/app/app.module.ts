@@ -23,6 +23,7 @@ import { UserBetsComponent } from './bet/user-bets/user-bets.component';
 import { ScoreboardComponent } from './scoreboard/scoreboard.component';
 import { ErrorComponent } from './general/error/error.component';
 import { UnderscoreToWhitespacePipe } from './general/underscore-to-whitespace.pipe';
+import { ScheduleComponent } from './schedule/schedule.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { UnderscoreToWhitespacePipe } from './general/underscore-to-whitespace.p
     UserBetsComponent,
     ScoreboardComponent,
     ErrorComponent,
+    ScheduleComponent,
   ],
   imports: [
     BrowserModule,

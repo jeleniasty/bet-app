@@ -11,9 +11,11 @@
     </div>
     <div class="header-tabs">
       <button (click)="navigateToScoreboard()">scoreboard</button>
-      <button>bets</button>
-      <button>schedule</button>
-      <button>results</button>
+      <button>your bets</button>
+      <button (click)="navigateToUpcomingMatches()">schedule</button>
+      <button (click)="navigateToOngoingCompetitions()">
+        ongoing competitions
+      </button>
     </div>
   </div>
   <betapp-user-menu></betapp-user-menu>

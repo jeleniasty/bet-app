@@ -5,4 +5,8 @@
     <betapp-upcoming-match (click)="openBet(match.id)" [upcomingMatch]="match">
     </betapp-upcoming-match>
   </div>
+
+  <div class="show-more" *ngIf="pageable">
+    <button (click)="showNextPage()">Show more</button>
+  </div>
 </div>
