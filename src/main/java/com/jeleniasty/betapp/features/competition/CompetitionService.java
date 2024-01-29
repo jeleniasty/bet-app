@@ -132,8 +132,7 @@ public class CompetitionService {
     var updatedMatches = ongoingCompetition
       .getCompetitionMatches()
       .stream()
-      .filter(isMatchFinishedOrInPlay().negate())
-      .filter(areTeamsNotAssigned().or(isMatchScheduled()))
+      .filter(areTeamsNotAssigned().or(isMatchInFuture().negate()))
       .map(match ->
         matchService.attemptToUpdate(
           match,
@@ -163,19 +162,16 @@ public class CompetitionService {
     return Optional.empty();
   }
 
-  private Predicate<Match> isMatchFinishedOrInPlay() {
-    return match ->
-      match.getStatus() == MatchStatus.FINISHED ||
-      match.getStatus() == MatchStatus.IN_PLAY ||
-      match.getStatus() == MatchStatus.PAUSED;
-  }
-
   private Predicate<Match> areTeamsNotAssigned() {
     return match -> match.getHomeTeam() == null || match.getAwayTeam() == null;
   }
 
-  private Predicate<Match> isMatchScheduled() {
-    return match -> match.getStatus() == MatchStatus.SCHEDULED;
+  private Predicate<Match> isMatchInFuture() {
+    return match ->
+      match.getStatus() == MatchStatus.FINISHED ||
+      match.getStatus() == MatchStatus.AWARDED ||
+      match.getStatus() == MatchStatus.IN_PLAY ||
+      match.getStatus() == MatchStatus.PAUSED;
   }
 
   private MatchDTO findCorrespondingMatchDTO(
