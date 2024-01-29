@@ -26,6 +26,7 @@ public class GoogleSheetsService {
       .spreadsheets()
       .values()
       .get(spreadsheetId, "Arkusz1")
+      .setKey(googleAuthorizationConfig.getApiKey())
       .execute()
       .getValues();
   }

@@ -20,7 +20,7 @@ scheduler:
   duration:
     match-result-task-cron: 0 2 * * * *
     match-result-update-millis: 60000
-    odds-task-cron: 0 */15 * * * *
+    odds-task-cron: 0 */1 * * * *
 
 betapp:
   footballdata:
@@ -40,7 +40,6 @@ betapp:
 googlesheets:
   name: "betapp"
   spreadsheet-id: "1eP4nqxSTtPiAfWQVgxgJ3VaPowyz627cwlwcrhrgBS0"
-  credentials-filepath: "/credentials.json"
-  tokens-directorypath: tokens
+  apiKey: ""
 
 
