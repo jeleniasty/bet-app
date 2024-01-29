@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'betapp-register',
@@ -15,6 +16,7 @@ import { Router } from '@angular/router';
 })
 export class RegisterComponent {
   registerForm: FormGroup;
+  backendUrl: String = environment.backendUrl;
 
   constructor(
     private formBuilder: FormBuilder,
