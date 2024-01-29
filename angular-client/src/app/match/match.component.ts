@@ -9,6 +9,7 @@ import { CreateBetDTO } from './model/CreateBetDTO';
 import { ResultDTO, ScoreDTO } from './model/ResultDTO';
 import { BetType } from './model/BetType';
 import { BetService } from '../bet/bet.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'betapp-match',
@@ -138,10 +139,10 @@ export class MatchComponent implements OnInit {
   }
 
   createBet(createBetDTO: CreateBetDTO) {
-    return this.http.post('http://localhost:8080/bet', createBetDTO);
+    return this.http.post(environment.backendUrl + '/bet', createBetDTO);
   }
 
   getMatch(matchId: number): Observable<Match> {
-    return this.http.get<Match>(`http://localhost:8080/match/${matchId}`);
+    return this.http.get<Match>(environment.backendUrl + `/match/${matchId}`);
   }
 }

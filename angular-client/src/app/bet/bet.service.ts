@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { Bet } from './Bet';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +20,8 @@ export class BetService {
   }
 
   getUserBets(matchId: number): Observable<Bet[]> {
-    return this.http.get<Bet[]>(`http://localhost:8080/bets/user/${matchId}`);
+    return this.http.get<Bet[]>(
+      environment.backendUrl + `/bets/user/${matchId}`
+    );
   }
 }

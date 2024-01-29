@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthenticationRequest } from './authentication-request';
 import { RegistrationRequest } from './registration-request';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +19,7 @@ export class AuthService {
       password
     );
 
-    return this.http.post('http://localhost:8080/api/login', authRequest);
+    return this.http.post(environment.backendUrl + '/api/login', authRequest);
   }
 
   register(username: string, email: string, password: string) {
@@ -29,7 +30,7 @@ export class AuthService {
       ['PLAYER']
     );
     return this.http.post(
-      'http://localhost:8080/api/register',
+      environment.backendUrl + '/api/register',
       registrationRequest
     );
   }

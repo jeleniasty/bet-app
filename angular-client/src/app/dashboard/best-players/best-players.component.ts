@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserScore } from './UserScore';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'betapp-best-players',
@@ -23,6 +24,6 @@ export class BestPlayersComponent implements OnInit {
   }
 
   getUserScores(): Observable<UserScore[]> {
-    return this.http.get<UserScore[]>('http://localhost:8080/user-scores');
+    return this.http.get<UserScore[]>(environment.backendUrl + '/user-scores');
   }
 }
