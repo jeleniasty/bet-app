@@ -7,7 +7,6 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
-import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'betapp-login',
@@ -17,7 +16,7 @@ import { environment } from '../../../../environments/environment';
 export class LoginComponent {
   loginForm: FormGroup;
   showAuthenticationError: boolean = false;
-  backendUrl: String = environment.backendUrl;
+  baseUrl: String = window.location.origin;
 
   constructor(
     private formBuilder: FormBuilder,
