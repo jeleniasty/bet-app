@@ -1,9 +1,21 @@
 <div class="upcoming-matches-container">
   <h3>Upcoming matches</h3>
-  <span *ngIf="matches.length === 0">No upcoming matches available.</span>
-  <div *ngFor="let match of matches">
-    <betapp-upcoming-match (click)="openBet(match.id)" [upcomingMatch]="match">
-    </betapp-upcoming-match>
+  <span *ngIf="groupedMatches.size === 0">No upcoming matches available.</span>
+  <div
+    class="match-group-container"
+    *ngFor="let group of groupedMatches | keyvalue"
+  >
+    <p>{{ group.key | date : "dd MMMM yyyy" }}</p>
+    <div *ngFor="let match of group.value">
+      <div class="match-group">
+        <p class="match-time">{{ match.matchDate | date : "shortTime" }}</p>
+        <betapp-upcoming-match
+          (click)="openBet(match.id)"
+          [upcomingMatch]="match"
+        >
+        </betapp-upcoming-match>
+      </div>
+    </div>
   </div>
 
   <div class="show-more" *ngIf="pageable">
