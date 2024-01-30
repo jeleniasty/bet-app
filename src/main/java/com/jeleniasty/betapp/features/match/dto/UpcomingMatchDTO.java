@@ -8,5 +8,6 @@ public interface UpcomingMatchDTO {
   String getAwayFlag();
   String getHomeOdds();
   String getAwayOdds();
+  String getDrawOdds();
   String getMatchDate();
 }

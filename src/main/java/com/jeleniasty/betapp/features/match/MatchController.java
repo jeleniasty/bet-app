@@ -4,10 +4,10 @@ import com.jeleniasty.betapp.features.match.dto.MatchDTO;
 import com.jeleniasty.betapp.features.match.dto.UpcomingMatchDTO;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -23,9 +23,8 @@ public class MatchController {
 
   @GetMapping("/matches/upcoming")
   public ResponseEntity<List<UpcomingMatchDTO>> getUpcomingMatches(
-    @RequestParam int page,
-    @RequestParam int size
+    Pageable pageable
   ) {
-    return ResponseEntity.ok(matchService.getUpcomingMatches(page, size));
+    return ResponseEntity.ok(matchService.getUpcomingMatches(pageable));
   }
 }

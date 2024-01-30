@@ -6,6 +6,7 @@ export class UpcomingMatch {
   awayTeam: string;
   awayFlag: string;
   awayOdds: number;
+  drawOdds: number;
   matchDate: Date;
 
   constructor(
@@ -16,6 +17,7 @@ export class UpcomingMatch {
     awayName: string,
     awayFlag: string,
     awayOdds: number,
+    drawOdds: number,
     matchDate: Date
   ) {
     this.id = id;
@@ -25,6 +27,7 @@ export class UpcomingMatch {
     this.awayTeam = awayName;
     this.awayFlag = awayFlag;
     this.awayOdds = awayOdds;
+    this.drawOdds = drawOdds;
     this.matchDate = matchDate;
   }
 }

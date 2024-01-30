@@ -4,9 +4,8 @@
     <div class="team-name">{{ upcomingMatch?.homeTeam }}</div>
     <div class="odds">{{ upcomingMatch?.homeOdds }}</div>
   </div>
-  <div class="upcoming-match-date">
-    <div class="day">{{ upcomingMatch?.matchDate | date }}</div>
-    <div class="hour">{{ upcomingMatch?.matchDate | date : "shortTime" }}</div>
+  <div class="drawodds">
+    <div class="odds">{{ upcomingMatch?.drawOdds }}</div>
   </div>
   <div class="awayteam">
     <div class="odds">{{ upcomingMatch?.awayOdds }}</div>
